@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAgrodelis", "ApiAgrodelis\ApiAgrodelis.csproj", "{450B879F-41F3-44CC-91B7-5808C1EB0DA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgrodelisForm", "AgrodelisForm\AgrodelisForm.csproj", "{A8EB7C36-8D21-477D-9D67-860AB2199B9A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{450B879F-41F3-44CC-91B7-5808C1EB0DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{450B879F-41F3-44CC-91B7-5808C1EB0DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{450B879F-41F3-44CC-91B7-5808C1EB0DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{450B879F-41F3-44CC-91B7-5808C1EB0DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8EB7C36-8D21-477D-9D67-860AB2199B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8EB7C36-8D21-477D-9D67-860AB2199B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8EB7C36-8D21-477D-9D67-860AB2199B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8EB7C36-8D21-477D-9D67-860AB2199B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15F50251-84B2-42DB-BFF9-37482A216823}
+	EndGlobalSection
+EndGlobal
