@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 using ApiAgrodelis.Models;
+using System;
 
 namespace ApiAgrodelis.Datos
 {
@@ -99,7 +100,8 @@ namespace ApiAgrodelis.Datos
             {
                 cmd.Parameters.Clear();
                 cmd.CommandType = CommandType.Text;
-                // Hacemos un JOIN con las tablas Categorias, VendedoresProductos y Vendedores
+
+                // Consulta SQL actualizada para usar la tabla intermedia ProductosVendedores
                 cmd.CommandText = @"
         SELECT 
             p.ProductoID, 
@@ -108,22 +110,24 @@ namespace ApiAgrodelis.Datos
             p.Precio, 
             p.Stock, 
             p.RutaImagen,
-            c.Nombre AS CategoriaNombre,  -- Nombre de la categoria
- c.CategoriaID,  -- Asegúrate de que esta columna esté seleccionada
-            v.Nombre AS VendedorNombre   -- Nombre del vendedor
+            c.Nombre AS CategoriaNombre,  -- Nombre de la categoría
+            c.CategoriaID,               -- ID de la categoría
+            u.Nombre AS VendedorNombre   -- Nombre del vendedor
         FROM 
             Productos p
         LEFT JOIN 
             Categorias c ON p.CategoriaID = c.CategoriaID
         INNER JOIN 
-            VendedoresProductos vp ON p.ProductoID = vp.ProductoID
+            ProductosVendedores pv ON p.ProductoID = pv.ProductoID  -- Relación con ProductosVendedores
         INNER JOIN 
-            Vendedores v ON vp.VendedorID = v.VendedorID";
+            Usuarios u ON pv.UsuarioID = u.UsuarioID  -- Relación con Usuarios (vendedores)
+        WHERE 
+            u.Rol = 'Vendedor' AND u.Activo = 1";
 
                 con.Open(); // Abrir la conexión
                 ds = new DataSet();
 
-                // Llenar el DataSet
+                // Llenar el DataSet con los resultados de la consulta
                 adapter = new SqlDataAdapter(cmd);
                 adapter.Fill(ds);
 
@@ -141,12 +145,14 @@ namespace ApiAgrodelis.Datos
                             Stock = Convert.ToInt32(row["Stock"]),
                             RutaImagen = row["RutaImagen"].ToString(),
 
-                            // Asignación del nombre de la Categoria
+                            // Asignación del nombre de la categoría
                             CategoriaNombre = row["CategoriaNombre"].ToString(),
 
-                            // Asignación del nombre del Vendedor
+                            // Asignación del nombre del vendedor
                             VendedorNombre = row["VendedorNombre"].ToString(),
-                            CategoriaID = Convert.ToInt32(row["CategoriaID"])  // Aquí agregas el CategoriaID
+
+                            // Asignación del ID de la categoría
+                            CategoriaID = Convert.ToInt32(row["CategoriaID"])
                         };
 
                         productos.Add(producto);
@@ -156,7 +162,7 @@ namespace ApiAgrodelis.Datos
             catch (Exception ex)
             {
                 // Manejo de excepciones
-                throw;
+                throw ex; // Asegúrate de registrar el error para análisis.
             }
             finally
             {
@@ -167,7 +173,9 @@ namespace ApiAgrodelis.Datos
         }
 
 
-       
+
+
+
         public int ActualizarProducto(Producto producto)
         {
             cmd.Parameters.Clear();
