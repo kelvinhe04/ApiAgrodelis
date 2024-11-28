@@ -2,6 +2,8 @@
 using Microsoft.Data.SqlClient;
 using ApiAgrodelis.Models;
 using System;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace ApiAgrodelis.Datos
 {
@@ -21,78 +23,6 @@ namespace ApiAgrodelis.Datos
             cmd.Connection = con;
         }
 
-        //public List<Categoria> ObtenerCategorias()
-        //{
-        //    List<Categoria> categorias = new List<Categoria>();
-        //    try
-        //    {
-        //        cmd.Parameters.Clear();
-        //        cmd.CommandType = CommandType.StoredProcedure;
-
-        //        // Consulta SQL que incluye stock y rutaImagen de los productos
-        //        cmd.CommandText = "sp_ObtenerCategoriasConProductos";
-
-        //        con.Open(); // Abrir la conexión
-        //        ds = new DataSet();
-
-        //        // Llenar el DataSet
-        //        adapter = new SqlDataAdapter(cmd);
-        //        adapter.Fill(ds);
-
-        //        // Procesar los resultados
-        //        Dictionary<int, Categoria> categoriaDict = new Dictionary<int, Categoria>();
-
-        //        foreach (DataTable table in ds.Tables)
-        //        {
-        //            foreach (DataRow row in table.Rows)
-        //            {
-        //                int categoriaId = Convert.ToInt32(row["CategoriaID"]);
-
-        //                // Verificar si la categoría ya está en el diccionario
-        //                if (!categoriaDict.ContainsKey(categoriaId))
-        //                {
-        //                    var categoria = new Categoria()
-        //                    {
-        //                        CategoriaId = categoriaId,
-        //                        Nombre = row["CategoriaNombre"].ToString(),
-        //                        Productos = new List<Producto>() // Inicializar la lista de productos
-        //                    };
-        //                    categoriaDict[categoriaId] = categoria;
-        //                }
-
-        //                // Si hay producto asociado, agregarlo a la lista
-        //                if (row["ProductoID"] != DBNull.Value)
-        //                {
-        //                    var producto = new Producto()
-        //                    {
-        //                        ProductoId = Convert.ToInt32(row["ProductoID"]),
-        //                        Nombre = row["ProductoNombre"].ToString(),
-        //                        Descripcion = row["Descripcion"].ToString(),
-        //                        Precio = Convert.ToDecimal(row["Precio"]),
-        //                        Stock = Convert.ToInt32(row["Stock"]),
-        //                        RutaImagen = row["RutaImagen"].ToString()
-        //                    };
-
-        //                    categoriaDict[categoriaId].Productos.Add(producto);
-        //                }
-        //            }
-        //        }
-
-        //        // Convertir el diccionario a una lista
-        //        categorias = categoriaDict.Values.ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Manejo de excepciones
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        con.Close(); // Cerrar la conexión en el bloque finally
-        //    }
-
-        //    return categorias;
-        //}
         public List<Producto> ObtenerTodosLosProductos()
         {
             List<Producto> productos = new List<Producto>();
@@ -210,7 +140,7 @@ namespace ApiAgrodelis.Datos
             con.Open();
             using (var reader = cmd.ExecuteReader())
             {
-                if (reader.Read())
+                if (reader.Read())      
                 {
                     producto = new Producto
                     {
@@ -228,88 +158,114 @@ namespace ApiAgrodelis.Datos
 
 
 
-        //    public int InsertarCategoria(CategoriaRequest categoria)
-        //    {
 
-        //        try
-        //        {
-        //            cmd.Parameters.Clear();
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.CommandText = "INSERT INTO Categorias(nombre)values(@n)";
-        //            cmd.Parameters.Add(new SqlParameter("@n", categoria.Nombre));
+        public bool ValidarUsuario(string email, string contraseña)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                // Consulta para verificar si el email y la contraseña coinciden
+                cmd.CommandText = "SELECT 1 FROM usuarios WHERE email = @Email AND contraseña = @Contraseña";
+                cmd.Parameters.Add(new SqlParameter("@Email", email));
+                cmd.Parameters.Add(new SqlParameter("@Contraseña", EncriptarContraseña(contraseña)));
+
+                con.Open();
+                var resultado = cmd.ExecuteScalar(); // Devuelve 1 si las credenciales son válidas
+
+                return resultado != null; // Retorna true si las credenciales son válidas, de lo contrario false
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al validar credenciales: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
 
 
-        //            con.Open();  // Abrir la conexión
-        //            int insertedId = Convert.ToInt32(cmd.ExecuteNonQuery());
-        //            if (insertedId > 0)
-        //                return insertedId;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Manejo de excepciones
-        //            throw;
-        //        }
-        //        finally
-        //        {
-        //            con.Close();  // Cerrar la conexión
-        //        }
+        // Encriptar Contraseña
+        private string EncriptarContraseña(string contraseña)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
+                return Convert.ToBase64String(bytes); // Cifrar la contraseña usando SHA-256
+            }
+        }
 
-        //        return 0;
-        //    }
 
-        //    public int ActualizarCategoria(int id, CategoriaRequest categoria)
-        //    {
-        //        try
-        //        {
-        //            cmd.Parameters.Clear();
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.CommandText = "UPDATE Categorias SET Nombre = @n WHERE CategoriaID = @id";
-        //            cmd.Parameters.Add(new SqlParameter("@n", categoria.Nombre));
-        //            cmd.Parameters.Add(new SqlParameter("@id", id));
+        public string ObtenerRolPorEmail(string email)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
 
-        //            con.Open();  // Abrir la conexión
-        //            int updatedRows = cmd.ExecuteNonQuery();
-        //            if (updatedRows > 0)
-        //                return updatedRows;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Manejo de excepciones
-        //            throw;
-        //        }
-        //        finally
-        //        {
-        //            con.Close();  // Cerrar la conexión
-        //        }
+                // Consulta para obtener el rol del usuario
+                cmd.CommandText = "SELECT rol FROM usuarios WHERE email = @Email";
+                cmd.Parameters.Add(new SqlParameter("@Email", email));
 
-        //        return 0;
-        //    }
+                con.Open();
+                var resultado = cmd.ExecuteScalar(); // Devuelve el rol como un string
 
-        //    public int BorrarCategoria(int id)
-        //    {
-        //        try
-        //        {
-        //            cmd.Parameters.Clear();
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.CommandText = "DELETE FROM Catagorias WHERE id = @id";
-        //            cmd.Parameters.Add(new SqlParameter("@id", id));
+                return resultado?.ToString(); // Retorna el rol si existe, de lo contrario null
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el rol: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
 
-        //            con.Open();  // Abrir la conexión
-        //            int deletedRows = cmd.ExecuteNonQuery();
-        //            if (deletedRows > 0)
-        //                return deletedRows;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Manejo de excepciones
-        //            throw;
-        //        }
-        //        finally
-        //        {
-        //            con.Close();  // Cerrar la conexión
-        //        }
+    
 
-        //        return 0;
-        //    }
+
+
+
+
+    // Registrar un nuevo Usuario
+    public int RegistrarUsuario(string nombre, string email, string contraseña, string rol)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                // Asegúrate de incluir el rol en la consulta SQL
+                cmd.CommandText = "INSERT INTO usuarios (nombre, email, contraseña, Rol) VALUES (@nombre, @email, @contraseña, @rol)";
+
+                // Añadir los parámetros a la consulta SQL
+                cmd.Parameters.Add(new SqlParameter("@nombre", nombre));
+                cmd.Parameters.Add(new SqlParameter("@email", email));
+                cmd.Parameters.Add(new SqlParameter("@contraseña", EncriptarContraseña(contraseña))); // Encriptamos la contraseña
+                cmd.Parameters.Add(new SqlParameter("@rol", rol)); // Agregar el rol (Vendedor, Cliente, etc.)
+
+                con.Open();
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected; // Devuelve el número de filas afectadas (debería ser 1 si el registro es exitoso)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al registrar usuario", ex);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+        
     }
+
+
+
 }
+

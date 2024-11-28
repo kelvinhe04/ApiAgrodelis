@@ -9,7 +9,7 @@ namespace ApiAgrodelis.Controllers
     [ApiController]
     public class ProductosController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet]   
         [Route("all")]
         public List<Producto> ObtenerTodosLosProductos()
         {

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace AgrodelisForm
 {
-    public partial class Form1 : Form
+    public partial class FormAdmin : Form
     {
-        public Form1()
+        public FormAdmin()
         {
             InitializeComponent();
         }

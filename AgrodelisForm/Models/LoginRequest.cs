@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace AgrodelisForm.Models
 {
-    public class CategoriaResquest
+    public class LoginRequest
     {
-        public string Nombre { get; set; }
+        public string Email { get; set; }
+        public string Contraseña { get; set; }
     }
 }
