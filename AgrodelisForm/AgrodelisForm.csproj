@@ -103,11 +103,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ApiAgrodelis\ApiAgrodelis.csproj">
-      <Project>{450b879f-41f3-44cc-91b7-5808c1eb0da3}</Project>
-      <Name>ApiAgrodelis</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -21,8 +21,10 @@ namespace AgrodelisForm.Services
         // Login
         public async Task<Respuesta> Login(LoginRequest loginRequest)
         {
+            
             try
             {
+               
                 // Serializar la solicitud de login
                 var datos = JsonConvert.SerializeObject(loginRequest);
                 var data = new StringContent(datos, Encoding.UTF8, "application/json");
@@ -31,17 +33,13 @@ namespace AgrodelisForm.Services
                 var respuesta = await _client.PostAsync("https://localhost:7156/api/Authentication/login", data);
 
                 // Verificar si la respuesta es exitosa
-                if (respuesta.IsSuccessStatusCode)  
+                if (respuesta.IsSuccessStatusCode)
                 {
                     var content = await respuesta.Content.ReadAsStringAsync();
                     var respuestaDeserializada = JsonConvert.DeserializeObject<Respuesta>(content);
 
-                    // Asegurarse de que la respuesta tenga la propiedad Exitoso como true
-                    respuestaDeserializada.Exitoso = true;
-                    respuestaDeserializada.Code = 200; // Código de éxito
-
-                    // Ahora, obtener el rol del usuario usando el email proporcionado en login
-                    if (respuestaDeserializada.Exitoso)
+                    // Aquí no es necesario volver a asignar Exitoso = true
+                    if (respuestaDeserializada.Exitoso) // Solo revisas si el servidor lo marcó como exitoso
                     {
                         string rol = await ObtenerRolUsuario(loginRequest.Email);
 
@@ -65,9 +63,19 @@ namespace AgrodelisForm.Services
                     }
                     else
                     {
-                        return respuestaDeserializada;
+                        return respuestaDeserializada; // Retorna la respuesta original si no fue exitosa
                     }
                 }
+                else
+                {
+                    return new Respuesta
+                    {
+                        Exitoso = false,
+                        Mensaje = "Error en la respuesta del servidor.",
+                        Code = 500
+                    };
+                }
+
 
                 // Manejar error en la solicitud
                 return new Respuesta
@@ -88,6 +96,7 @@ namespace AgrodelisForm.Services
                 };
             }
         }
+
 
         public async Task<string> ObtenerRolUsuario(string email)
         {

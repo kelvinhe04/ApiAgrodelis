@@ -11,8 +11,6 @@ namespace AgrodelisForm.Models
     public class Respuesta
     {
 
-        
-
         public bool Exitoso { get; set; }
         public string Mensaje { get; set; }
         public int Code { get; set; }    // Código de estado (por ejemplo, 200, 400, 500)

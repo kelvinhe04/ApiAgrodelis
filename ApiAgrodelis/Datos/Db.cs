@@ -170,10 +170,11 @@ namespace ApiAgrodelis.Datos
                 cmd.CommandText = "SELECT 1 FROM usuarios WHERE email = @Email AND contraseña = @Contraseña";
                 cmd.Parameters.Add(new SqlParameter("@Email", email));
                 cmd.Parameters.Add(new SqlParameter("@Contraseña", EncriptarContraseña(contraseña)));
+                
 
                 con.Open();
                 var resultado = cmd.ExecuteScalar(); // Devuelve 1 si las credenciales son válidas
-
+                
                 return resultado != null; // Retorna true si las credenciales son válidas, de lo contrario false
             }
             catch (Exception ex)
@@ -185,6 +186,7 @@ namespace ApiAgrodelis.Datos
                 con.Close();
             }
         }
+        
 
 
         // Encriptar Contraseña
@@ -224,20 +226,71 @@ namespace ApiAgrodelis.Datos
             }
         }
 
-    
 
-
-
-
-
-    // Registrar un nuevo Usuario
-    public int RegistrarUsuario(string nombre, string email, string contraseña, string rol)
+        public bool ValidarEmail(string email)
         {
             try
             {
                 cmd.Parameters.Clear();
                 cmd.CommandType = CommandType.Text;
 
+                // Verificar si el email ya está registrado
+                cmd.CommandText = "SELECT COUNT(*) FROM usuarios WHERE LOWER(email) = LOWER(@Email)";
+                cmd.Parameters.Add(new SqlParameter("@Email", email));
+
+                con.Open();
+                var resultado = cmd.ExecuteScalar();  // Si el resultado es mayor que 0, el email ya está registrado
+
+                return (int)resultado > 0;  // Retorna true si el email ya existe
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al validar el email: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public bool ValidarNombreUsuario(string nombre)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                // Verificar si el nombre de usuario ya está registrado
+                cmd.CommandText = "SELECT COUNT(*) FROM usuarios WHERE LOWER(nombre) = LOWER(@Nombre)";
+                cmd.Parameters.Add(new SqlParameter("@Nombre", nombre));
+
+                con.Open();
+                var resultado = cmd.ExecuteScalar();  // Si el resultado es mayor que 0, el nombre de usuario ya está registrado
+                Console.WriteLine(resultado);
+
+                return (int)resultado > 0;  // Retorna true si el nombre de usuario ya existe
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al validar el nombre de usuario: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+
+
+
+        // Registrar un nuevo Usuario
+        public int RegistrarUsuario(string nombre, string email, string contraseña, string rol)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                    
                 // Asegúrate de incluir el rol en la consulta SQL
                 cmd.CommandText = "INSERT INTO usuarios (nombre, email, contraseña, Rol) VALUES (@nombre, @email, @contraseña, @rol)";
 
@@ -252,7 +305,7 @@ namespace ApiAgrodelis.Datos
                 return rowsAffected; // Devuelve el número de filas afectadas (debería ser 1 si el registro es exitoso)
             }
             catch (Exception ex)
-            {
+            {   
                 throw new Exception("Error al registrar usuario", ex);
             }
             finally

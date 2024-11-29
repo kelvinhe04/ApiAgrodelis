@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AgrodelisForm.Models;
 using AgrodelisForm.Services;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace AgrodelisForm
 {
@@ -21,34 +22,50 @@ namespace AgrodelisForm
             InitializeComponent();
             authenticationService = new AuthenticationService();
 
+            panelRegistrar.Visible = false;
+
         }
 
 
         private async void btnLogin_Click_1(object sender, EventArgs e)
         {
+
+            string email = txtEmailLogin.Text.Trim();
+            string contraseña = txtContraLogin.Text.Trim();
+
             try
             {
+
+                // Validar que los campos no estén vacíos
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
+                {
+                    MessageBox.Show("Por favor, complete todos los campos", "Campos Vacios");
+                    return;
+                }
+
                 // Crear el request para el login
                 var loginRequest = new LoginRequest
                 {
-                    Email = txtNombre.Text.Trim(),
-                    Contraseña = txtContrasena.Text.Trim()
+                    Email = txtEmailLogin.Text.Trim(),
+                    Contraseña = txtContraLogin.Text.Trim()
                 };
 
                 // Enviar el request al servicio de autenticación
                 var respuesta = await authenticationService.Login(loginRequest);
+                
+
 
                 // Manejar la respuesta
                 if (respuesta.Exitoso)
                 {
                     // Login exitoso: ahora obtenemos el rol del usuario
                     var rol = await authenticationService.ObtenerRol(loginRequest.Email);
-
+                    
                     if (!string.IsNullOrEmpty(rol))
                     {
                         // Verificar el rol del usuario
                         if (rol == "Admin")
-                        {
+                        {       
                             // Redirigir al formulario de administración
                             MessageBox.Show("¡Bienvenido, Administrador!", "Login Exitoso");
                             var formAdmin = new FormAdmin();
@@ -71,13 +88,13 @@ namespace AgrodelisForm
                     }
                     else
                     {
-                        MessageBox.Show("Error: El rol del usuario no se pudo determinar. Contacta al soporte.", "Error");
+                        MessageBox.Show("El rol del usuario no se pudo determinar", "Error");
                     }
                 }
                 else
                 {
                     // Mostrar mensaje de error devuelto por la API
-                    MessageBox.Show(respuesta.Mensaje, "Error al iniciar sesión");
+                    MessageBox.Show(respuesta.Mensaje, "Error al iniciar sesión");  
                 }
             }
             catch (Exception ex)
@@ -101,7 +118,7 @@ namespace AgrodelisForm
             // Validar que los campos no estén vacíos
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
             {
-                lblMensajeRegistro.Text = "Por favor, complete todos los campos.";
+                MessageBox.Show("Por favor, complete todos los campos", "Campos Vacios");
                 return;
             }
 
@@ -121,18 +138,42 @@ namespace AgrodelisForm
 
                 if (respuesta.Exitoso)
                 {
-                    lblMensajeRegistro.Text = "¡Registro exitoso!";
+                    MessageBox.Show("¡Registro exitoso!", "Exito");
+                    
                 }
                 else
                 {
-                    lblMensajeRegistro.Text = $"Error: {respuesta.Mensaje}";
+                    MessageBox.Show(respuesta.Mensaje, "Error");
+                    
                 }
             }
             catch (Exception ex)
             {
-                lblMensajeRegistro.Text = $"Error interno: {ex.Message}";
+                MessageBox.Show($"Error interno: {ex.Message}", "Error");
+               
             }
 
+        }
+
+        private void panelLogin_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        
+       
+        private void lblIniciarSesion_Click(object sender, EventArgs e)
+        {
+            panelLogin.Visible = true;
+            panelRegistrar.Visible = false;
+
+        }
+
+        private void lblRegistrate_Click(object sender, EventArgs e)
+        {
+            
+            panelLogin.Visible = false;
+            panelRegistrar.Visible = true;
         }
     }
 }
