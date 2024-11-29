@@ -41,29 +41,29 @@ namespace AgrodelisForm.Services
                     // Aquí no es necesario volver a asignar Exitoso = true
                     if (respuestaDeserializada.Exitoso) // Solo revisas si el servidor lo marcó como exitoso
                     {
-                        string rol = await ObtenerRolUsuario(loginRequest.Email);
-
-                        if (!string.IsNullOrEmpty(rol))
-                        {
+                       
                             // Asignar el rol al usuario
-                            respuestaDeserializada.Mensaje = $"El rol del usuario es: {rol}";
+                            SesionUsuario.UsuarioId = respuestaDeserializada.Datos.UsuarioId;
+
+                            string rol = respuestaDeserializada.Datos.Rol;
+                            // Obtener el nombre del usuario desde la respuesta
+                            string nombreUsuario = respuestaDeserializada.Datos.Nombre;
+
+                            // Aquí puedes incluir el nombre en el mensaje de la respuesta
+                            respuestaDeserializada.Mensaje = $"¡Bienvenido, {nombreUsuario}! El rol del usuario es: {rol}";
 
                             // Aquí puedes hacer algo con el rol, como redirigir a una página específica
                             return respuestaDeserializada;
-                        }
-                        else
-                        {
-                            return new Respuesta
-                            {
-                                Exitoso = false,
-                                Mensaje = "No se pudo obtener el rol del usuario.",
-                                Code = 400
-                            };
-                        }
+                      
                     }
                     else
                     {
-                        return respuestaDeserializada; // Retorna la respuesta original si no fue exitosa
+                        return new Respuesta
+                        {
+                            Exitoso = false,
+                            Mensaje = respuestaDeserializada.Mensaje,
+                            Code = 400
+                        };
                     }
                 }
                 else
@@ -75,6 +75,7 @@ namespace AgrodelisForm.Services
                         Code = 500
                     };
                 }
+
 
 
                 // Manejar error en la solicitud

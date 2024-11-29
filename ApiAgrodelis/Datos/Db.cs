@@ -23,9 +23,11 @@ namespace ApiAgrodelis.Datos
             cmd.Connection = con;
         }
 
-        public List<Producto> ObtenerTodosLosProductos()
+
+        //======================================RONTEND-SOFTV===========================================
+        public List<ProductoV> ObtenerTodosLosProductos()
         {
-            List<Producto> productos = new List<Producto>();
+            List<ProductoV> productos = new List<ProductoV>();
             try
             {
                 cmd.Parameters.Clear();
@@ -66,7 +68,7 @@ namespace ApiAgrodelis.Datos
                 {
                     foreach (DataRow row in table.Rows)
                     {
-                        var producto = new Producto()
+                        var producto = new ProductoV()
                         {
                             ProductoId = Convert.ToInt32(row["ProductoID"]),
                             Nombre = row["Nombre"].ToString(),
@@ -103,10 +105,8 @@ namespace ApiAgrodelis.Datos
         }
 
 
-
-
-
-        public int ActualizarProducto(Producto producto)
+        //==============================FRONTEND-SOFTV================================
+        public int ActualizarProducto(ProductoV producto)
         {
             cmd.Parameters.Clear();
             cmd.CommandType = CommandType.Text;
@@ -125,9 +125,10 @@ namespace ApiAgrodelis.Datos
             return result;
         }
 
-        public Producto ObtenerProductoPorId(int productoId)
+        //=============================FRONTEND-SOFTV=================================
+        public ProductoV ObtenerProductoPorIdV(int productoId)
         {
-            Producto producto = null;
+            ProductoV producto = null;
             cmd.Parameters.Clear();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = @"
@@ -140,9 +141,9 @@ namespace ApiAgrodelis.Datos
             con.Open();
             using (var reader = cmd.ExecuteReader())
             {
-                if (reader.Read())      
+                if (reader.Read())
                 {
-                    producto = new Producto
+                    producto = new ProductoV()
                     {
                         ProductoId = Convert.ToInt32(reader["ProductoID"]),
                         Nombre = reader["Nombre"].ToString(),
@@ -154,11 +155,11 @@ namespace ApiAgrodelis.Datos
 
             return producto;
         }
+        //=================================================================================
 
 
 
-
-
+        //=============TODO LO QUE TIENE QUE VER CON EL LOGIN Y REGISTRO====================
         public bool ValidarUsuario(string email, string contraseña)
         {
             try
@@ -170,11 +171,11 @@ namespace ApiAgrodelis.Datos
                 cmd.CommandText = "SELECT 1 FROM usuarios WHERE email = @Email AND contraseña = @Contraseña";
                 cmd.Parameters.Add(new SqlParameter("@Email", email));
                 cmd.Parameters.Add(new SqlParameter("@Contraseña", EncriptarContraseña(contraseña)));
-                
+
 
                 con.Open();
                 var resultado = cmd.ExecuteScalar(); // Devuelve 1 si las credenciales son válidas
-                
+
                 return resultado != null; // Retorna true si las credenciales son válidas, de lo contrario false
             }
             catch (Exception ex)
@@ -186,8 +187,6 @@ namespace ApiAgrodelis.Datos
                 con.Close();
             }
         }
-        
-
 
         // Encriptar Contraseña
         private string EncriptarContraseña(string contraseña)
@@ -225,6 +224,53 @@ namespace ApiAgrodelis.Datos
                 con.Close();
             }
         }
+        public int ObtenerUsuarioIdPorEmail(string email)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT UsuarioId FROM usuarios WHERE email = @Email";
+                cmd.Parameters.Add(new SqlParameter("@Email", email));
+
+                con.Open();
+                var resultado = cmd.ExecuteScalar();  // Devuelve el ID si lo encuentra
+
+                return resultado != null ? Convert.ToInt32(resultado) : 0;  // Retorna el ID o 0 si no existe
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el ID del usuario: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public string ObtenerNombrePorEmail(string email)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT Nombre FROM usuarios WHERE Email = @Email";  // Asegúrate de que el campo 'Nombre' existe en la tabla
+                cmd.Parameters.Add(new SqlParameter("@Email", email));
+
+                con.Open();
+                var resultado = cmd.ExecuteScalar();  // Devuelve el nombre si lo encuentra
+
+                return resultado != null ? Convert.ToString(resultado) : null;  // Retorna el nombre o null si no existe
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el nombre del usuario: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
 
 
         public bool ValidarEmail(string email)
@@ -265,7 +311,7 @@ namespace ApiAgrodelis.Datos
 
                 con.Open();
                 var resultado = cmd.ExecuteScalar();  // Si el resultado es mayor que 0, el nombre de usuario ya está registrado
-                Console.WriteLine(resultado);
+
 
                 return (int)resultado > 0;  // Retorna true si el nombre de usuario ya existe
             }
@@ -280,9 +326,6 @@ namespace ApiAgrodelis.Datos
         }
 
 
-
-
-
         // Registrar un nuevo Usuario
         public int RegistrarUsuario(string nombre, string email, string contraseña, string rol)
         {
@@ -290,7 +333,7 @@ namespace ApiAgrodelis.Datos
             {
                 cmd.Parameters.Clear();
                 cmd.CommandType = CommandType.Text;
-                    
+
                 // Asegúrate de incluir el rol en la consulta SQL
                 cmd.CommandText = "INSERT INTO usuarios (nombre, email, contraseña, Rol) VALUES (@nombre, @email, @contraseña, @rol)";
 
@@ -305,7 +348,7 @@ namespace ApiAgrodelis.Datos
                 return rowsAffected; // Devuelve el número de filas afectadas (debería ser 1 si el registro es exitoso)
             }
             catch (Exception ex)
-            {   
+            {
                 throw new Exception("Error al registrar usuario", ex);
             }
             finally
@@ -315,10 +358,173 @@ namespace ApiAgrodelis.Datos
         }
 
 
-        
+
+        //=================================CRUD DE PRODUCTOS PARA LOS VENDEDORES===============================
+
+        public int RegistrarProductoYRelacion(string nombre, string descripcion, decimal precio, int stock, string rutaImagen, int categoriaId, int vendedorId)
+        {
+            try
+            {
+                // Iniciar una transacción
+                con.Open();
+                SqlTransaction transaction = con.BeginTransaction();
+                cmd.Transaction = transaction;
+
+                // Registrar el producto
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "INSERT INTO Productos (Nombre, Descripcion, Precio, Stock, RutaImagen, CategoriaId) " +
+                                  "VALUES (@Nombre, @Descripcion, @Precio, @Stock, @RutaImagen, @CategoriaId); " +
+                                  "SELECT SCOPE_IDENTITY();";  // Obtener el ProductoId generado
+
+                cmd.Parameters.AddWithValue("@Nombre", nombre);
+                cmd.Parameters.AddWithValue("@Descripcion", descripcion);
+                cmd.Parameters.AddWithValue("@Precio", precio);
+                cmd.Parameters.AddWithValue("@Stock", stock);
+                cmd.Parameters.AddWithValue("@RutaImagen", rutaImagen);
+                cmd.Parameters.AddWithValue("@CategoriaId", categoriaId);
+
+                var productoId = cmd.ExecuteScalar();  // Obtiene el ProductoId recién insertado
+
+                // Si no se insertó correctamente el producto, hacer rollback
+                if (productoId == null)
+                {
+                    transaction.Rollback();
+                    throw new Exception("No se pudo obtener el ID del producto.");
+                }
+
+                int idProducto = Convert.ToInt32(productoId);
+
+                // Registrar la relación Producto-Vendedor
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "INSERT INTO ProductosVendedores (ProductoId, UsuarioId) " +
+                                  "VALUES (@ProductoId, @UsuarioId)";
+
+                cmd.Parameters.AddWithValue("@ProductoId", idProducto);
+                cmd.Parameters.AddWithValue("@UsuarioId", vendedorId);
+
+                cmd.ExecuteNonQuery();  // Ejecuta la inserción de la relación
+
+                // Si todo es correcto, confirmar la transacción
+                transaction.Commit();
+
+                return idProducto;  // Retorna el ID del producto registrado
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, hacer rollback
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+
+                throw new Exception("Error al registrar el producto y la relación producto-vendedor: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public List<Producto> ObtenerProductosPorVendedor(int vendedorId)
+        {
+            List<Producto> productos = new List<Producto>();
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen " +
+                                  "FROM Productos p " +
+                                  "INNER JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId " +
+                                  "WHERE pv.UsuarioId = @VendedorId";
+
+                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    productos.Add(new Producto
+                    {
+                        ProductoId = Convert.ToInt32(reader["ProductoId"]),
+                        Nombre = reader["Nombre"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        Precio = Convert.ToDecimal(reader["Precio"]),
+                        Stock = Convert.ToInt32(reader["Stock"]),
+                        RutaImagen = reader["RutaImagen"].ToString()
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener productos del vendedor: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return productos;
+        }
+        public void EliminarProductoVendedor(int productoId, int vendedorId)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandText = "DELETE FROM ProductosVendedores WHERE ProductoId = @ProductoId AND UsuarioId = @UsuarioId";
+
+                cmd.Parameters.AddWithValue("@ProductoId", productoId);
+                cmd.Parameters.AddWithValue("@UsuarioId", vendedorId);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar la relación producto-vendedor: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+        //===============================PARA LAS CATEGORIAS======================================
+        public List<Categoria> ObtenerCategorias()
+        {
+            var categorias = new List<Categoria>();
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT CategoriaId, Nombre FROM Categorias";  // Suponiendo que tienes una tabla Categorias
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    categorias.Add(new Categoria
+                    {
+                        CategoriaId = Convert.ToInt32(reader["CategoriaId"]),
+                        Nombre = reader["Nombre"].ToString()
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener categorías: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return categorias;
+        }
+
+
+
     }
-
-
-
 }
-

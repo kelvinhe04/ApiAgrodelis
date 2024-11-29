@@ -19,73 +19,61 @@ namespace ApiAgrodelis.Controllers
             var db = new Db();
             try
             {
-                // Validar las credenciales
+                // Verificar las credenciales
                 if (db.ValidarUsuario(loginRequest.Email, loginRequest.Contraseña))
                 {
-                    // Obtener el rol si las credenciales son válidas
+                    // Obtener el rol, ID y nombre del usuario
                     var rol = db.ObtenerRolPorEmail(loginRequest.Email);
+                    var usuarioId = db.ObtenerUsuarioIdPorEmail(loginRequest.Email);  // Aquí obtenemos el ID del usuario
+                    var nombreUsuario = db.ObtenerNombrePorEmail(loginRequest.Email);  // Aquí obtenemos el nombre del usuario
 
-                    if (!string.IsNullOrEmpty(rol))
+                    if (!string.IsNullOrEmpty(rol) && usuarioId != 0 && !string.IsNullOrEmpty(nombreUsuario))
                     {
                         return new
                         {
                             Exitoso = true,
                             Mensaje = "Usuario autenticado correctamente",
-                            Code = 200, // Código de éxito
-                            usuario = new
+                            Code = 200,
+                            Datos = new
                             {
-                                email = loginRequest.Email,
-                                rol = rol
+                                UsuarioId = usuarioId,  // ID del usuario
+                                Nombre = nombreUsuario,  // Nombre del usuario
+                                Rol = rol  // El rol del usuario (Vendedor, Admin, etc.)
                             }
                         };
                     }
                     else
                     {
-                        // Si el rol no se encuentra, devolver error
                         return new
                         {
                             Exitoso = false,
-                            Mensaje = "El rol del usuario no fue encontrado.",
-                            Code = 401 // Unauthorized
+                            Mensaje = "El rol o el ID del usuario no fueron encontrados.",
+                            Code = 401
                         };
                     }
                 }
                 else
                 {
-                    // Si las credenciales son incorrectas
                     return new
                     {
                         Exitoso = false,
                         Mensaje = "El correo o la contraseña son incorrectos",
-                        Code = 401 // Unauthorized
+                        Code = 401
                     };
                 }
             }
             catch (Exception ex)
             {
-                // Manejo de errores internos
                 return new
                 {
                     Exitoso = false,
                     Mensaje = $"Error interno: {ex.Message}",
-                    Code = 500 // Internal Server Error
+                    Code = 500
                 };
             }
         }
 
-        [HttpGet("rol")]
-        public IActionResult ObtenerRol(string email)
-        {
-            var rol = new Db().ObtenerRolPorEmail(email);
-
-            if (!string.IsNullOrEmpty(rol))
-            {
-                return Ok(rol); // Retorna el rol como string
-            }
-
-            return NotFound("Rol no encontrado");
-        }
-
+     
 
 
 

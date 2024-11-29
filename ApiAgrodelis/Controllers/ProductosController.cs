@@ -9,16 +9,25 @@ namespace ApiAgrodelis.Controllers
     [ApiController]
     public class ProductosController : ControllerBase
     {
+        private Db _db;
+
+        public ProductosController()
+        {
+            _db = new Db();  
+        }
+
+
+        //==============================FRONTEND-SOFTV================================
         [HttpGet]   
         [Route("all")]
-        public List<Producto> ObtenerTodosLosProductos()
+        public List<ProductoV> ObtenerTodosLosProductos()
         {
             return new Db().ObtenerTodosLosProductos();
         }
-
+        //==============================FRONTEND-SOFTV================================
         [HttpPost]
         [Route("update")]
-        public object ActualizarStockProductos([FromBody] List<ProductoRequest> productos)
+        public object ActualizarStockProductos([FromBody] List<ProductoRequestV> productos)
         {
             Console.WriteLine("Datos recibidos: ");
             try
@@ -39,7 +48,7 @@ namespace ApiAgrodelis.Controllers
                 foreach (var producto in productos)
                 {
                     // Lógica para actualizar el stock en la base de datos
-                    var productoDb = new Db().ObtenerProductoPorId(producto.ProductoId);
+                    var productoDb = new Db().ObtenerProductoPorIdV(producto.ProductoId);
                     if (productoDb != null && producto.Cantidad > 0)
                     {
                         productoDb.Stock -= producto.Cantidad; // Resta la cantidad solicitada
@@ -64,10 +73,86 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        //=======================================================================================================================
 
 
+        //=================================CRUD PARA QUE LOS VENDEDORES MANEJEN SUS PRODUCTOS=====================================
 
+        // Endpoint para obtener los productos de un vendedor
+        [HttpGet("{vendedorId}")]
+        public object ObtenerProductosPorVendedor(int vendedorId)
+        {
+            try
+            {
+                // Obtener los productos asociados al vendedor
+                var productos = _db.ObtenerProductosPorVendedor(vendedorId);
 
+                if (productos.Count == 0)
+                {
+                    return new
+                    {
+                        Exitoso = false,
+                        Mensaje = "No hay productos registrados para este vendedor.",
+                        Code = 404  // Not Found
+                    };
+                }
+
+                return new
+                {
+                    Exitoso = true,
+                    Productos = productos,
+                    Code = 200  // OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = "Error al obtener los productos",
+                    Code = 500,  // Internal Server Error
+                    Detalle = ex.Message
+                };
+            }
+        }
+
+        // Endpoint para registrar un nuevo producto
+        [HttpPost("registrar")]
+        public object RegistrarProducto([FromBody] RegistrarProductoRequest request)
+        {
+            try
+            {
+                var resultado = _db.RegistrarProductoYRelacion(request.Nombre, request.Descripcion, request.Precio, request.Stock, request.RutaImagen, request.CategoriaId, request.VendedorId);
+
+                if (resultado > 0)
+                {
+                    return new
+                    {
+                        Exitoso = true,
+                        Mensaje = "Producto registrado correctamente.",
+                        Code = 200  // OK
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Exitoso = false,
+                        Mensaje = "Hubo un error al registrar el producto.",
+                        Code = 400  // Bad Request
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al registrar el producto: {ex.Message}",
+                    Code = 500  // Internal Server Error
+                };
+            }
+        }
 
     }
 }

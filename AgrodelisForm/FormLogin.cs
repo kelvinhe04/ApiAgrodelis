@@ -24,6 +24,11 @@ namespace AgrodelisForm
 
             panelRegistrar.Visible = false;
 
+            FormVendedor formVendedor = new FormVendedor(31);  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formVendedor.ShowDialog();
+            
+
         }
 
 
@@ -52,22 +57,24 @@ namespace AgrodelisForm
 
                 // Enviar el request al servicio de autenticación
                 var respuesta = await authenticationService.Login(loginRequest);
-                
+
 
 
                 // Manejar la respuesta
                 if (respuesta.Exitoso)
                 {
-                    // Login exitoso: ahora obtenemos el rol del usuario
-                    var rol = await authenticationService.ObtenerRol(loginRequest.Email);
-                    
+                    // Guardar los datos del usuario logueado en la sesión (variable estática)
+                    SesionUsuario.UsuarioId = respuesta.Datos.UsuarioId;  // ID del vendedor
+                    string nombreUsuario = respuesta.Datos.Nombre; // Obtener el nombre del vendedor desde la respuesta
+                    string rol = respuesta.Datos.Rol;
+
                     if (!string.IsNullOrEmpty(rol))
                     {
                         // Verificar el rol del usuario
                         if (rol == "Admin")
-                        {       
+                        {
                             // Redirigir al formulario de administración
-                            MessageBox.Show("¡Bienvenido, Administrador!", "Login Exitoso");
+                            MessageBox.Show($"¡Bienvenido, Administrador!", "Login Exitoso");
                             var formAdmin = new FormAdmin();
                             formAdmin.Show();
                             this.Hide(); // Ocultar el formulario actual
@@ -75,8 +82,8 @@ namespace AgrodelisForm
                         else if (rol == "Vendedor")
                         {
                             // Redirigir al formulario del vendedor
-                            MessageBox.Show("¡Bienvenido, Vendedor!", "Login Exitoso");
-                            var formVendedor = new FormVendedor();
+                            MessageBox.Show($"¡Bienvenido, Vendedor {nombreUsuario}!", "Login Exitoso");
+                            var formVendedor = new FormVendedor(SesionUsuario.UsuarioId);  // Pasamos el UsuarioId
                             formVendedor.Show();
                             this.Hide(); // Ocultar el formulario actual
                         }
@@ -94,8 +101,9 @@ namespace AgrodelisForm
                 else
                 {
                     // Mostrar mensaje de error devuelto por la API
-                    MessageBox.Show(respuesta.Mensaje, "Error al iniciar sesión");  
+                    MessageBox.Show(respuesta.Mensaje, "Error al iniciar sesión");
                 }
+
             }
             catch (Exception ex)
             {

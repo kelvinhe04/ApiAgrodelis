@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgrodelisForm.Models
 {
-    public class Producto
+    public class ProductoV
     {
      
         public int ProductoId { get; set; }
