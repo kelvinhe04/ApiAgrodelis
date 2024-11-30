@@ -183,5 +183,10 @@ namespace AgrodelisForm
             panelLogin.Visible = false;
             panelRegistrar.Visible = true;
         }
+
+        private void txtUsuarioRegistrar_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
