@@ -23,10 +23,36 @@ namespace AgrodelisForm
         {
             InitializeComponent();
             UsuarioId = usuarioId;
-
-            // Llamar al método para cargar las categorías en el ComboBox
+            CargarProductosDelVendedor(UsuarioId);
+            // Llamar al método para cargar las categorías en el Com    boBox
             CargarCategorias();
         }
+        private async void CargarProductosDelVendedor(int vendedorId)
+        {
+            try
+            {
+                var productoService = new ProductoService();
+                var respuesta = await productoService.ObtenerProductosPorVendedor(vendedorId);
+
+                // Verifica si la respuesta es válida y si la propiedad Productos no es null
+                if (respuesta != null && respuesta.Exitoso && respuesta.Productos != null && respuesta.Productos.Any())
+                {
+                    // Asignar los productos al DataGridView
+                    dataGridViewProductos.DataSource = respuesta.Productos;
+                }
+                else
+                {
+                    // Mostrar mensaje si no se encontraron productos
+                    MessageBox.Show("No se encontraron productos para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Capturar cualquier excepción y mostrar un mensaje
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private async void CargarCategorias()
         {
@@ -155,6 +181,19 @@ namespace AgrodelisForm
 
 
 
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+
+            // Opcionalmente, puedes mostrar un mensaje de confirmación
+            MessageBox.Show("Sesión cerrada correctamente.", "Cierre de sesión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            FormLogin formLogin = new FormLogin();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formLogin.ShowDialog();
+
+            
         }
     }
 

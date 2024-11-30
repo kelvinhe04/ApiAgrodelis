@@ -24,10 +24,10 @@ namespace AgrodelisForm
 
             panelRegistrar.Visible = false;
 
-            FormVendedor formVendedor = new FormVendedor(31);  // Pasamos el UsuarioId
-            this.Hide(); // Ocultar el formulario actua
-            formVendedor.ShowDialog();
-            
+            //FormVendedor formVendedor = new FormVendedor(31);  // Pasamos el UsuarioId
+            //this.Hide(); // Ocultar el formulario actua
+            //formVendedor.ShowDialog();
+
 
         }
 

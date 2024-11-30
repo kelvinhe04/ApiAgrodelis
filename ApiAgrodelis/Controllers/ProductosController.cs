@@ -84,24 +84,12 @@ namespace ApiAgrodelis.Controllers
         {
             try
             {
-                // Obtener los productos asociados al vendedor
-                var productos = _db.ObtenerProductosPorVendedor(vendedorId);
-
-                if (productos.Count == 0)
-                {
-                    return new
-                    {
-                        Exitoso = false,
-                        Mensaje = "No hay productos registrados para este vendedor.",
-                        Code = 404  // Not Found
-                    };
-                }
-
+                var productos = _db.ObtenerProductosPorVendedor(vendedorId);  // Llamada al método para obtener los productos
                 return new
                 {
                     Exitoso = true,
-                    Productos = productos,
-                    Code = 200  // OK
+                    Productos = productos,  // Aquí deberías devolver la lista de productos
+                    Code = 200
                 };
             }
             catch (Exception ex)
@@ -109,12 +97,13 @@ namespace ApiAgrodelis.Controllers
                 return new
                 {
                     Exitoso = false,
-                    Mensaje = "Error al obtener los productos",
-                    Code = 500,  // Internal Server Error
-                    Detalle = ex.Message
+                    Mensaje = $"Error al obtener los productos: {ex.Message}",
+                    Code = 500
                 };
             }
         }
+
+
 
         // Endpoint para registrar un nuevo producto
         [HttpPost("registrar")]

@@ -24,7 +24,7 @@ namespace ApiAgrodelis.Datos
         }
 
 
-        //======================================RONTEND-SOFTV===========================================
+        //=====================================FRONTEND-SOFTV===========================================
         public List<ProductoV> ObtenerTodosLosProductos()
         {
             List<ProductoV> productos = new List<ProductoV>();
@@ -433,9 +433,11 @@ namespace ApiAgrodelis.Datos
             try
             {
                 cmd.Parameters.Clear();
-                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen " +
+                // Realizar un JOIN con la tabla Categorias para obtener el nombre de la categoría
+                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen, c.Nombre AS CategoriaNombre " +
                                   "FROM Productos p " +
                                   "INNER JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId " +
+                                  "INNER JOIN Categorias c ON p.CategoriaId = c.CategoriaId " +  // Join con la tabla Categorias
                                   "WHERE pv.UsuarioId = @VendedorId";
 
                 cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
@@ -452,7 +454,8 @@ namespace ApiAgrodelis.Datos
                         Descripcion = reader["Descripcion"].ToString(),
                         Precio = Convert.ToDecimal(reader["Precio"]),
                         Stock = Convert.ToInt32(reader["Stock"]),
-                        RutaImagen = reader["RutaImagen"].ToString()
+                        RutaImagen = reader["RutaImagen"].ToString(),
+                        CategoriaNombre = reader["CategoriaNombre"].ToString()  // Asignamos el nombre de la categoría
                     });
                 }
             }
@@ -467,6 +470,7 @@ namespace ApiAgrodelis.Datos
 
             return productos;
         }
+
         public void EliminarProductoVendedor(int productoId, int vendedorId)
         {
             try
