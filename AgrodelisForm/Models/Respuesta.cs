@@ -13,7 +13,7 @@ namespace AgrodelisForm.Models
 
         public bool Exitoso { get; set; }
         public string Mensaje { get; set; }
-
+        public List<Producto> Productos { get; set; }  // Asegúrate de que esta propiedad existe
         public DatosUsuario Datos { get; set; }  // Cambiado de 'object' a 'DatosUsuario'
         public int Code { get; set; }    // Código de estado (por ejemplo, 200, 400, 500)
         public List<Categoria> Categorias { get; set; }  // Lista de categorías

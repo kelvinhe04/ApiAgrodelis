@@ -22,7 +22,7 @@ namespace ApiAgrodelis.Models
         // Nuevas propiedades para almacenar solo los nombres
         public int VendedorId { get; set; }
         // Nueva propiedad CategoriaID
-        public int CategoriaId { get; set; }
+        public string CategoriaNombre { get; set; }
 
     }
 }

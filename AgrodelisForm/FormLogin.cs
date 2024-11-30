@@ -27,7 +27,7 @@ namespace AgrodelisForm
             //FormVendedor formVendedor = new FormVendedor(31);  // Pasamos el UsuarioId
             //this.Hide(); // Ocultar el formulario actua
             //formVendedor.ShowDialog();
-            
+
 
         }
 
