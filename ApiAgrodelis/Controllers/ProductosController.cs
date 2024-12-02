@@ -142,6 +142,43 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        [HttpPut("Modificar")]
+        public object ModificarProducto([FromBody] ModificarProductoRequest request)
+        {
+            try
+            {
+                var resultado = _db.ModificarProducto(request.ProductoId, request.Nombre, request.Descripcion, request.Precio, request.Stock, request.RutaImagen, request.CategoriaId);
+
+                if (resultado > 0)
+                {
+                    return new
+                    {
+                        Exitoso = true,
+                        Mensaje = "Producto modificado correctamente",
+                        Code = 200 // OK
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Exitoso = false,
+                        Mensaje = "Hubo un error al modificar el producto",
+                        Code = 400 // Bad Request
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al modificar el producto: {ex.Message}",
+                    Code = 500 // Internal Server Error
+                };
+            }
+        }
+
 
     }
 }

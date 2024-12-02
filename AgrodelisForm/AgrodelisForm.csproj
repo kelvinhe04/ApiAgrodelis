@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\ModificarProductoRequest.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\ProductoV.cs" />
     <Compile Include="Models\RegisterRequest.cs" />

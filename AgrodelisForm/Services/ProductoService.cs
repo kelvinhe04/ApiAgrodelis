@@ -58,5 +58,28 @@ namespace AgrodelisForm.Services
                 };
             }
         }
+        public async Task<Respuesta> ModificarProducto(ModificarProductoRequest request)
+        {
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+                // Asumiendo que la URL del API está configurada correctamente
+                var respuesta = await _client.PutAsync($"https://localhost:7156/api/Productos/Modificar", content);
+                var contenido = await respuesta.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<Respuesta>(contenido);
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al modificar el producto: {ex.Message}",
+                    Code = 500 // Internal Server Error
+                };
+            }
+        }
     }
 }
+

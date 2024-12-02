@@ -360,7 +360,49 @@ namespace ApiAgrodelis.Datos
 
 
         //=================================CRUD DE PRODUCTOS PARA LOS VENDEDORES===============================
+        public List<Producto> ObtenerProductosPorVendedor(int vendedorId)
+        {
+            List<Producto> productos = new List<Producto>();
+            try
+            {
+                cmd.Parameters.Clear();
+                // Realizar un JOIN con la tabla Categorias para obtener el nombre de la categoría
+                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen, c.Nombre AS CategoriaNombre " +
+                                  "FROM Productos p " +
+                                  "INNER JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId " +
+                                  "INNER JOIN Categorias c ON p.CategoriaId = c.CategoriaId " +  // Join con la tabla Categorias
+                                  "WHERE pv.UsuarioId = @VendedorId";
 
+                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    productos.Add(new Producto
+                    {
+                        ProductoId = Convert.ToInt32(reader["ProductoId"]),
+                        Nombre = reader["Nombre"].ToString(),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        Precio = Convert.ToDecimal(reader["Precio"]),
+                        Stock = Convert.ToInt32(reader["Stock"]),
+                        RutaImagen = reader["RutaImagen"]?.ToString(),  // Verifica si es null
+                        CategoriaNombre = reader["CategoriaNombre"].ToString()  // Asignamos el nombre de la categoría
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener productos del vendedor: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return productos;
+        }
         public int RegistrarProductoYRelacion(string nombre, string descripcion, decimal precio, int stock, string rutaImagen, int categoriaId, int vendedorId)
         {
             try
@@ -426,50 +468,40 @@ namespace ApiAgrodelis.Datos
                 con.Close();
             }
         }
-
-        public List<Producto> ObtenerProductosPorVendedor(int vendedorId)
+        public int ModificarProducto(int productoId, string nombre, string descripcion, decimal precio, int stock, string rutaImagen, int categoriaId)
         {
-            List<Producto> productos = new List<Producto>();
             try
             {
                 cmd.Parameters.Clear();
-                // Realizar un JOIN con la tabla Categorias para obtener el nombre de la categoría
-                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen, c.Nombre AS CategoriaNombre " +
-                                  "FROM Productos p " +
-                                  "INNER JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId " +
-                                  "INNER JOIN Categorias c ON p.CategoriaId = c.CategoriaId " +  // Join con la tabla Categorias
-                                  "WHERE pv.UsuarioId = @VendedorId";
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE Productos " +
+                                  "SET Nombre = @Nombre, Descripcion = @Descripcion, Precio = @Precio, Stock = @Stock, RutaImagen = @RutaImagen, CategoriaId = @CategoriaId " +
+                                  "WHERE ProductoId = @ProductoId";
 
-                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+                cmd.Parameters.AddWithValue("@ProductoId", productoId);
+                cmd.Parameters.AddWithValue("@Nombre", nombre);
+                cmd.Parameters.AddWithValue("@Descripcion", descripcion);
+                cmd.Parameters.AddWithValue("@Precio", precio);
+                cmd.Parameters.AddWithValue("@Stock", stock);
+                cmd.Parameters.AddWithValue("@RutaImagen", rutaImagen);
+                cmd.Parameters.AddWithValue("@CategoriaId", categoriaId);
+
                 con.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    productos.Add(new Producto
-                    {
-                        ProductoId = Convert.ToInt32(reader["ProductoId"]),
-                        Nombre = reader["Nombre"].ToString(),
-                        Descripcion = reader["Descripcion"].ToString(),
-                        Precio = Convert.ToDecimal(reader["Precio"]),
-                        Stock = Convert.ToInt32(reader["Stock"]),
-                        RutaImagen = reader["RutaImagen"].ToString(),
-                        CategoriaNombre = reader["CategoriaNombre"].ToString()  // Asignamos el nombre de la categoría
-                    });
-                }
+                int filasAfectadas = cmd.ExecuteNonQuery();
+                return filasAfectadas;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener productos del vendedor: " + ex.Message);
+                throw new Exception("Error al modificar producto: " + ex.Message);
             }
             finally
             {
                 con.Close();
             }
-
-            return productos;
         }
+
+
+        
 
         public void EliminarProductoVendedor(int productoId, int vendedorId)
         {

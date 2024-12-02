@@ -6,24 +6,14 @@ using System.Threading.Tasks;
 
 namespace AgrodelisForm.Models
 {
-    public class Producto
+    public class ModificarProductoRequest
     {
-
         public int ProductoId { get; set; }
-
-
         public string Nombre { get; set; }
-
-        public string Descripcion { get; set; } // Nueva propiedad
-
+        public string Descripcion { get; set; }
         public decimal Precio { get; set; }
-
-        public int Stock { get; set; } // Nueva propiedad para controlar el stock disponible
-
-
+        public int Stock { get; set; }
         public string RutaImagen { get; set; }
-
-        public string CategoriaNombre { get; set; }
-
+        public int CategoriaId { get; set; }
     }
 }
