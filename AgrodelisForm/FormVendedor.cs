@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 
@@ -28,6 +29,11 @@ namespace AgrodelisForm
             CargarProductosDelVendedor(UsuarioId);
             // Llamar al método para cargar las categorías en el ComboBox
             CargarCategorias();
+            AplicarEstiloLabel();
+            btnClose.Focus();
+            cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
+
+
 
 
         }
@@ -121,7 +127,7 @@ namespace AgrodelisForm
             txtPrecio.Clear();
             txtStock.Clear();
             picBoxProducto.Image = null;
-            cmbCategoria.SelectedIndex = -1;  // Desmarcar la categoría seleccionada
+            cmbCategoria.SelectedIndex = 0;  // Desmarcar la categoría seleccionada
         }
 
         private void picBoxProducto_Click(object sender, EventArgs e)
@@ -203,10 +209,60 @@ namespace AgrodelisForm
         {
             LimpiarCampos();
         }
+        private string ValidarCamposProducto()
+        {
+            // Validación de campos vacíos o inválidos
+            if (string.IsNullOrEmpty(txtNombre.Text.Trim()))
+            {
+                return "El nombre del producto no puede estar vacío.";
+            }
+
+            if (string.IsNullOrEmpty(txtDescripcion.Text.Trim()))
+            {
+                return "La descripción del producto no puede estar vacía.";
+            }
+
+            if (string.IsNullOrEmpty(txtPrecio.Text.Trim()) || !decimal.TryParse(txtPrecio.Text.Trim(), out _))
+            {
+                // Intenta convertir el texto ingresado en el cuadro txtPrecio a un número decimal.
+                // Si la conversión es exitosa, devuelve true; de lo contrario, devuelve false.
+                // El resultado convertido se descarta usando "out _", ya que solo importa verificar si es un número válido.
+                return "El precio del producto debe ser un valor válido.";
+            }
+
+            if (string.IsNullOrEmpty(txtStock.Text.Trim()) || !int.TryParse(txtStock.Text.Trim(), out _))
+            {
+                return "El stock del producto debe ser un número válido.";
+            }
+
+            // Validación de la imagen
+            if (ofdProducto.FileName == string.Empty)
+            {
+                return "Por favor, selecciona una imagen para el producto.";
+            }
+
+            // Validación de categoría
+            var categoriaId = (int)cmbCategoria.SelectedValue;
+            if (categoriaId == 0)
+            {
+                return "Por favor, selecciona una categoría.";
+            }
+
+            // Si todo está correcto, retornar null
+            return null;
+        }
+
         private async void toolStripMenuRegistrar_Click(object sender, EventArgs e)
         {
             try
             {
+                // Validar campos antes de registrar el producto
+                string mensajeError = ValidarCamposProducto();
+                if (mensajeError != null)
+                {
+                    MessageBox.Show(mensajeError, "Campo obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 string fullPath = ofdProducto.FileName; // Ruta completa de la imagen seleccionada
 
@@ -269,6 +325,21 @@ namespace AgrodelisForm
             {
                 if (dataGridViewProductos.SelectedRows.Count > 0)
                 {
+                    // Validar campos antes de registrar el producto
+                    string mensajeError = ValidarCamposProducto();
+                    if (mensajeError != null)
+                    {
+                        MessageBox.Show(mensajeError, "Campo obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    string fullPath = ofdProducto.FileName; // Ruta completa de la imagen seleccionada
+
+                    string appDirectory = AppDomain.CurrentDomain.BaseDirectory; // Directorio de la aplicación
+
+                    // Obtener la ruta relativa
+                    string relativePath = GetRelativePath(appDirectory, fullPath);
+
                     // Obtén el ProductoId de la fila seleccionada
                     int productoId = Convert.ToInt32(dataGridViewProductos.SelectedRows[0].Cells["ProductoId"].Value);
                     int cantidadRestante = Convert.ToInt32(txtStock.Text);
@@ -283,7 +354,7 @@ namespace AgrodelisForm
                             Descripcion = txtDescripcion.Text,
                             Precio = Convert.ToDecimal(txtPrecio.Text),
                             Stock = cantidadRestante,
-                            RutaImagen = ofdProducto.FileName,
+                            RutaImagen = relativePath,
                             CategoriaId = (int)cmbCategoria.SelectedValue
                         };
 
@@ -295,6 +366,7 @@ namespace AgrodelisForm
                             // Refrescar el DataGridView después de la actualización
                             CargarProductosDelVendedor(UsuarioId);
                             MessageBox.Show("Producto modificado correctamente.");
+                            LimpiarCampos();
                         }
                         else
                         {
@@ -323,6 +395,7 @@ namespace AgrodelisForm
             {
                 if (dataGridViewProductos.SelectedRows.Count > 0)
                 {
+                    
                     // Obtén el ProductoId de la fila seleccionada
                     int productoId = Convert.ToInt32(dataGridViewProductos.SelectedRows[0].Cells["ProductoId"].Value);
 
@@ -363,7 +436,34 @@ namespace AgrodelisForm
             }
         }
 
-        
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+
+        }
+
+        private void AplicarEstiloLabel()
+        {
+
+
+            label1.BackColor = Color.Transparent;
+            label1.Parent = panel4;
+            label1.Invalidate(); // Redibuja el control
+            label2.BackColor = Color.Transparent;
+            label2.Parent = panel4;
+            label2.Invalidate(); // Redibuja el control
+            label3.BackColor = Color.Transparent;
+            label3.Parent = panel4;
+            label3.Invalidate(); // Redibuja el control
+            label4.BackColor = Color.Transparent;
+            label4.Parent = panel4;
+            label4.Invalidate(); // Redibuja el control
+            label6.BackColor = Color.Transparent;
+            label6.Parent = panel4;
+            label6.Invalidate(); // Redibuja el control
+
+
+        }
     }
 
 }
