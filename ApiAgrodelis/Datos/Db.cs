@@ -501,30 +501,38 @@ namespace ApiAgrodelis.Datos
         }
 
 
-        
 
-        public void EliminarProductoVendedor(int productoId, int vendedorId)
+
+        public int EliminarProducto(int productoId)
         {
             try
             {
                 cmd.Parameters.Clear();
-                cmd.CommandText = "DELETE FROM ProductosVendedores WHERE ProductoId = @ProductoId AND UsuarioId = @UsuarioId";
+                cmd.CommandType = CommandType.Text;
 
-                cmd.Parameters.AddWithValue("@ProductoId", productoId);
-                cmd.Parameters.AddWithValue("@UsuarioId", vendedorId);
+                // Eliminar las relaciones del producto en ProductosVendedores
+                cmd.CommandText = "DELETE FROM ProductosVendedores WHERE ProductoID = @ProductoId";
+                cmd.Parameters.Add(new SqlParameter("@ProductoId", productoId));    
 
                 con.Open();
-                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery(); // Primero elimina las relaciones
+
+                // Ahora elimina el producto en la tabla Productos
+                cmd.CommandText = "DELETE FROM Productos WHERE ProductoID = @ProductoId";
+                int rowsAffected = cmd.ExecuteNonQuery(); // Luego elimina el producto
+
+                return rowsAffected; // Devuelve el número de filas afectadas
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al eliminar la relación producto-vendedor: " + ex.Message);
+                throw new Exception("Error al eliminar el producto y sus relaciones: " + ex.Message);
             }
             finally
             {
                 con.Close();
             }
         }
+
 
 
         //===============================PARA LAS CATEGORIAS======================================

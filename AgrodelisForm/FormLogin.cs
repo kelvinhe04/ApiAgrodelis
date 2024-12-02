@@ -25,9 +25,9 @@ namespace AgrodelisForm
 
             panelRegistrar.Visible = false;
 
-            //FormVendedor formVendedor = new FormVendedor(31);  // Pasamos el UsuarioId
-            //this.Hide(); // Ocultar el formulario actua
-            //formVendedor.ShowDialog();
+            FormVendedor formVendedor = new FormVendedor(31);  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formVendedor.ShowDialog();
 
 
         }
@@ -125,50 +125,50 @@ namespace AgrodelisForm
         // Evento de clic para registrar un usuario
 
 
-private async void btnRegistrar_Click_1(object sender, EventArgs e)
-    {
-        string nombre = txtUsuarioRegistrar.Text.Trim();
-        string email = txtEmailRegistrar.Text.Trim();
-        string contraseña = txtContraRegistrar.Text.Trim();
-
-        // Validar que los campos no estén vacíos
-        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
+        private async void btnRegistrar_Click_1(object sender, EventArgs e)
         {
-            MessageBox.Show("Por favor, complete todos los campos", "Campos Vacíos");
-            return;
-        }
+            string nombre = txtUsuarioRegistrar.Text.Trim();
+            string email = txtEmailRegistrar.Text.Trim();
+            string contraseña = txtContraRegistrar.Text.Trim();
 
-        // Validar formato de correo electrónico
-        if (!EsCorreoValido(email))
-        {
-            MessageBox.Show("Por favor, ingrese un correo electrónico válido", "Correo Inválido");
-            return;
-        }
+            // Validar que los campos no estén vacíos
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
+            {
+                MessageBox.Show("Por favor, complete todos los campos", "Campos Vacíos");
+                return;
+            }
 
-        // Crear un objeto RegisterRequest con los datos del formulario
-        var registerRequest = new RegisterRequest
-        {
-            Nombre = nombre,
-            Email = email,
-            Contraseña = contraseña,
-            Rol = "Vendedor", // Aquí asignas el rol de "Vendedor" o "Cliente", según el caso
-        };
+            // Validar formato de correo electrónico
+            if (!EsCorreoValido(email))
+            {
+                MessageBox.Show("Por favor, ingrese un correo electrónico válido", "Correo Inválido");
+                return;
+            }
 
-        try
-        {
-            // Llamar al método Register de AuthenticationService
-            var respuesta = await authenticationService.Register(registerRequest);
-                
+            // Crear un objeto RegisterRequest con los datos del formulario
+            var registerRequest = new RegisterRequest
+            {
+                Nombre = nombre,
+                Email = email,
+                Contraseña = contraseña,
+                Rol = "Vendedor", // Aquí asignas el rol de "Vendedor" o "Cliente", según el caso
+            };
+
+            try
+            {
+                // Llamar al método Register de AuthenticationService
+                var respuesta = await authenticationService.Register(registerRequest);
+
 
                 if (respuesta.Exitoso)
-            {
-                MessageBox.Show("¡Registro exitoso!", "Éxito");
-                panelLogin.Visible = true;
-                panelRegistrar.Visible = false;
-            }
-            else
-            {
-                MessageBox.Show(respuesta.Mensaje, "Error");
+                {
+                    MessageBox.Show("¡Registro exitoso!", "Éxito");
+                    panelLogin.Visible = true;
+                    panelRegistrar.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje, "Error");
                     if (respuesta.Mensaje == "El correo electrónico ya está registrado.")
                     {
                         panelLogin.Visible = true;
@@ -176,28 +176,28 @@ private async void btnRegistrar_Click_1(object sender, EventArgs e)
                     }
 
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error interno: {ex.Message}", "Error");
+            }
         }
-        catch (Exception ex)
+
+        // Método para validar el formato del correo electrónico
+        private bool EsCorreoValido(string email)
         {
-            MessageBox.Show($"Error interno: {ex.Message}", "Error");
+            string patronCorreo = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, patronCorreo);
         }
-    }
-
-    // Método para validar el formato del correo electrónico
-    private bool EsCorreoValido(string email)
-    {
-        string patronCorreo = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        return Regex.IsMatch(email, patronCorreo);
-    }
 
 
-    private void panelLogin_Paint(object sender, PaintEventArgs e)
+        private void panelLogin_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        
-       
+
+
         private void lblIniciarSesion_Click(object sender, EventArgs e)
         {
             txtUsuarioRegistrar.Clear();

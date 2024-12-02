@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVendedor));
             this.panel4 = new System.Windows.Forms.Panel();
             this.cmbCategoria = new System.Windows.Forms.ComboBox();
             this.picBoxProducto = new System.Windows.Forms.PictureBox();
@@ -47,6 +48,12 @@
             this.toolStripMenuModificar = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuEliminar = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewProductos = new System.Windows.Forms.DataGridView();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Descripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Stock = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RutaImagen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CategoriaNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label7 = new System.Windows.Forms.Label();
             this.txtPrecio = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -56,12 +63,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ofdProducto = new System.Windows.Forms.OpenFileDialog();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
-            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Descripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Stock = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RutaImagen = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CategoriaNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxProducto)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -70,8 +71,9 @@
             // 
             // panel4
             // 
-            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.btnCerrarSesion);
             this.panel4.Controls.Add(this.cmbCategoria);
             this.panel4.Controls.Add(this.picBoxProducto);
             this.panel4.Controls.Add(this.txtStock);
@@ -87,7 +89,7 @@
             this.panel4.Controls.Add(this.txtDescripcion);
             this.panel4.Controls.Add(this.label1);
             this.panel4.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.panel4.Location = new System.Drawing.Point(12, 11);
+            this.panel4.Location = new System.Drawing.Point(13, 146);
             this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1664, 797);
@@ -162,6 +164,7 @@
             this.toolStripMenuNuevo.Name = "toolStripMenuNuevo";
             this.toolStripMenuNuevo.Size = new System.Drawing.Size(66, 24);
             this.toolStripMenuNuevo.Text = "Nuevo";
+            this.toolStripMenuNuevo.Click += new System.EventHandler(this.toolStripMenuNuevo_Click);
             // 
             // toolStripMenuRegistrar
             // 
@@ -182,6 +185,7 @@
             this.toolStripMenuEliminar.Name = "toolStripMenuEliminar";
             this.toolStripMenuEliminar.Size = new System.Drawing.Size(77, 24);
             this.toolStripMenuEliminar.Text = "Eliminar";
+            this.toolStripMenuEliminar.Click += new System.EventHandler(this.toolStripMenuEliminar_Click);
             // 
             // dataGridViewProductos
             // 
@@ -203,12 +207,87 @@
             this.dataGridViewProductos.Name = "dataGridViewProductos";
             this.dataGridViewProductos.ReadOnly = true;
             this.dataGridViewProductos.RowHeadersWidth = 51;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
-            this.dataGridViewProductos.RowsDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            this.dataGridViewProductos.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewProductos.RowTemplate.Height = 24;
             this.dataGridViewProductos.Size = new System.Drawing.Size(710, 244);
             this.dataGridViewProductos.TabIndex = 25;
             this.dataGridViewProductos.SelectionChanged += new System.EventHandler(this.dataGridViewProductos_SelectionChanged);
+            // 
+            // Nombre
+            // 
+            this.Nombre.DataPropertyName = "Nombre";
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            this.Nombre.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.MinimumWidth = 6;
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
+            this.Nombre.Width = 80;
+            // 
+            // Descripcion
+            // 
+            this.Descripcion.DataPropertyName = "Descripcion";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            this.Descripcion.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Descripcion.HeaderText = "Descripcion";
+            this.Descripcion.MinimumWidth = 6;
+            this.Descripcion.Name = "Descripcion";
+            this.Descripcion.ReadOnly = true;
+            this.Descripcion.Width = 125;
+            // 
+            // Precio
+            // 
+            this.Precio.DataPropertyName = "Precio";
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            this.Precio.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Precio.HeaderText = "Precio";
+            this.Precio.MinimumWidth = 6;
+            this.Precio.Name = "Precio";
+            this.Precio.ReadOnly = true;
+            this.Precio.Width = 80;
+            // 
+            // Stock
+            // 
+            this.Stock.DataPropertyName = "Stock";
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
+            this.Stock.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Stock.HeaderText = "Stock";
+            this.Stock.MinimumWidth = 6;
+            this.Stock.Name = "Stock";
+            this.Stock.ReadOnly = true;
+            this.Stock.Width = 60;
+            // 
+            // RutaImagen
+            // 
+            this.RutaImagen.DataPropertyName = "RutaImagen";
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            this.RutaImagen.DefaultCellStyle = dataGridViewCellStyle5;
+            this.RutaImagen.HeaderText = "Ruta Imagen";
+            this.RutaImagen.MinimumWidth = 6;
+            this.RutaImagen.Name = "RutaImagen";
+            this.RutaImagen.ReadOnly = true;
+            this.RutaImagen.Width = 125;
+            // 
+            // CategoriaNombre
+            // 
+            this.CategoriaNombre.DataPropertyName = "CategoriaNombre";
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            this.CategoriaNombre.DefaultCellStyle = dataGridViewCellStyle6;
+            this.CategoriaNombre.HeaderText = "Categoria";
+            this.CategoriaNombre.MinimumWidth = 6;
+            this.CategoriaNombre.Name = "CategoriaNombre";
+            this.CategoriaNombre.ReadOnly = true;
+            this.CategoriaNombre.Width = 160;
             // 
             // label7
             // 
@@ -283,7 +362,7 @@
             // 
             // btnCerrarSesion
             // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(67, 90);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(40, 87);
             this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(108, 40);
@@ -292,87 +371,14 @@
             this.btnCerrarSesion.UseVisualStyleBackColor = true;
             this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
-            // Nombre
-            // 
-            this.Nombre.DataPropertyName = "Nombre";
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
-            this.Nombre.DefaultCellStyle = dataGridViewCellStyle8;
-            this.Nombre.HeaderText = "Nombre";
-            this.Nombre.MinimumWidth = 6;
-            this.Nombre.Name = "Nombre";
-            this.Nombre.ReadOnly = true;
-            this.Nombre.Width = 80;
-            // 
-            // Descripcion
-            // 
-            this.Descripcion.DataPropertyName = "Descripcion";
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black;
-            this.Descripcion.DefaultCellStyle = dataGridViewCellStyle9;
-            this.Descripcion.HeaderText = "Descripcion";
-            this.Descripcion.MinimumWidth = 6;
-            this.Descripcion.Name = "Descripcion";
-            this.Descripcion.ReadOnly = true;
-            // 
-            // Precio
-            // 
-            this.Precio.DataPropertyName = "Precio";
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Black;
-            this.Precio.DefaultCellStyle = dataGridViewCellStyle10;
-            this.Precio.HeaderText = "Precio";
-            this.Precio.MinimumWidth = 6;
-            this.Precio.Name = "Precio";
-            this.Precio.ReadOnly = true;
-            this.Precio.Width = 80;
-            // 
-            // Stock
-            // 
-            this.Stock.DataPropertyName = "Stock";
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black;
-            this.Stock.DefaultCellStyle = dataGridViewCellStyle11;
-            this.Stock.HeaderText = "Stock";
-            this.Stock.MinimumWidth = 6;
-            this.Stock.Name = "Stock";
-            this.Stock.ReadOnly = true;
-            this.Stock.Width = 60;
-            // 
-            // RutaImagen
-            // 
-            this.RutaImagen.DataPropertyName = "RutaImagen";
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
-            this.RutaImagen.DefaultCellStyle = dataGridViewCellStyle12;
-            this.RutaImagen.HeaderText = "Ruta Imagen";
-            this.RutaImagen.MinimumWidth = 6;
-            this.RutaImagen.Name = "RutaImagen";
-            this.RutaImagen.ReadOnly = true;
-            this.RutaImagen.Width = 125;
-            // 
-            // CategoriaNombre
-            // 
-            this.CategoriaNombre.DataPropertyName = "CategoriaNombre";
-            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.Black;
-            this.CategoriaNombre.DefaultCellStyle = dataGridViewCellStyle13;
-            this.CategoriaNombre.HeaderText = "Categoria";
-            this.CategoriaNombre.MinimumWidth = 6;
-            this.CategoriaNombre.Name = "CategoriaNombre";
-            this.CategoriaNombre.ReadOnly = true;
-            this.CategoriaNombre.Width = 160;
-            // 
             // FormVendedor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1331, 547);
-            this.Controls.Add(this.btnCerrarSesion);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.ClientSize = new System.Drawing.Size(1373, 715);
             this.Controls.Add(this.panel4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormVendedor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormVendedor";

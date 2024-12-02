@@ -30,7 +30,7 @@ namespace AgrodelisForm.Services
                 return new Respuesta
                 {
                     Exitoso = false,
-                    Mensaje = $"Error al obtener los productos: {ex.Message}",
+                    Mensaje = "Error al obtener los productos!",
                     Code = 500
                 };
             }
@@ -77,6 +77,36 @@ namespace AgrodelisForm.Services
                     Exitoso = false,
                     Mensaje = $"Error al modificar el producto: {ex.Message}",
                     Code = 500 // Internal Server Error
+                };
+            }
+        }
+        // Método para eliminar un producto
+        public async Task<Respuesta> EliminarProducto(int productoId)
+        {
+            try
+            {
+                var respuesta = await _client.DeleteAsync($"https://localhost:7156/api/Productos/eliminar/{productoId}");
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var contenido = await respuesta.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Respuesta>(contenido);
+                }
+
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = "Error al eliminar el producto.",
+                    Code = 500
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error interno: {ex.Message}",
+                    Code = 500
                 };
             }
         }

@@ -10,7 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-    
+
+
 
 
 namespace AgrodelisForm
@@ -18,6 +19,7 @@ namespace AgrodelisForm
     public partial class FormVendedor : Form
     {
         public int UsuarioId { get; private set; }
+      
 
         public FormVendedor(int usuarioId)
         {
@@ -26,6 +28,8 @@ namespace AgrodelisForm
             CargarProductosDelVendedor(UsuarioId);
             // Llamar al método para cargar las categorías en el ComboBox
             CargarCategorias();
+
+
         }
         private async void CargarProductosDelVendedor(int vendedorId)
         {
@@ -34,22 +38,22 @@ namespace AgrodelisForm
                 var productoService = new ProductoService();
                 var respuesta = await productoService.ObtenerProductosPorVendedor(vendedorId);
 
-                // Verifica si la respuesta es válida y si la propiedad Productos no es null
-                if (respuesta != null && respuesta.Exitoso && respuesta.Productos != null && respuesta.Productos.Any())
-                {
-                    
+                
+
                     dataGridViewProductos.DataSource = respuesta.Productos;
 
 
                     if (dataGridViewProductos.Columns.Contains("ProductoId"))
                         dataGridViewProductos.Columns["ProductoId"].Visible = false;
 
-                }
-                else
-                {
-                    // Mostrar mensaje si no se encontraron productos
-                    MessageBox.Show("No se encontraron productos para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                    if(!respuesta.Exitoso)
+                    {
+                        // Mostrar mensaje si no se encontraron productos
+                        MessageBox.Show("No se encontraron productos para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                
+                
             }
             catch (Exception ex)
             {
@@ -57,7 +61,7 @@ namespace AgrodelisForm
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        
 
         private async void CargarCategorias()
         {
@@ -107,7 +111,7 @@ namespace AgrodelisForm
             Uri relativeUri = baseUri.MakeRelativeUri(fullUri);
             return Uri.UnescapeDataString(relativeUri.ToString());
         }
-        
+
 
         // Método para limpiar los campos del formulario después de registrar el producto
         private void LimpiarCampos()
@@ -161,7 +165,7 @@ namespace AgrodelisForm
             this.Hide(); // Ocultar el formulario actua
             formLogin.ShowDialog();
 
-            
+
         }
 
         private void dataGridViewProductos_SelectionChanged(object sender, EventArgs e)
@@ -194,6 +198,11 @@ namespace AgrodelisForm
                 }
             }
         }
+
+        private void toolStripMenuNuevo_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+        }
         private async void toolStripMenuRegistrar_Click(object sender, EventArgs e)
         {
             try
@@ -214,7 +223,7 @@ namespace AgrodelisForm
                 var stock = int.Parse(txtStock.Text.Trim());
                 var rutaImagen = relativePath;
                 var categoriaId = (int)cmbCategoria.SelectedValue;  // Obtener el ID de la categoría seleccionada
-                Console.WriteLine(categoriaId);
+                
                 if (categoriaId == 0) // Verificar si no se ha seleccionado una categoría válida
                 {
                     MessageBox.Show("Por favor, selecciona una categoría.", "Categoría no seleccionada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -307,6 +316,54 @@ namespace AgrodelisForm
                 MessageBox.Show($"Ocurrió un error al modificar el producto: {ex.Message}");
             }
         }
+
+        private async void toolStripMenuEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridViewProductos.SelectedRows.Count > 0)
+                {
+                    // Obtén el ProductoId de la fila seleccionada
+                    int productoId = Convert.ToInt32(dataGridViewProductos.SelectedRows[0].Cells["ProductoId"].Value);
+
+                    var confirmacion = MessageBox.Show(
+                        "¿Estás seguro de que deseas eliminar este producto?",
+                        "Confirmar eliminación",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (confirmacion == DialogResult.Yes)
+                    {
+                        var productoService = new ProductoService();
+                        var respuesta = await productoService.EliminarProducto(productoId);
+
+                        if (respuesta.Exitoso)
+                        {
+                            
+                            MessageBox.Show($"{ respuesta.Mensaje}");
+                            // Refrescar el DataGridView después de la eliminación
+                            CargarProductosDelVendedor(UsuarioId);
+                            LimpiarCampos();
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Error al eliminar el producto: {respuesta.Mensaje}");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Seleccione un producto de la tabla para eliminar.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al eliminar el producto: {ex.Message}");
+            }
+        }
+
+        
     }
 
 }
