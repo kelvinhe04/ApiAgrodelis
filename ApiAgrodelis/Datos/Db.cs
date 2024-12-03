@@ -601,9 +601,46 @@ WHERE
             return productos;
         }
 
-        
+        //==================================== Registrar Ventas ====================================
 
+        public void RegistrarVentas(List<VentaRequest> ventas)
+        {
+            try
+            {
+                // Iterar sobre la lista de ventas para insertarlas
+                foreach (var item in ventas)
+                {
+                    cmd.Parameters.Clear();
+                    cmd.CommandType = CommandType.Text;
 
+                    // Consulta SQL para insertar cada venta en la tabla de Ventas
+                    cmd.CommandText = @"
+                INSERT INTO Ventas (ProductoId, Cantidad, Precio, VendedorId, Total, FechaVenta)
+                VALUES (@ProductoId, @Cantidad, @Precio, @VendedorId, @Total, @FechaVenta)";
+
+                    // Agregar los parámetros de la venta
+                    cmd.Parameters.AddWithValue("@ProductoId", item.ProductoId);
+                    cmd.Parameters.AddWithValue("@Cantidad", item.Cantidad);
+                    cmd.Parameters.AddWithValue("@Precio", item.Precio);
+                    cmd.Parameters.AddWithValue("@VendedorId", item.VendedorId);
+                    cmd.Parameters.AddWithValue("@Total", item.Cantidad * item.Precio);
+                    cmd.Parameters.AddWithValue("@FechaVenta", DateTime.UtcNow);
+
+                    // Abrir la conexión y ejecutar la consulta
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones (podrías loguear el error si es necesario)
+                throw new Exception($"Error al registrar ventas: {ex.Message}");
+            }
+            finally
+            {
+                con.Close(); // Asegúrate de cerrar la conexión siempre
+            }
+        }
 
 
 
@@ -639,7 +676,7 @@ WHERE
 
             return categorias;
         }
-
+        
 
 
     }
