@@ -22,7 +22,7 @@ namespace AgrodelisForm
     public partial class FormVendedor : Form
     {
         public int UsuarioId { get; private set; }
-      
+
 
         public FormVendedor(int usuarioId)
         {
@@ -34,7 +34,7 @@ namespace AgrodelisForm
             AplicarEstiloLabel();
             btnClose.Focus();
             cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
-            
+
 
 
 
@@ -44,7 +44,7 @@ namespace AgrodelisForm
         {
             ofdProducto.FileName = string.Empty;
             RevisarStockBajoPorVendedor(UsuarioId);
-           
+
 
         }
         private async void CargarProductosDelVendedor(int vendedorId)
@@ -54,22 +54,22 @@ namespace AgrodelisForm
                 var productoService = new ProductoService();
                 var respuesta = await productoService.ObtenerProductosPorVendedor(vendedorId);
 
-                
-
-                    dataGridViewProductos.DataSource = respuesta.Productos;
 
 
-                    if (dataGridViewProductos.Columns.Contains("ProductoId"))
-                        dataGridViewProductos.Columns["ProductoId"].Visible = false;
+                dataGridViewProductos.DataSource = respuesta.Productos;
 
-                    if(!respuesta.Exitoso)
-                    {
-                        // Mostrar mensaje si no se encontraron productos
-                        MessageBox.Show("No se encontraron productos para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
 
-                
-                
+                if (dataGridViewProductos.Columns.Contains("ProductoId"))
+                    dataGridViewProductos.Columns["ProductoId"].Visible = false;
+
+                if (!respuesta.Exitoso)
+                {
+                    // Mostrar mensaje si no se encontraron productos
+                    MessageBox.Show("No se encontraron productos para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+
+
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace AgrodelisForm
             }
         }
 
-        
+
         private async void CargarCategorias()
         {
             try
@@ -412,7 +412,7 @@ namespace AgrodelisForm
             {
                 if (dataGridViewProductos.SelectedRows.Count > 0)
                 {
-                    
+
                     // Obtén el ProductoId de la fila seleccionada
                     int productoId = Convert.ToInt32(dataGridViewProductos.SelectedRows[0].Cells["ProductoId"].Value);
 
@@ -430,8 +430,8 @@ namespace AgrodelisForm
 
                         if (respuesta.Exitoso)
                         {
-                            
-                            MessageBox.Show($"{ respuesta.Mensaje}");
+
+                            MessageBox.Show($"{respuesta.Mensaje}");
                             // Refrescar el DataGridView después de la eliminación
                             CargarProductosDelVendedor(UsuarioId);
                             LimpiarCampos();
@@ -449,8 +449,8 @@ namespace AgrodelisForm
             }
             catch (Exception ex)
             {
-                    MessageBox.Show($"Ocurrió un error al eliminar el producto: {ex.Message}");
-                }
+                MessageBox.Show($"Ocurrió un error al eliminar el producto: {ex.Message}");
+            }
         }
 
 
@@ -458,13 +458,13 @@ namespace AgrodelisForm
         {
             // Obtener la respuesta completa
             var respuesta = await new ProductoService().ObtenerProductosConStockBajoPorVendedorAsync(UsuarioId);
-            
-          
+
+
             if (respuesta.Exitoso && respuesta.Productos != null && respuesta.Productos.Any())
             {
                 foreach (var producto in respuesta.Productos)
                 {
-                    
+
                     MostrarNotificacion($"Stock bajo: {producto.Nombre}", $"Quedan {producto.Stock} unidades.");
                 }
             }
@@ -518,9 +518,75 @@ namespace AgrodelisForm
             label5.Invalidate(); // Redibuja el control
 
 
+
         }
 
-        
+        //Nombres en txt
+        private void txtNombre_Enter(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "Nombre")
+            {
+                txtNombre.Text = "";
+            }
+        }
+
+        private void txtNombre_Leave(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Nombre";
+            }
+        }
+
+        private void txtPrecio_Enter(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "Precio de Compra")
+            {
+                txtNombre.Text = "";
+
+            }
+        }
+
+        private void txtPrecio_Leave(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Precio de Compra";
+            }
+        }
+
+        private void txtStock_Enter(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "Stock")
+            {
+                txtNombre.Text = "";
+            }
+        }
+
+        private void txtStock_Leave (object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Stock";
+            }
+        }
+
+        private void txtDescripcion_Enter(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "Descripcion")
+            {
+                txtNombre.Text = "";
+            }
+        }
+
+        private void txtDescripcion_Leave (object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Descripcion";
+            }
+        }
+
     }
 
 }
