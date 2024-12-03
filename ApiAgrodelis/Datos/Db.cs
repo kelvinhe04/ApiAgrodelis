@@ -535,6 +535,126 @@ namespace ApiAgrodelis.Datos
 
 
 
+        //===============================NOTIFICACION DE ESCRITORIO CUANDO EL STOCK  ESTE BAJO======================================
+        public List<Producto> ObtenerProductosConStockBajoPorVendedor(int vendedorId, int limiteStock)
+        {
+            List<Producto> productos = new List<Producto>();
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                // Consulta SQL para obtener solo los productos con stock bajo
+                cmd.CommandText = @"
+SELECT 
+    p.ProductoID, 
+    p.Nombre, 
+    p.Stock
+FROM 
+    Productos p
+INNER JOIN 
+    ProductosVendedores pv ON p.ProductoID = pv.ProductoID  
+INNER JOIN 
+    Usuarios u ON pv.UsuarioID = u.UsuarioID  
+WHERE 
+    u.Rol = 'Vendedor' AND u.Activo = 1
+    AND pv.UsuarioID = @VendedorId
+    AND p.Stock < @LimiteStock";  // Filtrar productos con stock bajo
+
+                // Añadir parámetros para evitar inyecciones SQL
+                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+                cmd.Parameters.AddWithValue("@LimiteStock", limiteStock);
+
+                con.Open(); // Abrir la conexión
+                ds = new DataSet();
+
+                // Llenar el DataSet con los resultados de la consulta
+                adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(ds);
+
+                // Procesar los resultados
+                foreach (DataTable table in ds.Tables)
+                {
+                    foreach (DataRow row in table.Rows)
+                    {
+                        var producto = new Producto()
+                        {
+                            ProductoId = Convert.ToInt32(row["ProductoID"]),
+                            Nombre = row["Nombre"].ToString(),
+                            Stock = Convert.ToInt32(row["Stock"])
+                        };
+
+                        productos.Add(producto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw ex;
+            }
+            finally
+            {
+                con.Close(); // Cerrar la conexión
+            }
+
+            return productos;
+        }
+
+        public Producto ObtenerProductoPorNombreYImagen(string nombre, string rutaImagen)
+        {
+            Producto producto = null;
+            try
+            {
+                // Comando SQL para verificar si ya existe un producto con el mismo nombre y ruta de la imagen
+                string query = @"
+        SELECT TOP 1 ProductoID, Nombre, Descripcion, Precio, Stock, RutaImagen
+        FROM Productos
+        WHERE Nombre = @Nombre AND RutaImagen = @RutaImagen";
+
+                // Configurar el comando para ejecutar la consulta
+                using (var cmd = new SqlCommand(query, con))
+                {
+                    // Añadir parámetros de manera segura para evitar inyecciones SQL
+                    cmd.Parameters.AddWithValue("@Nombre", nombre);
+                    cmd.Parameters.AddWithValue("@RutaImagen", rutaImagen);
+
+                    con.Open();
+                    var reader = cmd.ExecuteReader();
+
+                    // Comprobar si se encuentra algún producto con los mismos parámetros
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            producto = new Producto
+                            {
+                                ProductoId = reader.GetInt32(reader.GetOrdinal("ProductoID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("Nombre")),
+                                Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
+                                Precio = reader.GetDecimal(reader.GetOrdinal("Precio")),
+                                Stock = reader.GetInt32(reader.GetOrdinal("Stock")),
+                                RutaImagen = reader.GetString(reader.GetOrdinal("RutaImagen"))
+                            };
+                        }
+                    }
+
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al verificar el producto: {ex.Message}");
+                producto = null;  // Si ocurre un error, retornar null
+            }
+
+            return producto;
+        }
+
+
+
+
+
         //===============================PARA LAS CATEGORIAS======================================
         public List<Categoria> ObtenerCategorias()
         {

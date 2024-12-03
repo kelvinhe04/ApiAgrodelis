@@ -1,5 +1,6 @@
 ﻿using AgrodelisForm.Models;
 using AgrodelisForm.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,9 +34,17 @@ namespace AgrodelisForm
             AplicarEstiloLabel();
             btnClose.Focus();
             cmbCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
+            
 
 
 
+
+        }
+        private void FormVendedor_Load(object sender, EventArgs e)
+        {
+            ofdProducto.FileName = string.Empty;
+            RevisarStockBajoPorVendedor(UsuarioId);
+           
 
         }
         private async void CargarProductosDelVendedor(int vendedorId)
@@ -67,8 +77,8 @@ namespace AgrodelisForm
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
 
+        
         private async void CargarCategorias()
         {
             try
@@ -127,6 +137,7 @@ namespace AgrodelisForm
             txtPrecio.Clear();
             txtStock.Clear();
             picBoxProducto.Image = null;
+            ofdProducto.FileName = string.Empty;
             cmbCategoria.SelectedIndex = 0;  // Desmarcar la categoría seleccionada
         }
 
@@ -265,12 +276,9 @@ namespace AgrodelisForm
                 }
 
                 string fullPath = ofdProducto.FileName; // Ruta completa de la imagen seleccionada
-
                 string appDirectory = AppDomain.CurrentDomain.BaseDirectory; // Directorio de la aplicación
-
-                // Obtener la ruta relativa
+                                                                             // Obtener la ruta relativa
                 string relativePath = GetRelativePath(appDirectory, fullPath);
-
 
                 // Leer los datos del producto desde los TextBox y ComboBox
                 var nombre = txtNombre.Text.Trim();
@@ -279,10 +287,20 @@ namespace AgrodelisForm
                 var stock = int.Parse(txtStock.Text.Trim());
                 var rutaImagen = relativePath;
                 var categoriaId = (int)cmbCategoria.SelectedValue;  // Obtener el ID de la categoría seleccionada
-                
+
                 if (categoriaId == 0) // Verificar si no se ha seleccionado una categoría válida
                 {
                     MessageBox.Show("Por favor, selecciona una categoría.", "Categoría no seleccionada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Verificar si ya existe un producto con el mismo nombre y la misma imagen
+                var productoService = new ProductoService();
+                var productoExistente = await productoService.ObtenerProductoPorNombreYImagen(nombre, rutaImagen);
+
+                if (productoExistente != null)
+                {
+                    MessageBox.Show("Ya existe un producto con el mismo nombre y la misma imagen. No se puede registrar el producto duplicado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -296,11 +314,9 @@ namespace AgrodelisForm
                     RutaImagen = rutaImagen,
                     CategoriaId = categoriaId,
                     VendedorId = UsuarioId,
-
                 };
 
                 // Llamar al servicio para registrar el producto
-                var productoService = new ProductoService();
                 var respuesta = await productoService.RegistrarProducto(productoRequest);
 
                 if (respuesta.Exitoso)
@@ -319,6 +335,7 @@ namespace AgrodelisForm
                 MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private async void toolStripMenuModificar_Click(object sender, EventArgs e)
         {
             try
@@ -432,8 +449,43 @@ namespace AgrodelisForm
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al eliminar el producto: {ex.Message}");
+                    MessageBox.Show($"Ocurrió un error al eliminar el producto: {ex.Message}");
+                }
+        }
+
+
+        private async void RevisarStockBajoPorVendedor(int UsuarioId)
+        {
+            // Obtener la respuesta completa
+            var respuesta = await new ProductoService().ObtenerProductosConStockBajoPorVendedorAsync(UsuarioId);
+            
+          
+            if (respuesta.Exitoso && respuesta.Productos != null && respuesta.Productos.Any())
+            {
+                foreach (var producto in respuesta.Productos)
+                {
+                    
+                    MostrarNotificacion($"Stock bajo: {producto.Nombre}", $"Quedan {producto.Stock} unidades.");
+                }
             }
+            else
+            {
+                Console.WriteLine($"No hay productos con stock bajo o hubo un problema: {respuesta.Mensaje}");
+            }
+        }
+
+
+        private void MostrarNotificacion(string titulo, string mensaje)
+        {
+            NotifyIcon notifyIcon = new NotifyIcon
+            {
+                Icon = SystemIcons.Warning, // Cambia el icono si lo prefieres
+                Visible = true,
+                BalloonTipTitle = titulo,
+                BalloonTipText = mensaje
+            };
+
+            notifyIcon.ShowBalloonTip(3000); // Mostrar la notificación durante 3 segundos
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -461,9 +513,14 @@ namespace AgrodelisForm
             label6.BackColor = Color.Transparent;
             label6.Parent = panel4;
             label6.Invalidate(); // Redibuja el control
+            label5.BackColor = Color.Transparent;
+            label5.Parent = panel4;
+            label5.Invalidate(); // Redibuja el control
 
 
         }
+
+        
     }
 
 }

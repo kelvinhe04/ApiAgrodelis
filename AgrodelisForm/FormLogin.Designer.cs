@@ -259,6 +259,8 @@
             this.btnRegistrar.Text = "Registrar";
             this.btnRegistrar.UseVisualStyleBackColor = false;
             this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click_1);
+            this.btnRegistrar.Enter += new System.EventHandler(this.btnRegistrar_Enter);
+            this.btnRegistrar.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.btnRegistrar_KeyPress);
             // 
             // label6
             // 
@@ -335,6 +337,7 @@
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormLogin_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormLogin_KeyDown);
             this.panelLogin.ResumeLayout(false);
             this.panelLogin.PerformLayout();
             this.panelRegistrar.ResumeLayout(false);

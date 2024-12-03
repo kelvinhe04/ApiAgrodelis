@@ -217,6 +217,74 @@ namespace ApiAgrodelis.Controllers
             }
         }
 
+        //=================================NOTIFICACION DE ESCRITORIO CUANDO EL STOCK  ESTE BAJO=====================================
+        [HttpGet("{vendedorId}/stock-bajo")]
+        public object ObtenerProductosConStockBajoPorVendedor(int vendedorId)
+        {
+            try
+            {
+                // Llamada al método para obtener los productos de un vendedor con stock bajo (menos de 5 unidades)
+                var productosConStockBajo = _db.ObtenerProductosConStockBajoPorVendedor(vendedorId, 5);
+
+                return new
+                {
+                    Exitoso = true,
+                    Productos = productosConStockBajo,
+                    Code = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener los productos con stock bajo: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
+        [HttpGet("productos/nombre-imagen")]
+        public object ObtenerProductoPorNombreYImagen( string nombre, string rutaImagen)
+        {
+            try
+            {
+                var producto = _db.ObtenerProductoPorNombreYImagen(nombre, rutaImagen); // Llama al servicio de base de datos
+
+                if (producto != null)
+                {
+                    return new
+                    {
+                        Exitoso = true,
+                        Mensaje = "Producto encontrado.",
+                        Productos = new List<Producto> { producto },
+                        Code = 200
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Exitoso = false,
+                        Mensaje = "No se encontró un producto con el mismo nombre y ruta de imagen.",
+                        Productos = new List<Producto>(), // En lugar de null, devuelve una lista vacía
+                        Code = 404
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error interno: {ex.Message}",
+                    Productos = new List<Producto>(), // En caso de error, devuelve una lista vacía
+                    Code = 500
+                };
+            }
+        }
+
+
 
 
     }

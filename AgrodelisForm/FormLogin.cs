@@ -224,12 +224,142 @@ namespace AgrodelisForm
 
         private void FormLogin_Load(object sender, EventArgs e)
         {
-
+            // Permitir que el formulario reciba los eventos de teclado
+            this.KeyPreview = true;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private async void btnRegistrar_Enter(object sender, EventArgs e)
+        {
+            string nombre = txtUsuarioRegistrar.Text.Trim();
+            string email = txtEmailRegistrar.Text.Trim();
+            string contraseña = txtContraRegistrar.Text.Trim();
+
+            // Validar que los campos no estén vacíos
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
+            {
+                MessageBox.Show("Por favor, complete todos los campos", "Campos Vacíos");
+                return;
+            }
+
+            // Validar formato de correo electrónico
+            if (!EsCorreoValido(email))
+            {
+                MessageBox.Show("Por favor, ingrese un correo electrónico válido", "Correo Inválido");
+                return;
+            }
+
+            // Crear un objeto RegisterRequest con los datos del formulario
+            var registerRequest = new RegisterRequest
+            {
+                Nombre = nombre,
+                Email = email,
+                Contraseña = contraseña,
+                Rol = "Vendedor", // Aquí asignas el rol de "Vendedor" o "Cliente", según el caso
+            };
+
+            try
+            {
+                // Llamar al método Register de AuthenticationService
+                var respuesta = await authenticationService.Register(registerRequest);
+
+
+                if (respuesta.Exitoso)
+                {
+                    MessageBox.Show("¡Registro exitoso!", "Éxito");
+                    panelLogin.Visible = true;
+                    panelRegistrar.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje, "Error");
+                    if (respuesta.Mensaje == "El correo electrónico ya está registrado.")
+                    {
+                        panelLogin.Visible = true;
+                        panelRegistrar.Visible = false;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error interno: {ex.Message}", "Error");
+            }
+        }
+
+        private async void btnRegistrar_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            string nombre = txtUsuarioRegistrar.Text.Trim();
+            string email = txtEmailRegistrar.Text.Trim();
+            string contraseña = txtContraRegistrar.Text.Trim();
+
+            // Validar que los campos no estén vacíos
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
+            {
+                MessageBox.Show("Por favor, complete todos los campos", "Campos Vacíos");
+                return;
+            }
+
+            // Validar formato de correo electrónico
+            if (!EsCorreoValido(email))
+            {
+                MessageBox.Show("Por favor, ingrese un correo electrónico válido", "Correo Inválido");
+                return;
+            }
+
+            // Crear un objeto RegisterRequest con los datos del formulario
+            var registerRequest = new RegisterRequest
+            {
+                Nombre = nombre,
+                Email = email,
+                Contraseña = contraseña,
+                Rol = "Vendedor", // Aquí asignas el rol de "Vendedor" o "Cliente", según el caso
+            };
+
+            try
+            {
+                // Llamar al método Register de AuthenticationService
+                var respuesta = await authenticationService.Register(registerRequest);
+
+
+                if (respuesta.Exitoso)
+                {
+                    MessageBox.Show("¡Registro exitoso!", "Éxito");
+                    panelLogin.Visible = true;
+                    panelRegistrar.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje, "Error");
+                    if (respuesta.Mensaje == "El correo electrónico ya está registrado.")
+                    {
+                        panelLogin.Visible = true;
+                        panelRegistrar.Visible = false;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error interno: {ex.Message}", "Error");
+            }
+        }
+
+        private void FormLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Verificar si la tecla presionada es Enter
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+
+                // Simular el clic en el botón
+                btnRegistrar.PerformClick();
+                btnLogin.PerformClick();
+            }
         }
     }
 }
