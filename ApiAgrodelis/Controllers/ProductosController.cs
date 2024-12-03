@@ -244,45 +244,8 @@ namespace ApiAgrodelis.Controllers
             }
         }
 
-        [HttpGet("productos/nombre-imagen")]
-        public object ObtenerProductoPorNombreYImagen( string nombre, string rutaImagen)
-        {
-            try
-            {
-                var producto = _db.ObtenerProductoPorNombreYImagen(nombre, rutaImagen); // Llama al servicio de base de datos
-
-                if (producto != null)
-                {
-                    return new
-                    {
-                        Exitoso = true,
-                        Mensaje = "Producto encontrado.",
-                        Productos = new List<Producto> { producto },
-                        Code = 200
-                    };
-                }
-                else
-                {
-                    return new
-                    {
-                        Exitoso = false,
-                        Mensaje = "No se encontró un producto con el mismo nombre y ruta de imagen.",
-                        Productos = new List<Producto>(), // En lugar de null, devuelve una lista vacía
-                        Code = 404
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                return new
-                {
-                    Exitoso = false,
-                    Mensaje = $"Error interno: {ex.Message}",
-                    Productos = new List<Producto>(), // En caso de error, devuelve una lista vacía
-                    Code = 500
-                };
-            }
-        }
+        
+        
 
 
 

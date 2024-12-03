@@ -139,6 +139,26 @@ namespace AgrodelisForm
             picBoxProducto.Image = null;
             ofdProducto.FileName = string.Empty;
             cmbCategoria.SelectedIndex = 0;  // Desmarcar la categoría seleccionada
+
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Nombre";
+            }
+            if (txtPrecio.Text == "")
+            {
+                txtPrecio.Text = "Precio de Compra";
+            }
+            if (txtStock.Text == "")
+            {
+                txtStock.Text = "Stock";
+            }
+
+
+            if (txtDescripcion.Text == "")
+            {
+                txtDescripcion.Text = "Descripcion";
+            }
+
         }
 
         private void picBoxProducto_Click(object sender, EventArgs e)
@@ -185,38 +205,46 @@ namespace AgrodelisForm
 
         }
 
+        string rutaImagenOriginal = string.Empty; // Variable global para almacenar la ruta original
+
         private void dataGridViewProductos_SelectionChanged(object sender, EventArgs e)
         {
             if (dataGridViewProductos.SelectedRows.Count > 0)
             {
-                // Obtén la fila seleccionada
                 DataGridViewRow filaSeleccionada = dataGridViewProductos.SelectedRows[0];
 
-                // Asigna los valores de las celdas a los controles correspondientes
+                // Asignar valores a los controles
                 txtNombre.Text = filaSeleccionada.Cells["Nombre"].Value?.ToString() ?? string.Empty;
                 txtDescripcion.Text = filaSeleccionada.Cells["Descripcion"].Value?.ToString() ?? string.Empty;
                 txtPrecio.Text = filaSeleccionada.Cells["Precio"].Value?.ToString() ?? string.Empty;
                 txtStock.Text = filaSeleccionada.Cells["Stock"].Value?.ToString() ?? string.Empty;
 
-                // Asignar la categoría al combo box si está disponible
+                // Asignar categoría al ComboBox
                 if (filaSeleccionada.Cells["CategoriaNombre"] != null)
                 {
                     cmbCategoria.Text = filaSeleccionada.Cells["CategoriaNombre"].Value?.ToString() ?? string.Empty;
                 }
-                string rutaImagen = filaSeleccionada.Cells["RutaImagen"].Value?.ToString() ?? string.Empty;
 
-                if (File.Exists(rutaImagen))
+                // Obtener la ruta relativa de la imagen
+                rutaImagenOriginal = filaSeleccionada.Cells["RutaImagen"].Value?.ToString() ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(rutaImagenOriginal) && File.Exists(rutaImagenOriginal))
                 {
-                    picBoxProducto.Image = Image.FromFile(rutaImagen);
+                    picBoxProducto.Image = Image.FromFile(rutaImagenOriginal); // Cargar directamente la ruta relativa
+                    ofdProducto.FileName = rutaImagenOriginal; // Mantener la ruta original en el OpenFileDialog
                 }
                 else
                 {
-                    picBoxProducto.Image = null;  // O poner una imagen por defecto si no existe
+                    picBoxProducto.Image = null; // O usar una imagen por defecto
+                    ofdProducto.FileName = string.Empty;
                 }
             }
         }
 
-        private void toolStripMenuNuevo_Click(object sender, EventArgs e)
+
+
+
+        private void btnVaciar_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
         }
@@ -233,17 +261,26 @@ namespace AgrodelisForm
                 return "La descripción del producto no puede estar vacía.";
             }
 
-            if (string.IsNullOrEmpty(txtPrecio.Text.Trim()) || !decimal.TryParse(txtPrecio.Text.Trim(), out _))
+            if (string.IsNullOrEmpty(txtPrecio.Text.Trim()) || !decimal.TryParse(txtPrecio.Text.Trim(), out decimal precio))
             {
-                // Intenta convertir el texto ingresado en el cuadro txtPrecio a un número decimal.
-                // Si la conversión es exitosa, devuelve true; de lo contrario, devuelve false.
-                // El resultado convertido se descarta usando "out _", ya que solo importa verificar si es un número válido.
                 return "El precio del producto debe ser un valor válido.";
             }
 
-            if (string.IsNullOrEmpty(txtStock.Text.Trim()) || !int.TryParse(txtStock.Text.Trim(), out _))
+            // Validación de que el precio no sea menor que 0
+            if (precio <= 0)
+            {
+                return "El precio del producto no puede ser menor o igual que 0.";
+            }
+
+            if (string.IsNullOrEmpty(txtStock.Text.Trim()) || !int.TryParse(txtStock.Text.Trim(), out int stock))
             {
                 return "El stock del producto debe ser un número válido.";
+            }
+
+            // Validación de que el stock no sea menor que 0
+            if (stock <= 0)
+            {
+                return "El stock del producto no puede ser menor o igual que 0.";
             }
 
             // Validación de la imagen
@@ -263,84 +300,9 @@ namespace AgrodelisForm
             return null;
         }
 
-        private async void toolStripMenuRegistrar_Click(object sender, EventArgs e)
-        {
-            try
+            private async void btnRegistrar_Click(object sender, EventArgs e)
             {
-                // Validar campos antes de registrar el producto
-                string mensajeError = ValidarCamposProducto();
-                if (mensajeError != null)
-                {
-                    MessageBox.Show(mensajeError, "Campo obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                string fullPath = ofdProducto.FileName; // Ruta completa de la imagen seleccionada
-                string appDirectory = AppDomain.CurrentDomain.BaseDirectory; // Directorio de la aplicación
-                                                                             // Obtener la ruta relativa
-                string relativePath = GetRelativePath(appDirectory, fullPath);
-
-                // Leer los datos del producto desde los TextBox y ComboBox
-                var nombre = txtNombre.Text.Trim();
-                var descripcion = txtDescripcion.Text.Trim();
-                var precio = decimal.Parse(txtPrecio.Text.Trim());
-                var stock = int.Parse(txtStock.Text.Trim());
-                var rutaImagen = relativePath;
-                var categoriaId = (int)cmbCategoria.SelectedValue;  // Obtener el ID de la categoría seleccionada
-
-                if (categoriaId == 0) // Verificar si no se ha seleccionado una categoría válida
-                {
-                    MessageBox.Show("Por favor, selecciona una categoría.", "Categoría no seleccionada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Verificar si ya existe un producto con el mismo nombre y la misma imagen
-                var productoService = new ProductoService();
-                var productoExistente = await productoService.ObtenerProductoPorNombreYImagen(nombre, rutaImagen);
-
-                if (productoExistente != null)
-                {
-                    MessageBox.Show("Ya existe un producto con el mismo nombre y la misma imagen. No se puede registrar el producto duplicado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Crear el objeto de solicitud para registrar el producto
-                var productoRequest = new RegistrarProductoRequest
-                {
-                    Nombre = nombre,
-                    Descripcion = descripcion,
-                    Precio = precio,
-                    Stock = stock,
-                    RutaImagen = rutaImagen,
-                    CategoriaId = categoriaId,
-                    VendedorId = UsuarioId,
-                };
-
-                // Llamar al servicio para registrar el producto
-                var respuesta = await productoService.RegistrarProducto(productoRequest);
-
-                if (respuesta.Exitoso)
-                {
-                    CargarProductosDelVendedor(UsuarioId);
-                    MessageBox.Show("Producto registrado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LimpiarCampos();
-                }
-                else
-                {
-                    MessageBox.Show($"Error al registrar el producto: {respuesta.Mensaje}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private async void toolStripMenuModificar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (dataGridViewProductos.SelectedRows.Count > 0)
+                try
                 {
                     // Validar campos antes de registrar el producto
                     string mensajeError = ValidarCamposProducto();
@@ -351,27 +313,96 @@ namespace AgrodelisForm
                     }
 
                     string fullPath = ofdProducto.FileName; // Ruta completa de la imagen seleccionada
-
                     string appDirectory = AppDomain.CurrentDomain.BaseDirectory; // Directorio de la aplicación
-
-                    // Obtener la ruta relativa
+                                                                                 // Obtener la ruta relativa
                     string relativePath = GetRelativePath(appDirectory, fullPath);
 
-                    // Obtén el ProductoId de la fila seleccionada
-                    int productoId = Convert.ToInt32(dataGridViewProductos.SelectedRows[0].Cells["ProductoId"].Value);
-                    int cantidadRestante = Convert.ToInt32(txtStock.Text);
+                    // Leer los datos del producto desde los TextBox y ComboBox
+                    var nombre = txtNombre.Text.Trim();
+                    var descripcion = txtDescripcion.Text.Trim();
+                    var precio = decimal.Parse(txtPrecio.Text.Trim());
+                    var stock = int.Parse(txtStock.Text.Trim());
+                    var rutaImagen = relativePath;
+                    var categoriaId = (int)cmbCategoria.SelectedValue;  // Obtener el ID de la categoría seleccionada
 
-                    // Asegúrate de que la cantidad restante sea mayor a 0
-                    if (cantidadRestante > 0)
+                    if (categoriaId == 0) // Verificar si no se ha seleccionado una categoría válida
                     {
+                        MessageBox.Show("Por favor, selecciona una categoría.", "Categoría no seleccionada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Verificar si ya existe un producto con el mismo nombre y la misma imagen
+                    var productoService = new ProductoService();
+                    
+
+                    // Crear el objeto de solicitud para registrar el producto
+                    var productoRequest = new RegistrarProductoRequest
+                    {
+                        Nombre = nombre,
+                        Descripcion = descripcion,
+                        Precio = precio,
+                        Stock = stock,
+                        RutaImagen = rutaImagen,
+                        CategoriaId = categoriaId,
+                        VendedorId = UsuarioId,
+                    };
+
+                    // Llamar al servicio para registrar el producto
+                    var respuesta = await productoService.RegistrarProducto(productoRequest);
+
+                    if (respuesta.Exitoso)
+                    {
+                        CargarProductosDelVendedor(UsuarioId);
+                        MessageBox.Show("Producto registrado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LimpiarCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error al registrar el producto: {respuesta.Mensaje}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        private async void btnModificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridViewProductos.SelectedRows.Count > 0)
+                {
+                    
+
+                    // Obtener el ProductoId
+                    int productoId = Convert.ToInt32(dataGridViewProductos.SelectedRows[0].Cells["ProductoId"].Value);
+                    // Validar campos
+                    string mensajeError = ValidarCamposProducto();
+                    if (mensajeError != null)
+                    {
+                        MessageBox.Show(mensajeError, "Campo obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    // Usar la ruta de la imagen original si no se cambió
+                    string rutaImagen = rutaImagenOriginal;
+
+                        // Si se seleccionó una nueva imagen
+                        if (!string.IsNullOrEmpty(ofdProducto.FileName) && ofdProducto.FileName != rutaImagenOriginal)
+                        {
+                            // Convertir la ruta absoluta del OpenFileDialog a relativa
+                            string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                            rutaImagen = GetRelativePath(appDirectory, ofdProducto.FileName);
+                        }
+
                         var producto = new ModificarProductoRequest()
                         {
                             ProductoId = productoId,
                             Nombre = txtNombre.Text,
                             Descripcion = txtDescripcion.Text,
                             Precio = Convert.ToDecimal(txtPrecio.Text),
-                            Stock = cantidadRestante,
-                            RutaImagen = relativePath,
+                            Stock = Convert.ToInt32(txtStock.Text),
+                            RutaImagen = rutaImagen, // Guardar ruta relativa
                             CategoriaId = (int)cmbCategoria.SelectedValue
                         };
 
@@ -380,8 +411,7 @@ namespace AgrodelisForm
 
                         if (respuesta.Exitoso)
                         {
-                            // Refrescar el DataGridView después de la actualización
-                            CargarProductosDelVendedor(UsuarioId);
+                            CargarProductosDelVendedor(UsuarioId); // Refrescar
                             MessageBox.Show("Producto modificado correctamente.");
                             LimpiarCampos();
                         }
@@ -389,11 +419,7 @@ namespace AgrodelisForm
                         {
                             MessageBox.Show("Error al modificar el producto.");
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("La cantidad restante debe ser mayor que 0.");
-                    }
+                    
                 }
                 else
                 {
@@ -406,7 +432,9 @@ namespace AgrodelisForm
             }
         }
 
-        private async void toolStripMenuEliminar_Click(object sender, EventArgs e)
+
+
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -430,10 +458,10 @@ namespace AgrodelisForm
 
                         if (respuesta.Exitoso)
                         {
-
+                            CargarProductosDelVendedor(UsuarioId);
                             MessageBox.Show($"{respuesta.Mensaje}");
                             // Refrescar el DataGridView después de la eliminación
-                            CargarProductosDelVendedor(UsuarioId);
+                            
                             LimpiarCampos();
                         }
                         else
@@ -452,6 +480,7 @@ namespace AgrodelisForm
                 MessageBox.Show($"Ocurrió un error al eliminar el producto: {ex.Message}");
             }
         }
+
 
 
         private async void RevisarStockBajoPorVendedor(int UsuarioId)
@@ -540,53 +569,58 @@ namespace AgrodelisForm
 
         private void txtPrecio_Enter(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "Precio de Compra")
+            if (txtPrecio.Text == "Precio de Compra")
             {
-                txtNombre.Text = "";
+                txtPrecio.Text = "";
 
             }
         }
 
         private void txtPrecio_Leave(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "")
+            if (txtPrecio.Text == "")
             {
-                txtNombre.Text = "Precio de Compra";
+                txtPrecio.Text = "Precio de Compra";
             }
         }
 
         private void txtStock_Enter(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "Stock")
+            if (txtStock.Text == "Stock")
             {
-                txtNombre.Text = "";
+                txtStock.Text = "";
             }
         }
 
-        private void txtStock_Leave (object sender, EventArgs e)
+        private void txtStock_Leave(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "")
+            if (txtStock.Text == "")
             {
-                txtNombre.Text = "Stock";
+                txtStock.Text = "Stock";
             }
         }
+
+
+
+
 
         private void txtDescripcion_Enter(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "Descripcion")
+            if (txtDescripcion.Text == "Descripcion")
             {
-                txtNombre.Text = "";
+                txtDescripcion.Text = "";
             }
         }
 
-        private void txtDescripcion_Leave (object sender, EventArgs e)
+        private void txtDescripcion_Leave(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "")
+            if (txtDescripcion.Text == "")
             {
-                txtNombre.Text = "Descripcion";
+                txtDescripcion.Text = "Descripcion";
             }
         }
 
+       
     }
 
 }

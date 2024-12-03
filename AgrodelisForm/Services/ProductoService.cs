@@ -147,41 +147,7 @@ namespace AgrodelisForm.Services
                 };
             }
         }
-        public async Task<Respuesta> ObtenerProductoPorNombreYImagen(string nombre, string rutaImagen)
-        {
-            try
-            {
-                // URL de la API para obtener producto por nombre e imagen
-                var url = $"https://localhost:7156/api/productos/{nombre}&rutaImagen={rutaImagen}";  // Ajusta la URL según tu dominio
-
-                // Realizar la solicitud GET
-                var respuesta = await _client.GetAsync(url);
-
-                if (respuesta.IsSuccessStatusCode)
-                {
-                    var contenido = await respuesta.Content.ReadAsStringAsync();
-
-                    // Deserializar el contenido a la clase Respuesta
-                    return JsonConvert.DeserializeObject<Respuesta>(contenido);
-                }
-
-                return new Respuesta
-                {
-                    Exitoso = false,
-                    Mensaje = "No se encontró un producto con el mismo nombre y ruta de imagen.",
-                    Code = (int)respuesta.StatusCode
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Respuesta
-                {
-                    Exitoso = false,
-                    Mensaje = $"Error interno: {ex.Message}",
-                    Code = 500
-                };
-            }
-        }
+        
 
 
 
