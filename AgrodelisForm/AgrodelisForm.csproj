@@ -73,6 +73,12 @@
     <Compile Include="FormVendedor.Designer.cs">
       <DependentUpon>FormVendedor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ganancias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ganancias.Designer.cs">
+      <DependentUpon>Ganancias.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\ModificarProductoRequest.cs" />
@@ -87,6 +93,9 @@
     <Compile Include="Services\CategoriaService.cs" />
     <Compile Include="Services\ProductoService.cs" />
     <Compile Include="SesionUsuario.cs" />
+    <EmbeddedResource Include="FormAdmin.resx">
+      <DependentUpon>FormAdmin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>

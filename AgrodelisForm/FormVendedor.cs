@@ -521,7 +521,7 @@ namespace AgrodelisForm
 
         }
 
-        //Nombres en txt
+        //Nombres dentro del txt
         private void txtNombre_Enter(object sender, EventArgs e)
         {
             if (txtNombre.Text == "Nombre")

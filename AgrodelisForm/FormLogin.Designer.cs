@@ -80,7 +80,7 @@
             this.txtEmailLogin.Location = new System.Drawing.Point(36, 104);
             this.txtEmailLogin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtEmailLogin.Name = "txtEmailLogin";
-            this.txtEmailLogin.Size = new System.Drawing.Size(224, 27);
+            this.txtEmailLogin.Size = new System.Drawing.Size(224, 31);
             this.txtEmailLogin.TabIndex = 3;
             // 
             // lblRegistrate
@@ -90,7 +90,7 @@
             this.lblRegistrate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(111)))), ((int)(((byte)(212)))));
             this.lblRegistrate.Location = new System.Drawing.Point(148, 265);
             this.lblRegistrate.Name = "lblRegistrate";
-            this.lblRegistrate.Size = new System.Drawing.Size(117, 18);
+            this.lblRegistrate.Size = new System.Drawing.Size(143, 22);
             this.lblRegistrate.TabIndex = 11;
             this.lblRegistrate.Text = "Regístrate ahora";
             this.lblRegistrate.Click += new System.EventHandler(this.lblRegistrate_Click);
@@ -101,7 +101,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(38, 264);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(135, 18);
+            this.label1.Size = new System.Drawing.Size(165, 22);
             this.label1.TabIndex = 10;
             this.label1.Text = "¿No tienes cuenta?";
             // 
@@ -111,7 +111,7 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(106, 21);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(101, 38);
+            this.label7.Size = new System.Drawing.Size(123, 46);
             this.label7.TabIndex = 9;
             this.label7.Text = "Login";
             // 
@@ -138,7 +138,7 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(34, 77);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 26);
+            this.label2.Size = new System.Drawing.Size(81, 31);
             this.label2.TabIndex = 1;
             this.label2.Text = "Email";
             // 
@@ -148,7 +148,7 @@
             this.txtContraLogin.Location = new System.Drawing.Point(36, 162);
             this.txtContraLogin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtContraLogin.Name = "txtContraLogin";
-            this.txtContraLogin.Size = new System.Drawing.Size(224, 27);
+            this.txtContraLogin.Size = new System.Drawing.Size(224, 31);
             this.txtContraLogin.TabIndex = 5;
             this.txtContraLogin.UseSystemPasswordChar = true;
             // 
@@ -158,7 +158,7 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(34, 136);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(124, 26);
+            this.label3.Size = new System.Drawing.Size(155, 31);
             this.label3.TabIndex = 2;
             this.label3.Text = "Contraseña";
             // 
@@ -187,7 +187,7 @@
             this.txtUsuarioRegistrar.Location = new System.Drawing.Point(36, 107);
             this.txtUsuarioRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtUsuarioRegistrar.Name = "txtUsuarioRegistrar";
-            this.txtUsuarioRegistrar.Size = new System.Drawing.Size(224, 27);
+            this.txtUsuarioRegistrar.Size = new System.Drawing.Size(224, 31);
             this.txtUsuarioRegistrar.TabIndex = 3;
             this.txtUsuarioRegistrar.TextChanged += new System.EventHandler(this.txtUsuarioRegistrar_TextChanged);
             // 
@@ -199,7 +199,7 @@
             this.lblIniciarSesion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(111)))), ((int)(((byte)(212)))));
             this.lblIniciarSesion.Location = new System.Drawing.Point(158, 325);
             this.lblIniciarSesion.Name = "lblIniciarSesion";
-            this.lblIniciarSesion.Size = new System.Drawing.Size(89, 18);
+            this.lblIniciarSesion.Size = new System.Drawing.Size(108, 22);
             this.lblIniciarSesion.TabIndex = 12;
             this.lblIniciarSesion.Text = "Inicia sesión";
             this.lblIniciarSesion.Click += new System.EventHandler(this.lblIniciarSesion_Click);
@@ -210,7 +210,7 @@
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(50, 325);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(136, 18);
+            this.label9.Size = new System.Drawing.Size(169, 22);
             this.label9.TabIndex = 11;
             this.label9.Text = "¿Ya tienes cuenta? ";
             // 
@@ -220,7 +220,7 @@
             this.txtEmailRegistrar.Location = new System.Drawing.Point(37, 166);
             this.txtEmailRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtEmailRegistrar.Name = "txtEmailRegistrar";
-            this.txtEmailRegistrar.Size = new System.Drawing.Size(224, 27);
+            this.txtEmailRegistrar.Size = new System.Drawing.Size(224, 31);
             this.txtEmailRegistrar.TabIndex = 11;
             // 
             // label4
@@ -229,7 +229,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(35, 142);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 29);
+            this.label4.Size = new System.Drawing.Size(86, 32);
             this.label4.TabIndex = 10;
             this.label4.Text = "Email";
             // 
@@ -239,7 +239,7 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(74, 23);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(176, 38);
+            this.label5.Size = new System.Drawing.Size(211, 46);
             this.label5.TabIndex = 9;
             this.label5.Text = "Registrate";
             // 
@@ -268,7 +268,7 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(34, 83);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(96, 29);
+            this.label6.Size = new System.Drawing.Size(112, 32);
             this.label6.TabIndex = 1;
             this.label6.Text = "Usuario";
             // 
@@ -278,7 +278,7 @@
             this.txtContraRegistrar.Location = new System.Drawing.Point(37, 226);
             this.txtContraRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtContraRegistrar.Name = "txtContraRegistrar";
-            this.txtContraRegistrar.Size = new System.Drawing.Size(224, 27);
+            this.txtContraRegistrar.Size = new System.Drawing.Size(224, 31);
             this.txtContraRegistrar.TabIndex = 5;
             this.txtContraRegistrar.UseSystemPasswordChar = true;
             // 
@@ -288,7 +288,7 @@
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(35, 200);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(136, 29);
+            this.label8.Size = new System.Drawing.Size(161, 32);
             this.label8.TabIndex = 2;
             this.label8.Text = "Contraseña";
             // 
@@ -320,7 +320,7 @@
             // 
             // FormLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
