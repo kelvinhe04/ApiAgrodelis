@@ -79,6 +79,18 @@
     <Compile Include="Ganancias.Designer.cs">
       <DependentUpon>Ganancias.cs</DependentUpon>
     </Compile>
+    <Compile Include="GananciasTotales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GananciasTotales.Designer.cs">
+      <DependentUpon>GananciasTotales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Inventario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inventario.Designer.cs">
+      <DependentUpon>Inventario.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\ModificarProductoRequest.cs" />
@@ -93,6 +105,12 @@
     <Compile Include="Services\CategoriaService.cs" />
     <Compile Include="Services\ProductoService.cs" />
     <Compile Include="SesionUsuario.cs" />
+    <Compile Include="Transferencia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transferencia.Designer.cs">
+      <DependentUpon>Transferencia.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormAdmin.resx">
       <DependentUpon>FormAdmin.cs</DependentUpon>
     </EmbeddedResource>
