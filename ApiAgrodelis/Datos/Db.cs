@@ -731,10 +731,81 @@ WHERE
             {
                 throw new Exception($"Error al obtener las ventas: {ex.Message}");
             }
+            finally
+            {
+                con.Close();
+            }
 
             // Devolver la lista de ventas y el total
             return (ventas, totalVentas);
         }
+
+
+        public (List<Ventas> Ventas, decimal TotalVentas) ObtenerTodasLasVentas()
+        {
+            var ventas = new List<Ventas>();
+            decimal totalVentas = 0;
+
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = @"
+SELECT 
+    v.VentaId,
+    v.ProductoId,
+    p.Nombre AS NombreProducto,
+    c.Nombre AS NombreCategoria,
+    v.Cantidad,
+    v.Precio,
+    v.VendedorId,
+    u.Nombre AS NombreVendedor,  -- Cambié Vendedores por Usuarios
+    v.FechaVenta,
+    v.Total
+FROM Ventas v
+JOIN Productos p ON v.ProductoId = p.ProductoId
+JOIN Categorias c ON p.CategoriaId = c.CategoriaId
+JOIN Usuarios u ON v.VendedorId = u.UsuarioId"; 
+        
+        con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var venta = new Ventas
+                        {
+                            VentaId = reader.GetInt32(0),
+                            ProductoId = reader.GetInt32(1),
+                            NombreProducto = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            NombreCategoria = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Cantidad = reader.GetInt32(4),
+                            Precio = reader.GetDecimal(5),
+                            VendedorId = reader.GetInt32(6),
+                            NombreVendedor = reader.IsDBNull(7) ? null : reader.GetString(7),
+                            FechaVenta = reader.GetDateTime(8),
+                            Total = reader.GetDecimal(9)
+                        };
+
+                        ventas.Add(venta);
+
+                        // Sumar el total a la variable que lleva el total general
+                        totalVentas += venta.Total;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener las ventas: {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return (ventas, totalVentas);
+        }
+
 
 
 

@@ -37,8 +37,28 @@ namespace AgrodelisForm.Services
                 };
             }
         }
+
+        public async Task<Respuesta> ObtenerTodasLasVentas()
+        {
+            try
+            {
+                var respuesta = await _client.GetAsync("https://localhost:7156/api/ventas/todas");
+                var contenido = await respuesta.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Respuesta>(contenido);
+            }
+            catch (Exception)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = "Error al obtener todas las ventas.",
+                    Code = 500
+                };
+            }
+        }
+
     }
 
-    
+
 
 }

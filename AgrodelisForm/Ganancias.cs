@@ -74,6 +74,9 @@ namespace AgrodelisForm
                 if (dataGridViewVentas.Columns.Contains("VendedorId"))
                     dataGridViewVentas.Columns["VendedorId"].Visible = false;
 
+                if (dataGridViewVentas.Columns.Contains("NombreVendedor"))
+                    dataGridViewVentas.Columns["NombreVendedor"].Visible = false;
+
                 if (!respuesta.Ventas.Any())
                 {
                     MessageBox.Show("No se encontraron ventas para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -83,6 +83,33 @@ namespace ApiAgrodelis.Controllers
             }
         }
 
+        [HttpGet("todas")]
+        public object ObtenerTodasLasVentas()
+        {
+            try
+            {
+                var (ventas, totalVentas) = _db.ObtenerTodasLasVentas();
+
+                return new
+                {
+                    Exitoso = true,
+                    Ventas = ventas,
+                    TotalVentas = totalVentas,
+                    Code = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener las ventas: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
+
     }
 }
 
