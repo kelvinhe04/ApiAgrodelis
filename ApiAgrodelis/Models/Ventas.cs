@@ -9,6 +9,8 @@
         public decimal Precio { get; set; }
         public int VendedorId { get; set; }
         public DateTime FechaVenta { get; set; }
+
+        public decimal Total { get; set; }
     }
 
 

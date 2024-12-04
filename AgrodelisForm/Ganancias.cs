@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AgrodelisForm.Services;
 using AgrodelisForm.Models;
+using Newtonsoft.Json;
 
 namespace AgrodelisForm
 {
@@ -30,6 +31,8 @@ namespace AgrodelisForm
             {
                 var ventaService = new VentaService();
                 var respuesta = await ventaService.ObtenerVentasPorVendedor(vendedorId);
+                
+
 
                 if (respuesta == null)
                 {
@@ -53,6 +56,7 @@ namespace AgrodelisForm
                     MessageBox.Show("El control DataGridView no está inicializado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                Console.WriteLine(respuesta.Ventas);
 
                 dataGridViewVentas.DataSource = respuesta.Ventas;
 

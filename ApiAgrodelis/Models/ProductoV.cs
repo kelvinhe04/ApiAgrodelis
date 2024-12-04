@@ -26,6 +26,7 @@ namespace ApiAgrodelis.Models
         public string VendedorNombre { get; set; }
         // Nueva propiedad CategoriaID
         public int CategoriaID { get; set; }
+        public int VendedorId { get; set; }
 
     }
 }

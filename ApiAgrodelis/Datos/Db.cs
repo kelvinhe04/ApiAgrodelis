@@ -4,6 +4,7 @@ using ApiAgrodelis.Models;
 using System;
 using System.Text;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace ApiAgrodelis.Datos
 {
@@ -44,7 +45,8 @@ namespace ApiAgrodelis.Datos
             p.RutaImagen,
             c.Nombre AS CategoriaNombre,  -- Nombre de la categoría
             c.CategoriaID,               -- ID de la categoría
-            u.Nombre AS VendedorNombre   -- Nombre del vendedor
+            u.Nombre AS VendedorNombre,  -- Nombre del vendedor
+            u.UsuarioID AS VendedorId   -- ID del vendedor
         FROM 
             Productos p
         LEFT JOIN 
@@ -84,7 +86,10 @@ namespace ApiAgrodelis.Datos
                             VendedorNombre = row["VendedorNombre"].ToString(),
 
                             // Asignación del ID de la categoría
-                            CategoriaID = Convert.ToInt32(row["CategoriaID"])
+                            CategoriaID = Convert.ToInt32(row["CategoriaID"]),
+
+                            // Asignación del VendedorId
+                            VendedorId = Convert.ToInt32(row["VendedorId"])  // Asignar el VendedorId
                         };
 
                         productos.Add(producto);
@@ -103,6 +108,7 @@ namespace ApiAgrodelis.Datos
 
             return productos;
         }
+
 
 
         //==============================FRONTEND-SOFTV================================
@@ -607,79 +613,108 @@ WHERE
         {
             try
             {
+                // Abrir la conexión antes de comenzar el ciclo
+                con.Open();
+
                 // Iterar sobre la lista de ventas para insertarlas
                 foreach (var item in ventas)
                 {
-                    cmd.Parameters.Clear();
-                    cmd.CommandType = CommandType.Text;
+                    try
+                    {
+                        cmd.Parameters.Clear();
+                        cmd.CommandType = CommandType.Text;
 
-                    // Consulta SQL para insertar cada venta en la tabla de Ventas (sin incluir Total)
-                    cmd.CommandText = @"
+                        // Consulta SQL para insertar cada venta en la tabla de Ventas
+                        cmd.CommandText = @"
                 INSERT INTO Ventas (ProductoId, Cantidad, Precio, VendedorId, FechaVenta)
                 VALUES (@ProductoId, @Cantidad, @Precio, @VendedorId, @FechaVenta)";
 
-                    // Agregar los parámetros de la venta
-                    cmd.Parameters.AddWithValue("@ProductoId", item.ProductoId);
-                    cmd.Parameters.AddWithValue("@Cantidad", item.Cantidad);
-                    cmd.Parameters.AddWithValue("@Precio", item.Precio);
-                    cmd.Parameters.AddWithValue("@VendedorId", item.VendedorId);
-                    cmd.Parameters.AddWithValue("@FechaVenta", DateTime.UtcNow);
+                        // Agregar los parámetros de la venta
+                        cmd.Parameters.AddWithValue("@ProductoId", item.ProductoId);
+                        cmd.Parameters.AddWithValue("@Cantidad", item.Cantidad);
+                        cmd.Parameters.AddWithValue("@Precio", item.Precio);
+                        cmd.Parameters.AddWithValue("@VendedorId", item.VendedorId);
 
-                    // Abrir la conexión y ejecutar la consulta
-                    con.Open();
-                    cmd.ExecuteNonQuery();
+                        // Convertir la hora UTC a la zona horaria de Panamá
+                        TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                        DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
+                        cmd.Parameters.AddWithValue("@FechaVenta", localDateTime);
+
+                        // Ejecutar la consulta
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Capturar el error por cada venta y continuar con la siguiente
+                        Console.WriteLine($"Error al insertar la venta: {JsonConvert.SerializeObject(item)} - {ex.Message}");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones (podrías loguear el error si es necesario)
                 throw new Exception($"Error al registrar ventas: {ex.Message}");
             }
             finally
             {
-                con.Close(); // Asegúrate de cerrar la conexión siempre
+                // Asegúrate de cerrar la conexión siempre
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
+
+
         public List<Ventas> ObtenerVentasPorVendedor(int vendedorId)
         {
             var ventas = new List<Ventas>();
+            decimal totalVentas = 0;
+
             try
             {
                 cmd.Parameters.Clear();
                 cmd.CommandType = CommandType.Text;
 
+                // Consulta actualizada para incluir el campo "Total"
                 cmd.CommandText = @"
-            SELECT 
-                v.ProductoId, 
-                p.Nombre AS NombreProducto, 
-                c.Nombre AS NombreCategoria, 
-                v.Cantidad, 
-                v.Precio, 
-                v.VendedorId, 
-                v.FechaVenta
-            FROM Ventas v
-            JOIN Productos p ON v.ProductoId = p.ProductoId
-            JOIN Categorias c ON p.CategoriaId = c.CategoriaId
-            WHERE v.VendedorId = @VendedorId";
-
-                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+        SELECT 
+            v.ProductoId, 
+            p.Nombre AS NombreProducto, 
+            c.Nombre AS NombreCategoria, 
+            v.Cantidad, 
+            v.Precio, 
+            v.VendedorId, 
+            v.FechaVenta,
+            v.Total 
+                FROM Ventas v
+        JOIN Productos p ON v.ProductoId = p.ProductoId
+                JOIN Categorias c ON p.CategoriaId = c.CategoriaId
+                WHERE v.VendedorId = @VendedorId";
+        
+        cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
 
                 con.Open();
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        ventas.Add(new Ventas
+                        var venta = new Ventas
                         {
                             ProductoId = reader.GetInt32(0),
-                            NombreProducto = reader.IsDBNull(1) ? null : reader.GetString(1),  // Verificar si el nombre del producto es nulo
-                            NombreCategoria = reader.IsDBNull(2) ? null : reader.GetString(2),  // Verificar si el nombre de la categoría es nulo
+                            NombreProducto = reader.IsDBNull(1) ? null : reader.GetString(1),
+                            NombreCategoria = reader.IsDBNull(2) ? null : reader.GetString(2),
                             Cantidad = reader.GetInt32(3),
                             Precio = reader.GetDecimal(4),
                             VendedorId = reader.GetInt32(5),
-                            FechaVenta = reader.GetDateTime(6)
-                        });
-    
+                            FechaVenta = reader.GetDateTime(6),
+                            Total = reader.GetDecimal(7) // Asignar el total desde la base de datos
+                            
+                        };
+                        
+                        ventas.Add(venta);
+
+                        // Sumar el total a la variable que lleva el total general
+                        totalVentas += venta.Total;
                     }
                 }
             }
@@ -688,8 +723,10 @@ WHERE
                 throw new Exception($"Error al obtener las ventas: {ex.Message}");
             }
 
+            // Devolver la lista de ventas y el total
             return ventas;
         }
+
 
 
 

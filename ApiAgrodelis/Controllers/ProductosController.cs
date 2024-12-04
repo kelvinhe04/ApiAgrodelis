@@ -94,7 +94,7 @@ namespace ApiAgrodelis.Controllers
             }
             catch (Exception ex)
             {
-                return new
+                return new  
                 {
                     Exitoso = false,
                     Mensaje = $"Error al obtener los productos: {ex.Message}",
