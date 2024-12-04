@@ -29,7 +29,7 @@ namespace AgrodelisForm
             //this.Hide(); // Ocultar el formulario actua
             //formVendedor.ShowDialog();
 
-            Ganancias formGanancias = new Ganancias(31);  // Pasamos el UsuarioId
+            Ganancias formGanancias = new Ganancias(32);  // Pasamos el UsuarioId
             this.Hide(); // Ocultar el formulario actua
             formGanancias.ShowDialog();
         }

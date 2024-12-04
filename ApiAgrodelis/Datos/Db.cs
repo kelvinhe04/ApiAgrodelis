@@ -626,8 +626,8 @@ WHERE
 
                         // Consulta SQL para insertar cada venta en la tabla de Ventas
                         cmd.CommandText = @"
-                INSERT INTO Ventas (ProductoId, Cantidad, Precio, VendedorId, FechaVenta)
-                VALUES (@ProductoId, @Cantidad, @Precio, @VendedorId, @FechaVenta)";
+                    INSERT INTO Ventas (ProductoId, Cantidad, Precio, VendedorId, FechaVenta)
+                    VALUES (@ProductoId, @Cantidad, @Precio, @VendedorId, @FechaVenta)";
 
                         // Agregar los parámetros de la venta
                         cmd.Parameters.AddWithValue("@ProductoId", item.ProductoId);
@@ -635,10 +635,12 @@ WHERE
                         cmd.Parameters.AddWithValue("@Precio", item.Precio);
                         cmd.Parameters.AddWithValue("@VendedorId", item.VendedorId);
 
-                        // Convertir la hora UTC a la zona horaria de Panamá
-                        TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
-                        DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
-                        cmd.Parameters.AddWithValue("@FechaVenta", localDateTime);
+
+                        // Usar "SA Pacific Standard Time" para Panamá (UTC-5 sin horario de verano)
+                        TimeZoneInfo panamaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+                        DateTime panamaTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, panamaTimeZone);
+                        cmd.Parameters.AddWithValue("@FechaVenta", panamaTime);
+
 
                         // Ejecutar la consulta
                         cmd.ExecuteNonQuery();
@@ -665,7 +667,9 @@ WHERE
         }
 
 
-        public List<Ventas> ObtenerVentasPorVendedor(int vendedorId)
+
+
+        public List<Ventas> ObtenerVentasPorVendedor(int vendedorId)    
         {
             var ventas = new List<Ventas>();
             decimal totalVentas = 0;
@@ -690,8 +694,8 @@ WHERE
         JOIN Productos p ON v.ProductoId = p.ProductoId
                 JOIN Categorias c ON p.CategoriaId = c.CategoriaId
                 WHERE v.VendedorId = @VendedorId";
-        
-        cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+
+                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
 
                 con.Open();
                 using (var reader = cmd.ExecuteReader())
@@ -708,9 +712,9 @@ WHERE
                             VendedorId = reader.GetInt32(5),
                             FechaVenta = reader.GetDateTime(6),
                             Total = reader.GetDecimal(7) // Asignar el total desde la base de datos
-                            
+
                         };
-                        
+
                         ventas.Add(venta);
 
                         // Sumar el total a la variable que lleva el total general
@@ -769,3 +773,4 @@ WHERE
 
     }
 }
+    
