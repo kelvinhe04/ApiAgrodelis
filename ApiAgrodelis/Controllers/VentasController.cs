@@ -57,6 +57,31 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        [HttpGet("{vendedorId}")]
+        public object ObtenerVentasPorVendedor(int vendedorId)
+        {
+            try
+            {
+                var ventas = _db.ObtenerVentasPorVendedor(vendedorId);
+
+                return new
+                {
+                    Exitoso = true,
+                    Ventas = ventas,
+                    Code = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener las ventas: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
     }
 }
 

@@ -99,11 +99,13 @@
     <Compile Include="Models\RegisterRequest.cs" />
     <Compile Include="Models\RegistrarProductoRequest.cs" />
     <Compile Include="Models\Respuesta.cs" />
+    <Compile Include="Models\Ventas.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\CategoriaService.cs" />
     <Compile Include="Services\ProductoService.cs" />
+    <Compile Include="Services\VentaService.cs" />
     <Compile Include="SesionUsuario.cs" />
     <Compile Include="Transferencia.cs">
       <SubType>Form</SubType>

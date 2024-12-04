@@ -512,7 +512,7 @@ namespace ApiAgrodelis.Datos
 
                 // Eliminar las relaciones del producto en ProductosVendedores
                 cmd.CommandText = "DELETE FROM ProductosVendedores WHERE ProductoID = @ProductoId";
-                cmd.Parameters.Add(new SqlParameter("@ProductoId", productoId));    
+                cmd.Parameters.Add(new SqlParameter("@ProductoId", productoId));
 
                 con.Open();
                 cmd.ExecuteNonQuery(); // Primero elimina las relaciones
@@ -613,17 +613,16 @@ WHERE
                     cmd.Parameters.Clear();
                     cmd.CommandType = CommandType.Text;
 
-                    // Consulta SQL para insertar cada venta en la tabla de Ventas
+                    // Consulta SQL para insertar cada venta en la tabla de Ventas (sin incluir Total)
                     cmd.CommandText = @"
-                INSERT INTO Ventas (ProductoId, Cantidad, Precio, VendedorId, Total, FechaVenta)
-                VALUES (@ProductoId, @Cantidad, @Precio, @VendedorId, @Total, @FechaVenta)";
+                INSERT INTO Ventas (ProductoId, Cantidad, Precio, VendedorId, FechaVenta)
+                VALUES (@ProductoId, @Cantidad, @Precio, @VendedorId, @FechaVenta)";
 
                     // Agregar los parámetros de la venta
                     cmd.Parameters.AddWithValue("@ProductoId", item.ProductoId);
                     cmd.Parameters.AddWithValue("@Cantidad", item.Cantidad);
                     cmd.Parameters.AddWithValue("@Precio", item.Precio);
                     cmd.Parameters.AddWithValue("@VendedorId", item.VendedorId);
-                    cmd.Parameters.AddWithValue("@Total", item.Cantidad * item.Precio);
                     cmd.Parameters.AddWithValue("@FechaVenta", DateTime.UtcNow);
 
                     // Abrir la conexión y ejecutar la consulta
@@ -641,6 +640,58 @@ WHERE
                 con.Close(); // Asegúrate de cerrar la conexión siempre
             }
         }
+        public List<Ventas> ObtenerVentasPorVendedor(int vendedorId)
+        {
+            var ventas = new List<Ventas>();
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = @"
+            SELECT 
+                v.ProductoId, 
+                p.Nombre AS NombreProducto, 
+                c.Nombre AS NombreCategoria, 
+                v.Cantidad, 
+                v.Precio, 
+                v.VendedorId, 
+                v.FechaVenta
+            FROM Ventas v
+            JOIN Productos p ON v.ProductoId = p.ProductoId
+            JOIN Categorias c ON p.CategoriaId = c.CategoriaId
+            WHERE v.VendedorId = @VendedorId";
+
+                cmd.Parameters.AddWithValue("@VendedorId", vendedorId);
+
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ventas.Add(new Ventas
+                        {
+                            ProductoId = reader.GetInt32(0),
+                            NombreProducto = reader.IsDBNull(1) ? null : reader.GetString(1),  // Verificar si el nombre del producto es nulo
+                            NombreCategoria = reader.IsDBNull(2) ? null : reader.GetString(2),  // Verificar si el nombre de la categoría es nulo
+                            Cantidad = reader.GetInt32(3),
+                            Precio = reader.GetDecimal(4),
+                            VendedorId = reader.GetInt32(5),
+                            FechaVenta = reader.GetDateTime(6)
+                        });
+    
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener las ventas: {ex.Message}");
+            }
+
+            return ventas;
+        }
+
+
 
 
 
@@ -676,7 +727,7 @@ WHERE
 
             return categorias;
         }
-        
+
 
 
     }
