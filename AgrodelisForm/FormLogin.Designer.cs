@@ -67,10 +67,10 @@
             this.panelLogin.Controls.Add(this.label2);
             this.panelLogin.Controls.Add(this.txtContraLogin);
             this.panelLogin.Controls.Add(this.label3);
-            this.panelLogin.Location = new System.Drawing.Point(556, 174);
+            this.panelLogin.Location = new System.Drawing.Point(645, 277);
             this.panelLogin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelLogin.Name = "panelLogin";
-            this.panelLogin.Size = new System.Drawing.Size(268, 257);
+            this.panelLogin.Size = new System.Drawing.Size(268, 298);
             this.panelLogin.TabIndex = 9;
             this.panelLogin.Paint += new System.Windows.Forms.PaintEventHandler(this.panelLogin_Paint);
             // 
@@ -88,7 +88,7 @@
             this.lblRegistrate.AutoSize = true;
             this.lblRegistrate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRegistrate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(111)))), ((int)(((byte)(212)))));
-            this.lblRegistrate.Location = new System.Drawing.Point(132, 212);
+            this.lblRegistrate.Location = new System.Drawing.Point(132, 237);
             this.lblRegistrate.Name = "lblRegistrate";
             this.lblRegistrate.Size = new System.Drawing.Size(117, 18);
             this.lblRegistrate.TabIndex = 11;
@@ -99,7 +99,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(34, 211);
+            this.label1.Location = new System.Drawing.Point(23, 236);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(135, 18);
             this.label1.TabIndex = 10;
@@ -123,10 +123,10 @@
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnLogin.Location = new System.Drawing.Point(82, 170);
+            this.btnLogin.Location = new System.Drawing.Point(82, 186);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(102, 29);
+            this.btnLogin.Size = new System.Drawing.Size(102, 36);
             this.btnLogin.TabIndex = 6;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = false;
@@ -145,7 +145,7 @@
             // txtContraLogin
             // 
             this.txtContraLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContraLogin.Location = new System.Drawing.Point(32, 130);
+            this.txtContraLogin.Location = new System.Drawing.Point(32, 136);
             this.txtContraLogin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtContraLogin.Name = "txtContraLogin";
             this.txtContraLogin.Size = new System.Drawing.Size(200, 27);
@@ -156,7 +156,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(30, 109);
+            this.label3.Location = new System.Drawing.Point(30, 115);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(124, 26);
             this.label3.TabIndex = 2;
@@ -175,16 +175,16 @@
             this.panelRegistrar.Controls.Add(this.label6);
             this.panelRegistrar.Controls.Add(this.txtContraRegistrar);
             this.panelRegistrar.Controls.Add(this.label8);
-            this.panelRegistrar.Location = new System.Drawing.Point(555, 174);
+            this.panelRegistrar.Location = new System.Drawing.Point(645, 278);
             this.panelRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelRegistrar.Name = "panelRegistrar";
-            this.panelRegistrar.Size = new System.Drawing.Size(268, 302);
+            this.panelRegistrar.Size = new System.Drawing.Size(268, 357);
             this.panelRegistrar.TabIndex = 10;
             // 
             // txtUsuarioRegistrar
             // 
             this.txtUsuarioRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsuarioRegistrar.Location = new System.Drawing.Point(32, 86);
+            this.txtUsuarioRegistrar.Location = new System.Drawing.Point(32, 89);
             this.txtUsuarioRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtUsuarioRegistrar.Name = "txtUsuarioRegistrar";
             this.txtUsuarioRegistrar.Size = new System.Drawing.Size(200, 27);
@@ -197,7 +197,7 @@
             this.lblIniciarSesion.BackColor = System.Drawing.Color.White;
             this.lblIniciarSesion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIniciarSesion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(111)))), ((int)(((byte)(212)))));
-            this.lblIniciarSesion.Location = new System.Drawing.Point(140, 260);
+            this.lblIniciarSesion.Location = new System.Drawing.Point(140, 295);
             this.lblIniciarSesion.Name = "lblIniciarSesion";
             this.lblIniciarSesion.Size = new System.Drawing.Size(89, 18);
             this.lblIniciarSesion.TabIndex = 12;
@@ -208,7 +208,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(44, 260);
+            this.label9.Location = new System.Drawing.Point(34, 295);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(136, 18);
             this.label9.TabIndex = 11;
@@ -217,7 +217,7 @@
             // txtEmailRegistrar
             // 
             this.txtEmailRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmailRegistrar.Location = new System.Drawing.Point(33, 133);
+            this.txtEmailRegistrar.Location = new System.Drawing.Point(33, 142);
             this.txtEmailRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtEmailRegistrar.Name = "txtEmailRegistrar";
             this.txtEmailRegistrar.Size = new System.Drawing.Size(200, 27);
@@ -227,7 +227,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(31, 114);
+            this.label4.Location = new System.Drawing.Point(31, 118);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 29);
             this.label4.TabIndex = 10;
@@ -251,10 +251,10 @@
             this.btnRegistrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegistrar.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.btnRegistrar.Location = new System.Drawing.Point(68, 219);
+            this.btnRegistrar.Location = new System.Drawing.Point(68, 242);
             this.btnRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(128, 28);
+            this.btnRegistrar.Size = new System.Drawing.Size(128, 39);
             this.btnRegistrar.TabIndex = 6;
             this.btnRegistrar.Text = "Registrar";
             this.btnRegistrar.UseVisualStyleBackColor = false;
@@ -275,7 +275,7 @@
             // txtContraRegistrar
             // 
             this.txtContraRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContraRegistrar.Location = new System.Drawing.Point(33, 181);
+            this.txtContraRegistrar.Location = new System.Drawing.Point(33, 193);
             this.txtContraRegistrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtContraRegistrar.Name = "txtContraRegistrar";
             this.txtContraRegistrar.Size = new System.Drawing.Size(200, 27);
@@ -286,7 +286,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(31, 160);
+            this.label8.Location = new System.Drawing.Point(31, 169);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(136, 29);
             this.label8.TabIndex = 2;
