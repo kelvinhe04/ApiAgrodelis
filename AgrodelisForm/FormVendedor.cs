@@ -47,6 +47,7 @@ namespace AgrodelisForm
 
 
         }
+
         private async void CargarProductosDelVendedor(int vendedorId)
         {
             try
@@ -483,43 +484,44 @@ namespace AgrodelisForm
 
 
 
-        private async void RevisarStockBajoPorVendedor(int UsuarioId)
-        {
-            // Obtener la respuesta completa
-            var respuesta = await new ProductoService().ObtenerProductosConStockBajoPorVendedorAsync(UsuarioId);
-
-
-            if (respuesta.Exitoso && respuesta.Productos != null && respuesta.Productos.Any())
+            private async void RevisarStockBajoPorVendedor(int UsuarioId)
             {
-                foreach (var producto in respuesta.Productos)
-                {
+                // Obtener la respuesta completa
+                var respuesta = await new ProductoService().ObtenerProductosConStockBajoPorVendedorAsync(UsuarioId);
 
-                    MostrarNotificacion($"Stock bajo: {producto.Nombre}", $"Quedan {producto.Stock} unidades.");
+
+                if (respuesta.Exitoso && respuesta.Productos != null && respuesta.Productos.Any())
+                {
+                    foreach (var producto in respuesta.Productos)
+                    {
+
+                        MostrarNotificacion($"Stock bajo: {producto.Nombre}", $"Quedan {producto.Stock} unidades.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"No hay productos con stock bajo o hubo un problema: {respuesta.Mensaje}");
                 }
             }
-            else
+
+
+            private void MostrarNotificacion(string titulo, string mensaje)
             {
-                Console.WriteLine($"No hay productos con stock bajo o hubo un problema: {respuesta.Mensaje}");
+                NotifyIcon notifyIcon = new NotifyIcon
+                {
+                    Icon = SystemIcons.Warning, // Cambia el icono si lo prefieres
+                    Visible = true,
+                    BalloonTipTitle = titulo,
+                    BalloonTipText = mensaje
+                };
+
+                notifyIcon.ShowBalloonTip(3000); // Mostrar la notificación durante 3 segundos
             }
-        }
-
-
-        private void MostrarNotificacion(string titulo, string mensaje)
-        {
-            NotifyIcon notifyIcon = new NotifyIcon
-            {
-                Icon = SystemIcons.Warning, // Cambia el icono si lo prefieres
-                Visible = true,
-                BalloonTipTitle = titulo,
-                BalloonTipText = mensaje
-            };
-
-            notifyIcon.ShowBalloonTip(3000); // Mostrar la notificación durante 3 segundos
-        }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
+
 
         }
 
@@ -620,7 +622,12 @@ namespace AgrodelisForm
             }
         }
 
-       
+        private void toolStripGananciasForm_Click(object sender, EventArgs e)
+        {
+            Ganancias formGanancias = new Ganancias(UsuarioId);  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formGanancias.ShowDialog();
+        }
     }
 
 }

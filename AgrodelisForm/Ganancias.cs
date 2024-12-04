@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using AgrodelisForm.Services;
 using AgrodelisForm.Models;
 using Newtonsoft.Json;
+using System.Reflection.Emit;
 
 namespace AgrodelisForm
 {
@@ -22,6 +23,7 @@ namespace AgrodelisForm
             InitializeComponent();
             UsuarioId = usuarioId;
             CargarVentasDelVendedor(UsuarioId);
+            AplicarEstiloLabel();
         }
 
 
@@ -56,7 +58,9 @@ namespace AgrodelisForm
                     MessageBox.Show("El control DataGridView no está inicializado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                Console.WriteLine(respuesta.Ventas);
+                
+
+                lblTotalVentas.Text = ($"${respuesta.TotalVentas.ToString()}");
 
                 dataGridViewVentas.DataSource = respuesta.Ventas;
 
@@ -81,6 +85,37 @@ namespace AgrodelisForm
             }
         }
 
+        private void panel4_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void AplicarEstiloLabel()
+        {
+
+
+            label1.BackColor = Color.Transparent;
+            label1.Parent = panel4;
+            label1.Invalidate(); // Redibuja el control
+            lblTotalVentas.BackColor = Color.Transparent;
+            lblTotalVentas.Parent = panel4;
+            lblTotalVentas.Invalidate(); // Redibuja el control
+           
+
+
+
+        }
+
+        private void toolStripRegistroProductosForm_Click(object sender, EventArgs e)
+        {
+            FormVendedor formVendedor = new FormVendedor(UsuarioId);  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formVendedor.ShowDialog();
+        }
     }
 }

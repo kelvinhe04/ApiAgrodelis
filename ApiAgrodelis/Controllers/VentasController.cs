@@ -62,12 +62,13 @@ namespace ApiAgrodelis.Controllers
         {
             try
             {
-                var ventas = _db.ObtenerVentasPorVendedor(vendedorId);
+                var (ventas, totalVentas) = _db.ObtenerVentasPorVendedor(vendedorId);
 
                 return new
                 {
                     Exitoso = true,
                     Ventas = ventas,
+                    TotalVentas = totalVentas,
                     Code = 200
                 };
             }

@@ -516,16 +516,20 @@ namespace ApiAgrodelis.Datos
                 cmd.Parameters.Clear();
                 cmd.CommandType = CommandType.Text;
 
-                // Eliminar las relaciones del producto en ProductosVendedores
-                cmd.CommandText = "DELETE FROM ProductosVendedores WHERE ProductoID = @ProductoId";
+                // Paso 1: Eliminar las relaciones del producto en la tabla Ventas
+                cmd.CommandText = "DELETE FROM Ventas WHERE ProductoID = @ProductoId";
                 cmd.Parameters.Add(new SqlParameter("@ProductoId", productoId));
 
                 con.Open();
-                cmd.ExecuteNonQuery(); // Primero elimina las relaciones
+                cmd.ExecuteNonQuery(); // Primero elimina las relaciones en Ventas
 
-                // Ahora elimina el producto en la tabla Productos
+                // Paso 2: Eliminar las relaciones del producto en la tabla ProductosVendedores
+                cmd.CommandText = "DELETE FROM ProductosVendedores WHERE ProductoID = @ProductoId";
+                cmd.ExecuteNonQuery(); // Luego elimina las relaciones en ProductosVendedores
+
+                // Paso 3: Eliminar el producto en la tabla Productos
                 cmd.CommandText = "DELETE FROM Productos WHERE ProductoID = @ProductoId";
-                int rowsAffected = cmd.ExecuteNonQuery(); // Luego elimina el producto
+                int rowsAffected = cmd.ExecuteNonQuery(); // Finalmente elimina el producto
 
                 return rowsAffected; // Devuelve el número de filas afectadas
             }
@@ -538,6 +542,7 @@ namespace ApiAgrodelis.Datos
                 con.Close();
             }
         }
+
 
 
 
@@ -669,7 +674,7 @@ WHERE
 
 
 
-        public List<Ventas> ObtenerVentasPorVendedor(int vendedorId)    
+        public (List<Ventas> Ventas, decimal TotalVentas) ObtenerVentasPorVendedor(int vendedorId)    
         {
             var ventas = new List<Ventas>();
             decimal totalVentas = 0;
@@ -728,7 +733,7 @@ WHERE
             }
 
             // Devolver la lista de ventas y el total
-            return ventas;
+            return (ventas, totalVentas);
         }
 
 

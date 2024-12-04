@@ -19,6 +19,8 @@ namespace AgrodelisForm.Models
         public DatosUsuario Datos { get; set; }  // Cambiado de 'object' a 'DatosUsuario'
         public List<Categoria> Categorias { get; set; }  // Lista de categorías
         public List<Ventas> Ventas { get; set; }  // Lista de ventas
+        public decimal TotalVentas { get; set; } // Nueva propiedad para almacenar el total de ventas
+
     }
     public class DatosUsuario
     {

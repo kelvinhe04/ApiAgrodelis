@@ -105,7 +105,6 @@
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.menuStrip1);
             this.panel4.Controls.Add(this.dataGridViewProductos);
-            this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.txtPrecio);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Controls.Add(this.txtNombre);
@@ -328,6 +327,7 @@
             this.toolStripGananciasForm.Name = "toolStripGananciasForm";
             this.toolStripGananciasForm.Size = new System.Drawing.Size(114, 32);
             this.toolStripGananciasForm.Text = "Ganancias";
+            this.toolStripGananciasForm.Click += new System.EventHandler(this.toolStripGananciasForm_Click);
             // 
             // toolStripMenuTransferenciaForm
             // 
@@ -461,7 +461,7 @@
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.label7.Location = new System.Drawing.Point(26, 56);
+            this.label7.Location = new System.Drawing.Point(705, 4);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(240, 32);
@@ -550,6 +550,7 @@
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(137)))), ((int)(((byte)(219)))));
             this.panel1.Controls.Add(this.btnCerrarSesion);
             this.panel1.Controls.Add(this.btnClose);
+            this.panel1.Controls.Add(this.label7);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -595,6 +596,7 @@
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProductos)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
