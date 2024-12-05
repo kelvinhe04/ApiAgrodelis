@@ -138,6 +138,43 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        [HttpDelete("eliminar/{vendedorId}")]
+        public object EliminarVendedor(int vendedorId)
+        {
+            try
+            {
+                var db = new Db(); // Suponiendo que tienes una clase Db para manejar las operaciones de la base de datos
+                int resultado = db.EliminarVendedor(vendedorId);
+
+                if (resultado > 0)
+                {
+                    return new
+                    {
+                        Exitoso = true,
+                        Mensaje = "Vendedor eliminado correctamente.",
+                        Code = 200
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Exitoso = false,
+                        Mensaje = "No se encontró el vendedor para eliminar.",
+                        Code = 404
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error interno: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
 
 
 

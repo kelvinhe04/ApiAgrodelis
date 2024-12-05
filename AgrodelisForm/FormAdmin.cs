@@ -354,5 +354,49 @@ namespace AgrodelisForm
                 txtEmail.Text = filaSeleccionada.Cells["Email"].Value?.ToString() ?? string.Empty;
             }
         }
+
+        private async void btnEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvVendedores.SelectedRows.Count > 0)
+                {
+                    // Obtén el VendedorId de la fila seleccionada
+                    int vendedorId = Convert.ToInt32(dgvVendedores.SelectedRows[0].Cells["VendedorId"].Value);
+
+                    var confirmacion = MessageBox.Show(
+                        "¿Estás seguro de que deseas eliminar este vendedor?",
+                        "Confirmar eliminación",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (confirmacion == DialogResult.Yes)
+                    {
+                        var vendedorService = new VendedorService();
+                        var respuesta = await vendedorService.EliminarVendedor(vendedorId);
+
+                        if (respuesta.Exitoso)
+                        {
+                            CargarTodosVendedores(); // Refrescar la lista de vendedores
+                            MessageBox.Show($"{respuesta.Mensaje}");
+                            LimpiarCampos(); // Limpiar los campos de entrada
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Error al eliminar el vendedor: {respuesta.Mensaje}");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Seleccione un vendedor de la tabla para eliminar.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al eliminar el vendedor: {ex.Message}");
+            }
+        }
     }
 }

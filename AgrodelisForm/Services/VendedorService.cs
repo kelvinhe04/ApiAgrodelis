@@ -120,6 +120,35 @@ namespace AgrodelisForm.Services
                 };
             }
         }
+        public async Task<Respuesta> EliminarVendedor(int vendedorId)
+        {
+            try
+            {
+                var respuesta = await _client.DeleteAsync($"https://localhost:7156/api/Vendedores/eliminar/{vendedorId}");
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var contenido = await respuesta.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Respuesta>(contenido);
+                }
+
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = "Error al eliminar el vendedor.",
+                    Code = 500
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error interno: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
 
     }
 }

@@ -1180,6 +1180,40 @@ WHERE pv.UsuarioId = @UsuarioId";
             }
         }
 
+        public int EliminarVendedor(int vendedorId)
+        {
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                // Paso 1: Eliminar las relaciones del vendedor en la tabla Ventas
+                cmd.CommandText = "DELETE FROM Ventas WHERE VendedorId = @VendedorId";
+                cmd.Parameters.Add(new SqlParameter("@VendedorId", vendedorId));
+
+                con.Open();
+                cmd.ExecuteNonQuery(); // Primero elimina las relaciones en Ventas
+
+                // Paso 2: Eliminar las relaciones del vendedor en la tabla ProductosVendedores
+                cmd.CommandText = "DELETE FROM ProductosVendedores WHERE UsuarioId = @VendedorId";
+                cmd.ExecuteNonQuery(); // Luego elimina las relaciones en ProductosVendedores
+
+                // Paso 3: Eliminar el vendedor de la tabla Usuarios (en lugar de Vendedores)
+                cmd.CommandText = "DELETE FROM Usuarios WHERE UsuarioId = @VendedorId"; // Modificado para la tabla Usuarios
+                int rowsAffected = cmd.ExecuteNonQuery(); // Finalmente elimina el vendedor de Usuarios
+
+                return rowsAffected; // Devuelve el número de filas afectadas
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar el vendedor y sus relaciones: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
 
 
 
