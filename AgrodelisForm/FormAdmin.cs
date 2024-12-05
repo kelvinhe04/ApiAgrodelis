@@ -9,11 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AgrodelisForm.Models;
+using System.Net.Http;
 
 namespace AgrodelisForm
 {
     public partial class FormAdmin : Form
     {
+
+        private int vendedorIdSeleccionado;
+
         public FormAdmin()
         {
             InitializeComponent();
@@ -44,7 +48,7 @@ namespace AgrodelisForm
                 }
 
                 // Asignar los vendedores al DataGridView
-                dataGridViewVendedores.DataSource = vendedores; 
+                dgvVendedores.DataSource = vendedores; 
             }
             catch (Exception ex)
             {
@@ -202,7 +206,7 @@ namespace AgrodelisForm
             cmbRol.SelectedIndex = 0;  // Establecer "Vendedor" como valor seleccionado por defecto
         }
 
-
+        
         private async void btnAgregar_Click(object sender, EventArgs e)
         {
             try
@@ -238,7 +242,7 @@ namespace AgrodelisForm
                 var vendedorService = new VendedorService();
 
                 // Crear el objeto de solicitud para registrar el vendedor
-                var vendedorRequest = new RegistrarVendedorRequest
+                var vendedorRequest = new VendedorRequest
                 {
                     Nombre = nombre,
                     Contrasena = contrasena,
@@ -274,6 +278,81 @@ namespace AgrodelisForm
         private void btnVaciar_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
+        }
+
+
+        private async void btnModificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string mensajeError = ValidarCamposVendedor();
+                if (mensajeError != null)
+                {
+                    MessageBox.Show(mensajeError, "Campo obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var vendedorRequest = new VendedorRequest
+                {
+                    VendedorId = vendedorIdSeleccionado, // Utiliza la variable de clase para el ID
+                    Nombre = txtNombre.Text.Trim(),
+                    Contrasena = txtContraseña.Text.Trim(),
+                    Rol = cmbRol.SelectedItem.ToString().Trim(),
+                    Activo = checkBoxActivo.Checked,
+                    ObjetivoVenta = int.Parse(txtObjetivoDeVenta.Text.Trim()),
+                    LugarDeVentas = int.Parse(txtLugarDeVenta.Text.Trim()),
+                    Motivo = textMotivo.Text.Trim(),
+                    Duracion = textDuracion.Text.Trim(),
+                    Email = txtEmail.Text.Trim()
+                };
+
+                var vendedorService = new VendedorService();
+                var respuesta = await vendedorService.ModificarVendedor(vendedorRequest);
+
+                if (respuesta != null && respuesta.Exitoso)
+                {
+                    CargarTodosVendedores();
+                    MessageBox.Show("Vendedor modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarCampos();
+                }
+                else if (respuesta == null)
+                {
+                    MessageBox.Show("No se recibió respuesta del servicio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Error al modificar el vendedor: {respuesta.Mensaje}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvVendedores_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvVendedores.SelectedRows.Count > 0)
+            {
+                DataGridViewRow filaSeleccionada = dgvVendedores.SelectedRows[0];
+
+                // Asignar el ID del vendedor para futuras operaciones
+                vendedorIdSeleccionado = Convert.ToInt32(filaSeleccionada.Cells["VendedorId"].Value);
+
+
+                // Asignar valores a los controles
+                txtNombre.Text = filaSeleccionada.Cells["Nombre"].Value?.ToString() ?? string.Empty;
+                txtContraseña.Text = filaSeleccionada.Cells["Contraseña"].Value?.ToString() ?? string.Empty; // Si la contraseña se muestra
+                cmbRol.Text = filaSeleccionada.Cells["Rol"].Value?.ToString() ?? string.Empty;
+                checkBoxActivo.Checked = filaSeleccionada.Cells["Activo"].Value != null && Convert.ToBoolean(filaSeleccionada.Cells["Activo"].Value);
+                txtObjetivoDeVenta.Text = filaSeleccionada.Cells["ObjetivoVenta"].Value?.ToString() ?? string.Empty;
+                txtLugarDeVenta.Text = filaSeleccionada.Cells["LugarDeVentas"].Value?.ToString() ?? string.Empty;
+                textMotivo.Text = filaSeleccionada.Cells["Motivo"].Value?.ToString() ?? string.Empty;
+                textDuracion.Text = filaSeleccionada.Cells["Duracion"].Value?.ToString() ?? string.Empty;
+                txtEmail.Text = filaSeleccionada.Cells["Email"].Value?.ToString() ?? string.Empty;
+            }
         }
     }
 }

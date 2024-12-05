@@ -78,7 +78,7 @@ namespace AgrodelisForm.Services
             }
 
 
-        public async Task<Respuesta> RegistrarVendedor(RegistrarVendedorRequest request)
+        public async Task<Respuesta> RegistrarVendedor(VendedorRequest request)
         {
             try
             {
@@ -96,6 +96,27 @@ namespace AgrodelisForm.Services
                     Exitoso = false,
                     Mensaje = $"Error al registrar el vendedor: {ex.Message}",
                     Code = 500
+                };
+            }
+        }
+        public async Task<Respuesta> ModificarVendedor(VendedorRequest request)
+        {
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+                var respuesta = await _client.PostAsync("https://localhost:7156/api/Vendedores/modificar", content);
+                var contenido = await respuesta.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<Respuesta>(contenido);
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al modificar el vendedor: {ex.Message}",
+                    Code = 500  // Internal Server Error
                 };
             }
         }

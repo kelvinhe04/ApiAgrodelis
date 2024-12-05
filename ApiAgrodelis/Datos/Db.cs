@@ -5,6 +5,7 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using System.Data.Common;
 
 namespace ApiAgrodelis.Datos
 {
@@ -1108,6 +1109,78 @@ WHERE pv.UsuarioId = @UsuarioId";
                 con.Close();
             }
         }
+        public int ModificarVendedor(int usuarioId, string nombre, string contrasena, string rol, bool activo,
+                      int objetivoVenta, int lugarDeVentas, string motivo, string duracion, string email)
+        {
+            try
+            {
+                // Encriptar la contraseña antes de almacenarla
+                string contrasenaEncriptada = EncriptarContraseña(contrasena);
+
+                // Iniciar una transacción
+                con.Open();
+                SqlTransaction transaction = con.BeginTransaction();
+                cmd.Transaction = transaction;
+
+                // Modificar el vendedor
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"
+        UPDATE Usuarios
+        SET Nombre = @Nombre, 
+            Contraseña = @Contraseña, 
+            Rol = @Rol, 
+            Activo = @Activo, 
+            ObjetivoVenta = @ObjetivoVenta, 
+            LugarDeVentas = @LugarDeVentas, 
+            Motivo = @Motivo, 
+            Duracion = @Duracion, 
+            Email = @Email
+        WHERE UsuarioId = @UsuarioId;";  // Usa UsuarioId en lugar de VendedorId
+
+                // Agregar los parámetros a la consulta
+                cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);  // Cambia VendedorId por UsuarioId
+                cmd.Parameters.AddWithValue("@Nombre", nombre);
+                cmd.Parameters.AddWithValue("@Contraseña", contrasenaEncriptada);
+                cmd.Parameters.AddWithValue("@Rol", rol);
+                cmd.Parameters.AddWithValue("@Activo", activo);
+                cmd.Parameters.AddWithValue("@ObjetivoVenta", objetivoVenta);
+                cmd.Parameters.AddWithValue("@LugarDeVentas", lugarDeVentas);
+                cmd.Parameters.AddWithValue("@Motivo", motivo);
+                cmd.Parameters.AddWithValue("@Duracion", duracion);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                // Ejecutar la consulta y obtener el número de filas afectadas
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    transaction.Rollback();
+                    throw new Exception("No se encontró el vendedor o no se pudo modificar.");
+                }
+
+                // Si todo es correcto, confirmar la transacción
+                transaction.Commit();
+
+                return rowsAffected;  // Retorna el número de filas afectadas
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, hacer rollback
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+
+                throw new Exception("Error al modificar el vendedor: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
 
 
 

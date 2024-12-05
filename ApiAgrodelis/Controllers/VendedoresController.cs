@@ -64,7 +64,7 @@ namespace ApiAgrodelis.Controllers
         }
         //============================================CRUD VENDEDORES================================================
         [HttpPost("registrar")]
-        public object RegistrarVendedor([FromBody] RegistrarVendedorRequest request)
+        public object RegistrarVendedor([FromBody] VendedorRequest request)
         {
             try
             {
@@ -99,6 +99,47 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        [HttpPost("modificar")]
+        public object ModificarVendedor([FromBody] VendedorRequest request)
+        {
+            try
+            {
+                // Llamamos al método del DB para modificar el vendedor
+                var resultado = _db.ModificarVendedor(request.VendedorId, request.Nombre, request.Contrasena, request.Rol,
+                                                      request.Activo, request.ObjetivoVenta, request.LugarDeVentas,
+                                                      request.Motivo, request.Duracion, request.Email);
+
+                if (resultado > 0)
+                {
+                    return new
+                    {
+                        Exitoso = true,
+                        Mensaje = "Vendedor modificado correctamente.",
+                        Code = 200
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Exitoso = false,
+                        Mensaje = "Hubo un error al modificar el vendedor.",
+                        Code = 400
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al modificar el vendedor: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
+
 
 
 

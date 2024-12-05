@@ -98,7 +98,7 @@
     <Compile Include="Models\ProductoV.cs" />
     <Compile Include="Models\RegisterRequest.cs" />
     <Compile Include="Models\RegistrarProductoRequest.cs" />
-    <Compile Include="Models\RegistrarVendedorRequest.cs" />
+    <Compile Include="Models\VendedorRequest.cs" />
     <Compile Include="Models\Respuesta.cs" />
     <Compile Include="Models\Vendedor.cs" />
     <Compile Include="Models\Ventas.cs" />

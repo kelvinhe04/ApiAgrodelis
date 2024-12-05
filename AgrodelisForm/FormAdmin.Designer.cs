@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAdmin));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel4 = new System.Windows.Forms.Panel();
             this.textDuracion = new System.Windows.Forms.TextBox();
             this.textMotivo = new System.Windows.Forms.TextBox();
@@ -65,7 +65,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuGananciasTotales = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuInventario = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataGridViewVendedores = new System.Windows.Forms.DataGridView();
+            this.dgvVendedores = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
             this.txtContraseña = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -91,7 +91,7 @@
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewVendedores)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVendedores)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -124,7 +124,7 @@
             this.panel4.Controls.Add(this.label4);
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.menuStrip1);
-            this.panel4.Controls.Add(this.dataGridViewVendedores);
+            this.panel4.Controls.Add(this.dgvVendedores);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.txtContraseña);
             this.panel4.Controls.Add(this.label2);
@@ -296,6 +296,7 @@
             this.btnModificar.TabIndex = 45;
             this.btnModificar.Text = "Modificar";
             this.btnModificar.UseVisualStyleBackColor = false;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // btnEliminar
             // 
@@ -431,16 +432,16 @@
             this.toolStripMenuInventario.Text = "Inventario";
             this.toolStripMenuInventario.Click += new System.EventHandler(this.toolStripMenuInventario_Click);
             // 
-            // dataGridViewVendedores
+            // dgvVendedores
             // 
-            this.dataGridViewVendedores.AllowUserToAddRows = false;
-            this.dataGridViewVendedores.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.Black;
-            this.dataGridViewVendedores.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle19;
-            this.dataGridViewVendedores.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(137)))), ((int)(((byte)(219)))));
-            this.dataGridViewVendedores.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridViewVendedores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewVendedores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvVendedores.AllowUserToAddRows = false;
+            this.dgvVendedores.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            this.dgvVendedores.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvVendedores.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(137)))), ((int)(((byte)(219)))));
+            this.dgvVendedores.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvVendedores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvVendedores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.VendedorId,
             this.Nombre,
             this.Email,
@@ -451,30 +452,31 @@
             this.LugarDeVentas,
             this.Motivo,
             this.Duracion});
-            this.dataGridViewVendedores.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(137)))), ((int)(((byte)(219)))));
-            this.dataGridViewVendedores.Location = new System.Drawing.Point(31, 94);
-            this.dataGridViewVendedores.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dataGridViewVendedores.Name = "dataGridViewVendedores";
-            this.dataGridViewVendedores.ReadOnly = true;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle26.Padding = new System.Windows.Forms.Padding(2);
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewVendedores.RowHeadersDefaultCellStyle = dataGridViewCellStyle26;
-            this.dataGridViewVendedores.RowHeadersWidth = 51;
-            dataGridViewCellStyle27.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle27.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle27.Padding = new System.Windows.Forms.Padding(2);
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.Color.Black;
-            this.dataGridViewVendedores.RowsDefaultCellStyle = dataGridViewCellStyle27;
-            this.dataGridViewVendedores.RowTemplate.Height = 24;
-            this.dataGridViewVendedores.Size = new System.Drawing.Size(646, 309);
-            this.dataGridViewVendedores.TabIndex = 25;
+            this.dgvVendedores.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(137)))), ((int)(((byte)(219)))));
+            this.dgvVendedores.Location = new System.Drawing.Point(31, 94);
+            this.dgvVendedores.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dgvVendedores.Name = "dgvVendedores";
+            this.dgvVendedores.ReadOnly = true;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.Padding = new System.Windows.Forms.Padding(2);
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvVendedores.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvVendedores.RowHeadersWidth = 51;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle9.Padding = new System.Windows.Forms.Padding(2);
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgvVendedores.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            this.dgvVendedores.RowTemplate.Height = 24;
+            this.dgvVendedores.Size = new System.Drawing.Size(646, 309);
+            this.dgvVendedores.TabIndex = 25;
+            this.dgvVendedores.SelectionChanged += new System.EventHandler(this.dgvVendedores_SelectionChanged);
             // 
             // label7
             // 
@@ -606,10 +608,10 @@
             // VendedorId
             // 
             this.VendedorId.DataPropertyName = "VendedorId";
-            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Black;
-            this.VendedorId.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            this.VendedorId.DefaultCellStyle = dataGridViewCellStyle2;
             this.VendedorId.HeaderText = "VendedorId";
             this.VendedorId.MinimumWidth = 6;
             this.VendedorId.Name = "VendedorId";
@@ -619,11 +621,11 @@
             // Nombre
             // 
             this.Nombre.DataPropertyName = "Nombre";
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.Color.Black;
-            this.Nombre.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            this.Nombre.DefaultCellStyle = dataGridViewCellStyle3;
             this.Nombre.HeaderText = "Nombre";
             this.Nombre.MinimumWidth = 6;
             this.Nombre.Name = "Nombre";
@@ -633,10 +635,10 @@
             // Email
             // 
             this.Email.DataPropertyName = "Email";
-            dataGridViewCellStyle22.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.Color.Black;
-            this.Email.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
+            this.Email.DefaultCellStyle = dataGridViewCellStyle4;
             this.Email.HeaderText = "Email";
             this.Email.MinimumWidth = 6;
             this.Email.Name = "Email";
@@ -646,10 +648,10 @@
             // Contraseña
             // 
             this.Contraseña.DataPropertyName = "Contraseña";
-            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.Color.Black;
-            this.Contraseña.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
+            this.Contraseña.DefaultCellStyle = dataGridViewCellStyle5;
             this.Contraseña.HeaderText = "Contraseña";
             this.Contraseña.MinimumWidth = 6;
             this.Contraseña.Name = "Contraseña";
@@ -659,11 +661,11 @@
             // Rol
             // 
             this.Rol.DataPropertyName = "Rol";
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.Color.Black;
-            this.Rol.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            this.Rol.DefaultCellStyle = dataGridViewCellStyle6;
             this.Rol.HeaderText = "Rol";
             this.Rol.MinimumWidth = 6;
             this.Rol.Name = "Rol";
@@ -673,10 +675,10 @@
             // Activo
             // 
             this.Activo.DataPropertyName = "Activo";
-            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.Black;
-            this.Activo.DefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            this.Activo.DefaultCellStyle = dataGridViewCellStyle7;
             this.Activo.HeaderText = "Activo";
             this.Activo.MinimumWidth = 6;
             this.Activo.Name = "Activo";
@@ -758,7 +760,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewVendedores)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVendedores)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -780,7 +782,7 @@
         private System.Windows.Forms.TextBox txtLugarDeVenta;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridView dataGridViewVendedores;
+        private System.Windows.Forms.DataGridView dgvVendedores;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtContraseña;
         private System.Windows.Forms.Label label2;
