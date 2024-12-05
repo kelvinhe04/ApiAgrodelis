@@ -823,9 +823,10 @@ JOIN Usuarios u ON v.VendedorId = u.UsuarioId";
         FROM Productos p
         JOIN Categorias c ON p.CategoriaId = c.CategoriaId
         JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId
-        JOIN Usuarios u ON pv.UsuarioId = u.UsuarioId";
-
-                con.Open();
+        JOIN Usuarios u ON pv.UsuarioId = u.UsuarioId
+        WHERE u.Activo = 1";
+        
+        con.Open();
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -853,6 +854,7 @@ JOIN Usuarios u ON v.VendedorId = u.UsuarioId";
 
             return productos;
         }
+
 
         public List<Producto> ObtenerInventarioPorVendedor(int usuarioId)
         {
