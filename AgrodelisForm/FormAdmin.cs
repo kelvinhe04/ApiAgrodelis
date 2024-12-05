@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AgrodelisForm.Models;
 using System.Net.Http;
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace AgrodelisForm
 {
@@ -226,6 +228,7 @@ namespace AgrodelisForm
                     return;
                 }
 
+
                 // Leer los datos del vendedor desde los TextBox
                 var nombre = txtNombre.Text.Trim();
                 var contrasena = txtContraseña.Text.Trim();
@@ -244,7 +247,12 @@ namespace AgrodelisForm
                 var motivo = textMotivo.Text.Trim();
                 var duracion = textDuracion.Text.Trim();
                 var email = txtEmail.Text.Trim();
-
+                // Validar formato de correo electrónico
+                if (!EsCorreoValido(email))
+                {
+                    MessageBox.Show("Por favor, ingrese un correo electrónico válido", "Correo Inválido");
+                    return;
+                }
                 // Verificar si ya existe un vendedor con el mismo email (opcional)
                 var vendedorService = new VendedorService();
 
@@ -298,7 +306,12 @@ namespace AgrodelisForm
                     MessageBox.Show(mensajeError, "Campo obligatorio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
+                // Validar formato de correo electrónico
+                if (!EsCorreoValido(txtEmail.Text.Trim()))
+                {
+                    MessageBox.Show("Por favor, ingrese un correo electrónico válido", "Correo Inválido");
+                    return;
+                }
                 var vendedorRequest = new VendedorRequest
                 {
                     VendedorId = vendedorIdSeleccionado, // Utiliza la variable de clase para el ID
@@ -443,6 +456,12 @@ namespace AgrodelisForm
 
 
 
+        }
+        // Método para validar el formato del correo electrónico
+        private bool EsCorreoValido(string email)
+        {
+            string patronCorreo = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, patronCorreo);
         }
 
 
