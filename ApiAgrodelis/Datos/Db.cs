@@ -1047,7 +1047,67 @@ WHERE pv.UsuarioId = @UsuarioId";
         }
 
 
+        //===================================================CRUD VENDEDORES=============================================
+        public int RegistrarVendedor(string nombre, string contrasena, string rol, bool activo, int objetivoVenta, int lugarDeVentas, string motivo, string duracion, string email)
+        {
+            try
+            {
+                // Encriptar la contraseña antes de almacenarla
+                string contrasenaEncriptada = EncriptarContraseña(contrasena);
 
+                // Iniciar una transacción
+                con.Open();
+                SqlTransaction transaction = con.BeginTransaction();
+                cmd.Transaction = transaction;
+
+                // Registrar el vendedor
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"
+            INSERT INTO Usuarios (Nombre, Contraseña, Rol, Activo, ObjetivoVenta, LugarDeVentas, Motivo, Duracion, Email)
+            VALUES (@Nombre, @Contraseña, @Rol, @Activo, @ObjetivoVenta, @LugarDeVentas, @Motivo, @Duracion, @Email);
+            SELECT SCOPE_IDENTITY();";  // Obtener el UsuarioId generado
+
+                cmd.Parameters.AddWithValue("@Nombre", nombre);
+                cmd.Parameters.AddWithValue("@Contraseña", contrasenaEncriptada);
+                cmd.Parameters.AddWithValue("@Rol", rol);
+                cmd.Parameters.AddWithValue("@Activo", activo);
+                cmd.Parameters.AddWithValue("@ObjetivoVenta", objetivoVenta);
+                cmd.Parameters.AddWithValue("@LugarDeVentas", lugarDeVentas);
+                cmd.Parameters.AddWithValue("@Motivo", motivo);
+                cmd.Parameters.AddWithValue("@Duracion", duracion);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                var usuarioId = cmd.ExecuteScalar();  // Obtiene el UsuarioId recién insertado
+
+                if (usuarioId == null)
+                {
+                    transaction.Rollback();
+                    throw new Exception("No se pudo obtener el ID del vendedor.");
+                }
+
+                int idVendedor = Convert.ToInt32(usuarioId);
+
+                // Si todo es correcto, confirmar la transacción
+                transaction.Commit();
+
+                return idVendedor;  // Retorna el ID del vendedor registrado
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, hacer rollback
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+
+                throw new Exception("Error al registrar el vendedor: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
 
 
 
