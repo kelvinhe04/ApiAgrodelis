@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgrodelisForm.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AgrodelisForm.Models;
 
 namespace AgrodelisForm
 {
@@ -15,11 +17,40 @@ namespace AgrodelisForm
         public FormAdmin()
         {
             InitializeComponent();
+            CargarTodosVendedores();
         }
 
 
 
 
+        private async void CargarTodosVendedores()
+        {
+            try
+            {
+                var vendedorService = new VendedorService(); // Instancia del servicio.
+                var respuesta = await vendedorService.ObtenerTodosVendedores();
+
+                if (!respuesta.Exitoso)
+                {
+                    MessageBox.Show(respuesta.Mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var vendedores = respuesta.Vendedores as List<Vendedor>;
+                if (vendedores == null || !vendedores.Any())
+                {
+                    MessageBox.Show("No se encontraron vendedores.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Asignar los vendedores al DataGridView
+                dataGridViewVendedores.DataSource = vendedores; 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
 
 
@@ -53,33 +84,33 @@ namespace AgrodelisForm
 
         private void txtEmail_Enter(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "Email")
+            if (txtEmail.Text == "Email")
             {
-                txtNombre.Text = "";
+                txtEmail.Text = "";
             }
         }
 
         private void txtEmail_Leave(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "")
+            if (txtEmail.Text == "")
             {
-                txtNombre.Text = "Email";
+                txtEmail.Text = "Email";
             }
         }
 
         private void txtContraseña_Enter(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "Contraseña")
+            if (txtContraseña.Text == "Contraseña")
             {
-                txtNombre.Text = "";
+                txtContraseña.Text = "";
             }
         }
 
         private void txtContraseña_Leave(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "")
+            if (txtContraseña.Text == "")
             {
-                txtNombre.Text = "Contraseña";
+                txtContraseña.Text = "Contraseña";
             }
         }
 
@@ -110,6 +141,11 @@ namespace AgrodelisForm
             GananciasTotales GananciasTotales = new GananciasTotales();  // Pasamos el UsuarioId
             this.Hide(); // Ocultar el formulario actua
             GananciasTotales.ShowDialog();
+        }
+
+        private void btnClose_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -47,5 +47,34 @@ namespace AgrodelisForm.Services
                 };
             }
         }
+            public async Task<Respuesta> ObtenerTodosVendedores()
+            {
+                try
+                {
+                    var respuesta = await _client.GetAsync("https://localhost:7156/api/vendedores/vendedores/todos");
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        var contenido = await respuesta.Content.ReadAsStringAsync();
+                        return JsonConvert.DeserializeObject<Respuesta>(contenido);
+                    }
+
+                    return new Respuesta
+                    {
+                        Exitoso = false,
+                        Mensaje = "Error al obtener los vendedores.",
+                        Code = 500
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new Respuesta
+                    {
+                        Exitoso = false,
+                        Mensaje = $"Error interno: {ex.Message}",
+                        Code = 500
+                    };
+                }
+            }
     }
 }

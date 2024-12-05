@@ -38,6 +38,30 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        [HttpGet]
+        [Route("vendedores/todos")]
+        public object ObtenerTodosVendedores()
+        {
+            try
+            {
+                var vendedores = _db.ObtenerTodosVendedores(); // Método en la base de datos que obtiene los vendedores.
+                return new
+                {
+                    Exitoso = true,
+                    Vendedores = vendedores,
+                    Code = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener los vendedores: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
 
 
     }

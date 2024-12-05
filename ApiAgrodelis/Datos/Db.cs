@@ -990,6 +990,67 @@ WHERE pv.UsuarioId = @UsuarioId";
             return vendedores;
         }
 
+        public List<Vendedor> ObtenerTodosVendedores()
+        {
+            var vendedores = new List<Vendedor>();
+
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                // Consulta SQL con el campo Email
+                cmd.CommandText = @"
+            SELECT 
+                UsuarioId, 
+                Nombre, 
+                Contraseña, 
+                Rol, 
+                Activo, 
+                ObjetivoVenta, 
+                LugarDeVentas, 
+                Motivo, 
+                Duracion,
+                Email
+            FROM Usuarios
+            WHERE Rol = 'Vendedor'";
+
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var vendedor = new Vendedor
+                        {
+                            VendedorId = reader.GetInt32(0),       // UsuarioId
+                            Nombre = reader.IsDBNull(1) ? null : reader.GetString(1),          // Nombre
+                            Contraseña = reader.IsDBNull(2) ? null : reader.GetString(2),      // Contraseña
+                            Rol = reader.IsDBNull(3) ? null : reader.GetString(3),             // Rol
+                            Activo = reader.IsDBNull(4) ? false : reader.GetBoolean(4),        // Activo
+                            ObjetivoVenta = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),      // ObjetivoVenta
+                            LugarDeVentas = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),     // LugarDeVentas
+                            Motivo = reader.IsDBNull(7) ? null : reader.GetString(7),         // Motivo
+                            Duracion = reader.IsDBNull(8) ? null : reader.GetString(8),       // Duracion
+                            Email = reader.IsDBNull(9) ? null : reader.GetString(9)           // Email
+                        };
+
+                        vendedores.Add(vendedor);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener los vendedores: {ex.Message}");
+            }
+
+            return vendedores;
+        }
+
+
+
+
+
+
     }
 }
     

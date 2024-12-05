@@ -37,13 +37,13 @@ namespace AgrodelisForm
             //this.Hide(); // Ocultar el formulario actua
             //formGananciastotal.ShowDialog();
 
-            //FormAdmin FormAdmin = new FormAdmin();  // Pasamos el UsuarioId
-            //this.Hide(); // Ocultar el formulario actua
-            //FormAdmin.ShowDialog();
-
-            Inventario Inventario = new Inventario();  // Pasamos el UsuarioId
+            FormAdmin FormAdmin = new FormAdmin();  // Pasamos el UsuarioId
             this.Hide(); // Ocultar el formulario actua
-            Inventario.ShowDialog();
+            FormAdmin.ShowDialog();
+
+            //Inventario Inventario = new Inventario();  // Pasamos el UsuarioId
+            //this.Hide(); // Ocultar el formulario actua
+            //Inventario.ShowDialog();
         }
 
 

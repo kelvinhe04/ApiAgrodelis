@@ -1,16 +1,36 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiAgrodelis.Models
 {
     public class Vendedor
     {
-        [Key]
-        public int VendedorId { get; set; } // Clave primaria
+        public int VendedorId { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Nombre { get; set; } // Nombre del vendedor
+        [JsonProperty("Nombre")]
+        public string Nombre { get; set; }
 
-        
+        [JsonProperty("Contraseña")]
+        public string Contraseña { get; set; }
+
+        [JsonProperty("Rol")]
+        public string Rol { get; set; }
+
+        [JsonProperty("Activo")]
+        public bool Activo { get; set; }
+
+        [JsonProperty("ObjetivoVenta")]
+        public int ObjetivoVenta { get; set; }
+
+        [JsonProperty("LugarDeVentas")]
+        public int LugarDeVentas { get; set; }
+
+        [JsonProperty("Motivo")]
+        public string Motivo { get; set; }
+
+        [JsonProperty("Duracion")]
+        public string Duracion { get; set; }
+        public string Email { get; set; }
     }
+
 }
