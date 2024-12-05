@@ -97,5 +97,19 @@ namespace AgrodelisForm
         {
             Application.Exit();
         }
+
+        private void toolStripMenuInventario_Click(object sender, EventArgs e)
+        {
+            Inventario Inventario = new Inventario();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            Inventario.ShowDialog();
+        }
+
+        private void toolStripMenuGananciasTotales_Click(object sender, EventArgs e)
+        {
+            GananciasTotales GananciasTotales = new GananciasTotales();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            GananciasTotales.ShowDialog();
+        }
     }
 }

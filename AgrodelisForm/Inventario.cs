@@ -198,5 +198,19 @@ namespace AgrodelisForm
 
 
         }
+
+        private void toolStripMenuInventario_Click(object sender, EventArgs e)
+        {
+            GananciasTotales formGananciastotal = new GananciasTotales();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formGananciastotal.ShowDialog();
+        }
+
+        private void toolStripMenuAdminForm_Click(object sender, EventArgs e)
+        {
+            FormAdmin FormAdmin = new FormAdmin();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            FormAdmin.ShowDialog();
+        }
     }
 }
