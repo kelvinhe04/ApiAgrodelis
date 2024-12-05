@@ -495,7 +495,7 @@
             // 
             // Nombre
             // 
-            this.Nombre.DataPropertyName = "Nombre";
+            this.Nombre.DataPropertyName = "NombreProducto";
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
@@ -562,7 +562,7 @@
             // 
             // CategoriaNombre
             // 
-            this.CategoriaNombre.DataPropertyName = "CategoriaNombre";
+            this.CategoriaNombre.DataPropertyName = "NombreCategoria";
             dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
