@@ -69,10 +69,10 @@
             this.panel4.Controls.Add(this.menuStrip1);
             this.panel4.Controls.Add(this.dataGridViewVentas);
             this.panel4.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.panel4.Location = new System.Drawing.Point(373, 280);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4);
+            this.panel4.Location = new System.Drawing.Point(27, 71);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1322, 455);
+            this.panel4.Size = new System.Drawing.Size(1487, 569);
             this.panel4.TabIndex = 19;
             this.panel4.Paint += new System.Windows.Forms.PaintEventHandler(this.panel4_Paint);
             // 
@@ -80,18 +80,18 @@
             // 
             this.lblTotalVentas.AutoSize = true;
             this.lblTotalVentas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalVentas.Location = new System.Drawing.Point(1046, 178);
+            this.lblTotalVentas.Location = new System.Drawing.Point(1177, 222);
             this.lblTotalVentas.Name = "lblTotalVentas";
-            this.lblTotalVentas.Size = new System.Drawing.Size(0, 25);
+            this.lblTotalVentas.Size = new System.Drawing.Size(0, 29);
             this.lblTotalVentas.TabIndex = 41;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(1046, 115);
+            this.label1.Location = new System.Drawing.Point(1177, 144);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(235, 25);
+            this.label1.Size = new System.Drawing.Size(285, 29);
             this.label1.TabIndex = 40;
             this.label1.Text = "Total de todas las ventas:";
             // 
@@ -106,7 +106,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1322, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(1487, 40);
             this.menuStrip1.TabIndex = 35;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -114,7 +114,7 @@
             // 
             this.toolStripRegistroProductosForm.ForeColor = System.Drawing.Color.White;
             this.toolStripRegistroProductosForm.Name = "toolStripRegistroProductosForm";
-            this.toolStripRegistroProductosForm.Size = new System.Drawing.Size(197, 32);
+            this.toolStripRegistroProductosForm.Size = new System.Drawing.Size(235, 36);
             this.toolStripRegistroProductosForm.Text = "Registrar Productos";
             this.toolStripRegistroProductosForm.Click += new System.EventHandler(this.toolStripRegistroProductosForm_Click);
             // 
@@ -122,7 +122,7 @@
             // 
             this.toolStripMenuTransferenciaForm.ForeColor = System.Drawing.Color.White;
             this.toolStripMenuTransferenciaForm.Name = "toolStripMenuTransferenciaForm";
-            this.toolStripMenuTransferenciaForm.Size = new System.Drawing.Size(304, 32);
+            this.toolStripMenuTransferenciaForm.Size = new System.Drawing.Size(376, 36);
             this.toolStripMenuTransferenciaForm.Text = "Transferencias entre Vendedores";
             // 
             // dataGridViewVentas
@@ -142,7 +142,7 @@
             this.FechaVenta,
             this.NombreCategoria});
             this.dataGridViewVentas.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(137)))), ((int)(((byte)(219)))));
-            this.dataGridViewVentas.Location = new System.Drawing.Point(30, 115);
+            this.dataGridViewVentas.Location = new System.Drawing.Point(34, 144);
             this.dataGridViewVentas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridViewVentas.Name = "dataGridViewVentas";
             this.dataGridViewVentas.ReadOnly = true;
@@ -160,7 +160,7 @@
             dataGridViewCellStyle9.Padding = new System.Windows.Forms.Padding(2);
             this.dataGridViewVentas.RowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewVentas.RowTemplate.Height = 24;
-            this.dataGridViewVentas.Size = new System.Drawing.Size(963, 268);
+            this.dataGridViewVentas.Size = new System.Drawing.Size(1083, 335);
             this.dataGridViewVentas.TabIndex = 25;
             // 
             // NombreProducto
@@ -249,10 +249,10 @@
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.label7.Location = new System.Drawing.Point(960, 2);
+            this.label7.Location = new System.Drawing.Point(1080, 2);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(130, 32);
+            this.label7.Size = new System.Drawing.Size(151, 38);
             this.label7.TabIndex = 18;
             this.label7.Text = "Ganancias";
             // 
@@ -266,7 +266,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1402, 39);
+            this.panel1.Size = new System.Drawing.Size(1577, 49);
             this.panel1.TabIndex = 20;
             // 
             // btnCerrarSesion
@@ -280,7 +280,7 @@
             this.btnCerrarSesion.Location = new System.Drawing.Point(0, 0);
             this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(162, 39);
+            this.btnCerrarSesion.Size = new System.Drawing.Size(182, 49);
             this.btnCerrarSesion.TabIndex = 19;
             this.btnCerrarSesion.Text = "Cerrar Sesión";
             this.btnCerrarSesion.UseVisualStyleBackColor = false;
@@ -293,24 +293,25 @@
             this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnClose.FlatAppearance.BorderSize = 0;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Location = new System.Drawing.Point(1357, 0);
+            this.btnClose.Location = new System.Drawing.Point(1526, 0);
             this.btnClose.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(45, 39);
+            this.btnClose.Size = new System.Drawing.Size(51, 49);
             this.btnClose.TabIndex = 7;
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // Ganancias
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1402, 805);
+            this.ClientSize = new System.Drawing.Size(1577, 1006);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel4);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Ganancias";
             this.Text = "Ganancias";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

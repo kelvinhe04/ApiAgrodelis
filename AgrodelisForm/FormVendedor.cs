@@ -602,10 +602,6 @@ namespace AgrodelisForm
             }
         }
 
-
-
-
-
         private void txtDescripcion_Enter(object sender, EventArgs e)
         {
             if (txtDescripcion.Text == "Descripcion")
@@ -628,6 +624,14 @@ namespace AgrodelisForm
             this.Hide(); // Ocultar el formulario actua
             formGanancias.ShowDialog();
         }
+
+        private void toolStripMenuTransferenciaForm_Click(object sender, EventArgs e)
+        {
+            Transferencia transferencia = new Transferencia(UsuarioId);  // Pasamos el UsuarioId
+            this.Hide();
+            transferencia.ShowDialog();
+        }
+
     }
 
 }
