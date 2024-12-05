@@ -46,9 +46,6 @@ namespace AgrodelisForm
                     // Mostrar mensaje si no se encontraron productos
                     MessageBox.Show("No se encontraron productos para este vendedor.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -94,7 +91,7 @@ namespace AgrodelisForm
             }
         }
 
-        private void btnConfirmar_Click(object sender, EventArgs e)
+        private async void btnConfirmar_Click(object sender, EventArgs e)
         {
             // Verificar si se seleccionó un producto y un vendedor
             if (dataGridViewProductos.SelectedRows.Count == 0 || dataGridViewVendedores.SelectedRows.Count == 0)
@@ -134,10 +131,11 @@ namespace AgrodelisForm
                 Cantidad = cantidad
             };
 
-            // Llamar al servicio para realizar la transferencia
+            // Llamar al servicio para realizar la transferencia y esperar la respuesta
             var transferenciaService = new TransferenciaService();
             var respuesta = await transferenciaService.RealizarTransferencia(transferencia);
 
+            // Verificar la respuesta de la transferencia
             if (respuesta.Exitoso)
             {
                 MessageBox.Show("Transferencia realizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -147,5 +145,6 @@ namespace AgrodelisForm
                 MessageBox.Show(respuesta.Mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }
