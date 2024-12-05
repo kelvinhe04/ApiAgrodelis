@@ -10,9 +10,10 @@ namespace AgrodelisForm.Models
     {
 
         public int ProductoId { get; set; }
+        public int VendedorId { get; set; }
 
 
-        public string Nombre { get; set; }
+        public string NombreProducto { get; set; }
 
         public string Descripcion { get; set; } // Nueva propiedad
 
@@ -23,7 +24,11 @@ namespace AgrodelisForm.Models
 
         public string RutaImagen { get; set; }
 
-        public string CategoriaNombre { get; set; }
+        public string NombreCategoria { get; set; }
+
+        public string NombreVendedor { get; set; }
+
+        
 
     }
 }

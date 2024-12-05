@@ -243,9 +243,57 @@ namespace ApiAgrodelis.Controllers
                 };
             }
         }
+        //=================================INVENTARIO=====================================
+        [HttpGet("inventario")]
+        public object ObtenerInventarioDeTodosLosVendedores()
+        {
+            try
+            {
+                var productos = _db.ObtenerInventarioDeTodosLosVendedores();
 
-        
-        
+                return new
+                {
+                    Exitoso = true,
+                    Productos = productos,
+                    Code = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener el inventario: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
+        [HttpGet("inventario/{vendedorId}")]
+        public object ObtenerInventarioPorVendedor(int vendedorId)
+        {
+            try
+            {
+                var productos = _db.ObtenerInventarioPorVendedor(vendedorId);
+                return new
+                {
+                    Exitoso = true,
+                    Productos = productos,
+                    Code = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener los productos: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
+
 
 
 

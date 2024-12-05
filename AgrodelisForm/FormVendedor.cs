@@ -495,7 +495,7 @@ namespace AgrodelisForm
                     foreach (var producto in respuesta.Productos)
                     {
 
-                        MostrarNotificacion($"Stock bajo: {producto.Nombre}", $"Quedan {producto.Stock} unidades.");
+                        MostrarNotificacion($"Stock bajo: {producto.NombreProducto}", $"Quedan {producto.Stock} unidades.");
                     }
                 }
                 else

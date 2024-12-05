@@ -373,7 +373,7 @@ namespace ApiAgrodelis.Datos
             {
                 cmd.Parameters.Clear();
                 // Realizar un JOIN con la tabla Categorias para obtener el nombre de la categoría
-                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen, c.Nombre AS CategoriaNombre " +
+                cmd.CommandText = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen, c.Nombre AS NombreCategoria " +
                                   "FROM Productos p " +
                                   "INNER JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId " +
                                   "INNER JOIN Categorias c ON p.CategoriaId = c.CategoriaId " +  // Join con la tabla Categorias
@@ -389,12 +389,12 @@ namespace ApiAgrodelis.Datos
                     productos.Add(new Producto
                     {
                         ProductoId = Convert.ToInt32(reader["ProductoId"]),
-                        Nombre = reader["Nombre"].ToString(),
+                        NombreProducto = reader["Nombre"].ToString(),
                         Descripcion = reader["Descripcion"].ToString(),
                         Precio = Convert.ToDecimal(reader["Precio"]),
                         Stock = Convert.ToInt32(reader["Stock"]),
                         RutaImagen = reader["RutaImagen"]?.ToString(),  // Verifica si es null
-                        CategoriaNombre = reader["CategoriaNombre"].ToString()  // Asignamos el nombre de la categoría
+                        NombreCategoria = reader["NombreCategoria"].ToString()  // Asignamos el nombre de la categoría
                     });
                 }
             }
@@ -591,7 +591,7 @@ WHERE
                         var producto = new Producto()
                         {
                             ProductoId = Convert.ToInt32(row["ProductoID"]),
-                            Nombre = row["Nombre"].ToString(),
+                            NombreProducto = row["Nombre"].ToString(),
                             Stock = Convert.ToInt32(row["Stock"])
                         };
 
@@ -807,6 +807,116 @@ JOIN Usuarios u ON v.VendedorId = u.UsuarioId";
         }
 
 
+        //===============================INVENTARIO======================================
+        public List<Producto> ObtenerInventarioDeTodosLosVendedores()
+        {
+            var productos = new List<Producto>();
+
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = @"
+        SELECT 
+            p.ProductoId, 
+            p.Nombre AS NombreProducto, 
+            c.Nombre AS NombreCategoria, 
+            p.Stock, 
+            p.Precio, 
+            pv.UsuarioId AS VendedorId, 
+            u.Nombre AS NombreVendedor, 
+            p.Descripcion
+        FROM Productos p
+        JOIN Categorias c ON p.CategoriaId = c.CategoriaId
+        JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId
+        JOIN Usuarios u ON pv.UsuarioId = u.UsuarioId";
+
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var producto = new Producto
+                        {
+                            ProductoId = reader.GetInt32(0),
+                            NombreProducto = reader.IsDBNull(1) ? null : reader.GetString(1),
+                            NombreCategoria = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            Stock = reader.GetInt32(3),
+                            Precio = reader.GetDecimal(4),
+                            VendedorId = reader.GetInt32(5),
+                            NombreVendedor = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            Descripcion = reader.IsDBNull(7) ? null : reader.GetString(7)
+                        };
+
+                        productos.Add(producto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener el inventario: {ex.Message}");
+            }
+
+            return productos;
+        }
+
+        public List<Producto> ObtenerInventarioPorVendedor(int usuarioId)
+        {
+            var productos = new List<Producto>();
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = @"
+SELECT 
+    p.ProductoId,
+    p.Nombre AS NombreProducto,
+    c.Nombre AS NombreCategoria,
+    p.Stock,
+    p.Precio,
+    p.Descripcion,
+    u.UsuarioId AS VendedorId,   -- Seleccionar VendedorId (UsuarioId)
+    u.Nombre AS NombreVendedor
+FROM Productos p
+JOIN Categorias c ON p.CategoriaId = c.CategoriaId
+JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId
+JOIN Usuarios u ON pv.UsuarioId = u.UsuarioId
+WHERE pv.UsuarioId = @UsuarioId";
+
+                cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);
+
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        productos.Add(new Producto
+                        {
+                            ProductoId = reader.GetInt32(0),
+                            NombreProducto = reader.IsDBNull(1) ? null : reader.GetString(1),
+                            NombreCategoria = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            Stock = reader.GetInt32(3),
+                            Precio = reader.GetDecimal(4),
+                            Descripcion = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            VendedorId = reader.GetInt32(6), // Asignar VendedorId
+                            NombreVendedor = reader.IsDBNull(7) ? null : reader.GetString(7) // Asignar NombreVendedor
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener los productos: {ex.Message}");
+            }
+
+            return productos;
+        }
+
+
+
+
 
 
 
@@ -845,7 +955,40 @@ JOIN Usuarios u ON v.VendedorId = u.UsuarioId";
             return categorias;
         }
 
+        //===============================VENDEDORES ======================================
+        public List<Vendedor> ObtenerVendedores()
+        {
+            var vendedores = new List<Vendedor>();
 
+            try
+            {
+                cmd.Parameters.Clear();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT UsuarioId, Nombre FROM Usuarios WHERE Rol = 'Vendedor'"; // Asegúrate de usar el rol correcto.
+
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var vendedor = new Vendedor
+                        {
+                            VendedorId = reader.GetInt32(0),
+                            Nombre = reader.GetString(1)
+                        };
+
+                        vendedores.Add(vendedor);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener los vendedores: {ex.Message}");
+            }
+
+            return vendedores;
+        }
 
     }
 }

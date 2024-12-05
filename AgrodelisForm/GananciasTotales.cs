@@ -75,5 +75,15 @@ namespace AgrodelisForm
             this.Hide(); // Ocultar el formulario actua
             FormAdmin.ShowDialog();
         }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            // Opcionalmente, puedes mostrar un mensaje de confirmación
+            MessageBox.Show("Sesión cerrada correctamente.", "Cierre de sesión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            FormLogin formLogin = new FormLogin();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            formLogin.ShowDialog();
+        }
     }
 }

@@ -112,6 +112,58 @@ namespace AgrodelisForm.Services
             }
         }
 
+
+        // INVENTARIO DE TODOS LOS VENDEDORES
+        public async Task<Respuesta> ObtenerInventarioDeTodosLosVendedores()
+        {
+            try
+            {
+                var respuesta = await _client.GetAsync("https://localhost:7156/api/Productos/inventario");
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var contenido = await respuesta.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Respuesta>(contenido);
+                }
+
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = "Error al obtener el inventario.",
+                    Code = 500
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error interno: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+        public async Task<Respuesta> ObtenerInventarioPorVendedor(int vendedorId)
+        {
+            try
+            {
+                var respuesta = await _client.GetAsync($"https://localhost:7156/api/Productos/inventario/{vendedorId}");
+                var contenido = await respuesta.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Respuesta>(contenido);
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Exitoso = false,
+                    Mensaje = $"Error al obtener los productos: {ex.Message}",
+                    Code = 500
+                };
+            }
+        }
+
+
+        // NOTIFICACION DE STOCK BAJO
         public async Task<Respuesta> ObtenerProductosConStockBajoPorVendedorAsync(int vendedorId)
         {
             try
