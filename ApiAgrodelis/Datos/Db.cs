@@ -177,7 +177,7 @@ namespace ApiAgrodelis.Datos
                 // Consulta para verificar si el email y la contraseña coinciden
                 cmd.CommandText = "SELECT 1 FROM usuarios WHERE email = @Email AND contraseña = @Contraseña";
                 cmd.Parameters.Add(new SqlParameter("@Email", email));
-                cmd.Parameters.Add(new SqlParameter("@Contraseña", EncriptarContraseña(contraseña)));
+                cmd.Parameters.Add(new SqlParameter("@Contraseña", contraseña));
 
 
                 con.Open();
@@ -195,15 +195,7 @@ namespace ApiAgrodelis.Datos
             }
         }
 
-        // Encriptar Contraseña
-        private string EncriptarContraseña(string contraseña)
-        {
-            using (var sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
-                return Convert.ToBase64String(bytes); // Cifrar la contraseña usando SHA-256
-            }
-        }
+       
 
 
         public string ObtenerRolPorEmail(string email)
@@ -347,7 +339,7 @@ namespace ApiAgrodelis.Datos
                 // Añadir los parámetros a la consulta SQL
                 cmd.Parameters.Add(new SqlParameter("@nombre", nombre));
                 cmd.Parameters.Add(new SqlParameter("@email", email));
-                cmd.Parameters.Add(new SqlParameter("@contraseña", EncriptarContraseña(contraseña))); // Encriptamos la contraseña
+                cmd.Parameters.Add(new SqlParameter("@contraseña", contraseña)); // Encriptamos la contraseña
                 cmd.Parameters.Add(new SqlParameter("@rol", rol)); // Agregar el rol (Vendedor, Cliente, etc.)
 
                 con.Open();
@@ -884,7 +876,7 @@ FROM Productos p
 JOIN Categorias c ON p.CategoriaId = c.CategoriaId
 JOIN ProductosVendedores pv ON p.ProductoId = pv.ProductoId
 JOIN Usuarios u ON pv.UsuarioId = u.UsuarioId
-WHERE pv.UsuarioId = @UsuarioId";
+WHERE pv.UsuarioId = @UsuarioId";   
 
                 cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);
 
@@ -1053,8 +1045,7 @@ WHERE pv.UsuarioId = @UsuarioId";
         {
             try
             {
-                // Encriptar la contraseña antes de almacenarla
-                string contrasenaEncriptada = EncriptarContraseña(contrasena);
+               
 
                 // Iniciar una transacción
                 con.Open();
@@ -1070,7 +1061,7 @@ WHERE pv.UsuarioId = @UsuarioId";
             SELECT SCOPE_IDENTITY();";  // Obtener el UsuarioId generado
 
                 cmd.Parameters.AddWithValue("@Nombre", nombre);
-                cmd.Parameters.AddWithValue("@Contraseña", contrasenaEncriptada);
+                cmd.Parameters.AddWithValue("@Contraseña", contrasena);
                 cmd.Parameters.AddWithValue("@Rol", rol);
                 cmd.Parameters.AddWithValue("@Activo", activo);
                 cmd.Parameters.AddWithValue("@ObjetivoVenta", objetivoVenta);
@@ -1114,8 +1105,7 @@ WHERE pv.UsuarioId = @UsuarioId";
         {
             try
             {
-                // Encriptar la contraseña antes de almacenarla
-                string contrasenaEncriptada = EncriptarContraseña(contrasena);
+              
 
                 // Iniciar una transacción
                 con.Open();
@@ -1141,7 +1131,7 @@ WHERE pv.UsuarioId = @UsuarioId";
                 // Agregar los parámetros a la consulta
                 cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);  // Cambia VendedorId por UsuarioId
                 cmd.Parameters.AddWithValue("@Nombre", nombre);
-                cmd.Parameters.AddWithValue("@Contraseña", contrasenaEncriptada);
+                cmd.Parameters.AddWithValue("@Contraseña", contrasena);
                 cmd.Parameters.AddWithValue("@Rol", rol);
                 cmd.Parameters.AddWithValue("@Activo", activo);
                 cmd.Parameters.AddWithValue("@ObjetivoVenta", objetivoVenta);

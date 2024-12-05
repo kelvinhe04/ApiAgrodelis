@@ -31,14 +31,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAdmin));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAdmin));
             this.panel4 = new System.Windows.Forms.Panel();
+            this.checkBoxActivo = new System.Windows.Forms.CheckBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.textDuracion = new System.Windows.Forms.TextBox();
             this.textMotivo = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -62,18 +64,6 @@
             this.toolStripMenuGananciasTotales = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuInventario = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvVendedores = new System.Windows.Forms.DataGridView();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtContraseña = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtEmail = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.checkBoxActivo = new System.Windows.Forms.CheckBox();
             this.VendedorId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -84,6 +74,16 @@
             this.LugarDeVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Motivo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Duracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtContraseña = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -129,6 +129,25 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1790, 622);
             this.panel4.TabIndex = 19;
+            // 
+            // checkBoxActivo
+            // 
+            this.checkBoxActivo.AutoSize = true;
+            this.checkBoxActivo.Location = new System.Drawing.Point(1518, 513);
+            this.checkBoxActivo.Name = "checkBoxActivo";
+            this.checkBoxActivo.Size = new System.Drawing.Size(18, 17);
+            this.checkBoxActivo.TabIndex = 60;
+            this.checkBoxActivo.UseVisualStyleBackColor = true;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(1330, 508);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(66, 25);
+            this.label16.TabIndex = 59;
+            this.label16.Text = "Activo";
             // 
             // textDuracion
             // 
@@ -419,6 +438,122 @@
             this.dgvVendedores.TabIndex = 25;
             this.dgvVendedores.SelectionChanged += new System.EventHandler(this.dgvVendedores_SelectionChanged);
             // 
+            // VendedorId
+            // 
+            this.VendedorId.DataPropertyName = "VendedorId";
+            dataGridViewCellStyle65.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle65.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle65.SelectionForeColor = System.Drawing.Color.Black;
+            this.VendedorId.DefaultCellStyle = dataGridViewCellStyle65;
+            this.VendedorId.HeaderText = "VendedorId";
+            this.VendedorId.MinimumWidth = 6;
+            this.VendedorId.Name = "VendedorId";
+            this.VendedorId.ReadOnly = true;
+            this.VendedorId.Width = 70;
+            // 
+            // Nombre
+            // 
+            this.Nombre.DataPropertyName = "Nombre";
+            dataGridViewCellStyle66.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle66.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle66.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle66.SelectionForeColor = System.Drawing.Color.Black;
+            this.Nombre.DefaultCellStyle = dataGridViewCellStyle66;
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.MinimumWidth = 6;
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
+            this.Nombre.Width = 110;
+            // 
+            // Email
+            // 
+            this.Email.DataPropertyName = "Email";
+            dataGridViewCellStyle67.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle67.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle67.SelectionForeColor = System.Drawing.Color.Black;
+            this.Email.DefaultCellStyle = dataGridViewCellStyle67;
+            this.Email.HeaderText = "Email";
+            this.Email.MinimumWidth = 6;
+            this.Email.Name = "Email";
+            this.Email.ReadOnly = true;
+            this.Email.Width = 150;
+            // 
+            // Contraseña
+            // 
+            this.Contraseña.DataPropertyName = "Contraseña";
+            dataGridViewCellStyle68.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle68.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle68.SelectionForeColor = System.Drawing.Color.Black;
+            this.Contraseña.DefaultCellStyle = dataGridViewCellStyle68;
+            this.Contraseña.HeaderText = "Contraseña";
+            this.Contraseña.MinimumWidth = 6;
+            this.Contraseña.Name = "Contraseña";
+            this.Contraseña.ReadOnly = true;
+            this.Contraseña.Width = 120;
+            // 
+            // Rol
+            // 
+            this.Rol.DataPropertyName = "Rol";
+            dataGridViewCellStyle69.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle69.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle69.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle69.SelectionForeColor = System.Drawing.Color.Black;
+            this.Rol.DefaultCellStyle = dataGridViewCellStyle69;
+            this.Rol.HeaderText = "Rol";
+            this.Rol.MinimumWidth = 6;
+            this.Rol.Name = "Rol";
+            this.Rol.ReadOnly = true;
+            this.Rol.Width = 60;
+            // 
+            // Activo
+            // 
+            this.Activo.DataPropertyName = "Activo";
+            dataGridViewCellStyle70.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle70.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle70.SelectionForeColor = System.Drawing.Color.Black;
+            this.Activo.DefaultCellStyle = dataGridViewCellStyle70;
+            this.Activo.HeaderText = "Activo";
+            this.Activo.MinimumWidth = 6;
+            this.Activo.Name = "Activo";
+            this.Activo.ReadOnly = true;
+            this.Activo.Width = 50;
+            // 
+            // ObjetivoVenta
+            // 
+            this.ObjetivoVenta.DataPropertyName = "ObjetivoVenta";
+            this.ObjetivoVenta.HeaderText = "ObjetivoVenta";
+            this.ObjetivoVenta.MinimumWidth = 6;
+            this.ObjetivoVenta.Name = "ObjetivoVenta";
+            this.ObjetivoVenta.ReadOnly = true;
+            this.ObjetivoVenta.Width = 90;
+            // 
+            // LugarDeVentas
+            // 
+            this.LugarDeVentas.DataPropertyName = "LugarDeVentas";
+            this.LugarDeVentas.HeaderText = "LugarDeVentas";
+            this.LugarDeVentas.MinimumWidth = 6;
+            this.LugarDeVentas.Name = "LugarDeVentas";
+            this.LugarDeVentas.ReadOnly = true;
+            this.LugarDeVentas.Width = 90;
+            // 
+            // Motivo
+            // 
+            this.Motivo.DataPropertyName = "Motivo";
+            this.Motivo.HeaderText = "Motivo";
+            this.Motivo.MinimumWidth = 6;
+            this.Motivo.Name = "Motivo";
+            this.Motivo.ReadOnly = true;
+            this.Motivo.Width = 125;
+            // 
+            // Duracion
+            // 
+            this.Duracion.DataPropertyName = "Duracion";
+            this.Duracion.HeaderText = "Duracion";
+            this.Duracion.MinimumWidth = 6;
+            this.Duracion.Name = "Duracion";
+            this.Duracion.ReadOnly = true;
+            this.Duracion.Width = 90;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -441,8 +576,8 @@
             this.txtContraseña.Size = new System.Drawing.Size(240, 27);
             this.txtContraseña.TabIndex = 33;
             this.txtContraseña.Text = "Contraseña";
-            this.txtContraseña.Enter += new System.EventHandler(this.txtContraseña_Enter);
-            this.txtContraseña.Leave += new System.EventHandler(this.txtContraseña_Leave);
+            this.txtContraseña.Enter += new System.EventHandler(this.txtContraseña_Enter_1);
+            this.txtContraseña.Leave += new System.EventHandler(this.txtContraseña_Leave_1);
             // 
             // label2
             // 
@@ -463,8 +598,8 @@
             this.txtNombre.Size = new System.Drawing.Size(257, 27);
             this.txtNombre.TabIndex = 28;
             this.txtNombre.Text = "Nombre";
-            this.txtNombre.Enter += new System.EventHandler(this.txtNombre_Enter);
-            this.txtNombre.Leave += new System.EventHandler(this.txtNombre_Leave);
+            this.txtNombre.Enter += new System.EventHandler(this.txtNombre_Enter_1);
+            this.txtNombre.Leave += new System.EventHandler(this.txtNombre_Leave_1);
             // 
             // label6
             // 
@@ -485,8 +620,8 @@
             this.txtEmail.Size = new System.Drawing.Size(257, 27);
             this.txtEmail.TabIndex = 29;
             this.txtEmail.Text = "Email";
-            this.txtEmail.Enter += new System.EventHandler(this.txtEmail_Enter);
-            this.txtEmail.Leave += new System.EventHandler(this.txtEmail_Leave);
+            this.txtEmail.Enter += new System.EventHandler(this.txtEmail_Enter_1);
+            this.txtEmail.Leave += new System.EventHandler(this.txtEmail_Leave_1);
             // 
             // panel1
             // 
@@ -545,141 +680,6 @@
             this.label15.Size = new System.Drawing.Size(90, 32);
             this.label15.TabIndex = 18;
             this.label15.Text = "Admin";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(1330, 508);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(66, 25);
-            this.label16.TabIndex = 59;
-            this.label16.Text = "Activo";
-            // 
-            // checkBoxActivo
-            // 
-            this.checkBoxActivo.AutoSize = true;
-            this.checkBoxActivo.Location = new System.Drawing.Point(1518, 513);
-            this.checkBoxActivo.Name = "checkBoxActivo";
-            this.checkBoxActivo.Size = new System.Drawing.Size(18, 17);
-            this.checkBoxActivo.TabIndex = 60;
-            this.checkBoxActivo.UseVisualStyleBackColor = true;
-            // 
-            // VendedorId
-            // 
-            this.VendedorId.DataPropertyName = "VendedorId";
-            dataGridViewCellStyle65.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle65.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle65.SelectionForeColor = System.Drawing.Color.Black;
-            this.VendedorId.DefaultCellStyle = dataGridViewCellStyle65;
-            this.VendedorId.HeaderText = "VendedorId";
-            this.VendedorId.MinimumWidth = 6;
-            this.VendedorId.Name = "VendedorId";
-            this.VendedorId.ReadOnly = true;
-            this.VendedorId.Width = 80;
-            // 
-            // Nombre
-            // 
-            this.Nombre.DataPropertyName = "Nombre";
-            dataGridViewCellStyle66.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle66.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle66.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle66.SelectionForeColor = System.Drawing.Color.Black;
-            this.Nombre.DefaultCellStyle = dataGridViewCellStyle66;
-            this.Nombre.HeaderText = "Nombre";
-            this.Nombre.MinimumWidth = 6;
-            this.Nombre.Name = "Nombre";
-            this.Nombre.ReadOnly = true;
-            this.Nombre.Width = 140;
-            // 
-            // Email
-            // 
-            this.Email.DataPropertyName = "Email";
-            dataGridViewCellStyle67.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle67.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle67.SelectionForeColor = System.Drawing.Color.Black;
-            this.Email.DefaultCellStyle = dataGridViewCellStyle67;
-            this.Email.HeaderText = "Email";
-            this.Email.MinimumWidth = 6;
-            this.Email.Name = "Email";
-            this.Email.ReadOnly = true;
-            this.Email.Width = 60;
-            // 
-            // Contraseña
-            // 
-            this.Contraseña.DataPropertyName = "Contraseña";
-            dataGridViewCellStyle68.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle68.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle68.SelectionForeColor = System.Drawing.Color.Black;
-            this.Contraseña.DefaultCellStyle = dataGridViewCellStyle68;
-            this.Contraseña.HeaderText = "Contraseña";
-            this.Contraseña.MinimumWidth = 6;
-            this.Contraseña.Name = "Contraseña";
-            this.Contraseña.ReadOnly = true;
-            this.Contraseña.Width = 50;
-            // 
-            // Rol
-            // 
-            this.Rol.DataPropertyName = "Rol";
-            dataGridViewCellStyle69.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle69.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle69.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle69.SelectionForeColor = System.Drawing.Color.Black;
-            this.Rol.DefaultCellStyle = dataGridViewCellStyle69;
-            this.Rol.HeaderText = "Rol";
-            this.Rol.MinimumWidth = 6;
-            this.Rol.Name = "Rol";
-            this.Rol.ReadOnly = true;
-            this.Rol.Width = 60;
-            // 
-            // Activo
-            // 
-            this.Activo.DataPropertyName = "Activo";
-            dataGridViewCellStyle70.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle70.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle70.SelectionForeColor = System.Drawing.Color.Black;
-            this.Activo.DefaultCellStyle = dataGridViewCellStyle70;
-            this.Activo.HeaderText = "Activo";
-            this.Activo.MinimumWidth = 6;
-            this.Activo.Name = "Activo";
-            this.Activo.ReadOnly = true;
-            this.Activo.Width = 50;
-            // 
-            // ObjetivoVenta
-            // 
-            this.ObjetivoVenta.DataPropertyName = "ObjetivoVenta";
-            this.ObjetivoVenta.HeaderText = "ObjetivoVenta";
-            this.ObjetivoVenta.MinimumWidth = 6;
-            this.ObjetivoVenta.Name = "ObjetivoVenta";
-            this.ObjetivoVenta.ReadOnly = true;
-            this.ObjetivoVenta.Width = 125;
-            // 
-            // LugarDeVentas
-            // 
-            this.LugarDeVentas.DataPropertyName = "LugarDeVentas";
-            this.LugarDeVentas.HeaderText = "LugarDeVentas";
-            this.LugarDeVentas.MinimumWidth = 6;
-            this.LugarDeVentas.Name = "LugarDeVentas";
-            this.LugarDeVentas.ReadOnly = true;
-            this.LugarDeVentas.Width = 125;
-            // 
-            // Motivo
-            // 
-            this.Motivo.DataPropertyName = "Motivo";
-            this.Motivo.HeaderText = "Motivo";
-            this.Motivo.MinimumWidth = 6;
-            this.Motivo.Name = "Motivo";
-            this.Motivo.ReadOnly = true;
-            this.Motivo.Width = 125;
-            // 
-            // Duracion
-            // 
-            this.Duracion.DataPropertyName = "Duracion";
-            this.Duracion.HeaderText = "Duracion";
-            this.Duracion.MinimumWidth = 6;
-            this.Duracion.Name = "Duracion";
-            this.Duracion.ReadOnly = true;
-            this.Duracion.Width = 125;
             // 
             // FormAdmin
             // 

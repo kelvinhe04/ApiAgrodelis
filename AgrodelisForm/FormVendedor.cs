@@ -63,6 +63,12 @@ namespace AgrodelisForm
                 if (dataGridViewProductos.Columns.Contains("ProductoId"))
                     dataGridViewProductos.Columns["ProductoId"].Visible = false;
 
+                if (dataGridViewProductos.Columns.Contains("VendedorId"))
+                    dataGridViewProductos.Columns["VendedorId"].Visible = false;
+
+                if (dataGridViewProductos.Columns.Contains("NombreVendedor"))
+                    dataGridViewProductos.Columns["NombreVendedor"].Visible = false;
+
                 if (!respuesta.Exitoso)
                 {
                     // Mostrar mensaje si no se encontraron productos

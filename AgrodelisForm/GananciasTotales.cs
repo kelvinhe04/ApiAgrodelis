@@ -85,5 +85,12 @@ namespace AgrodelisForm
             this.Hide(); // Ocultar el formulario actua
             formLogin.ShowDialog();
         }
+
+        private void toolStripMenuInventarioForm_Click(object sender, EventArgs e)
+        {
+            Inventario Inventario = new Inventario();  // Pasamos el UsuarioId
+            this.Hide(); // Ocultar el formulario actua
+            Inventario.ShowDialog();
+        }
     }
 }

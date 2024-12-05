@@ -110,12 +110,6 @@
     <Compile Include="Services\VendedorService.cs" />
     <Compile Include="Services\VentaService.cs" />
     <Compile Include="SesionUsuario.cs" />
-    <Compile Include="Transferencia.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Transferencia.Designer.cs">
-      <DependentUpon>Transferencia.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="FormAdmin.resx">
       <DependentUpon>FormAdmin.cs</DependentUpon>
     </EmbeddedResource>

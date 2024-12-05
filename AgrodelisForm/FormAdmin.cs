@@ -22,6 +22,7 @@ namespace AgrodelisForm
         {
             InitializeComponent();
             CargarTodosVendedores();
+            AplicarEstiloLabel();
         }
 
 
@@ -68,7 +69,8 @@ namespace AgrodelisForm
 
 
         //Nombres dentro del txt
-        private void txtNombre_Enter(object sender, EventArgs e)
+        
+        private void txtNombre_Enter_1(object sender, EventArgs e)
         {
             if (txtNombre.Text == "Nombre")
             {
@@ -76,25 +78,21 @@ namespace AgrodelisForm
             }
         }
 
-        private void txtNombre_Leave(object sender, EventArgs e)
+        private void txtNombre_Leave_1(object sender, EventArgs e)
         {
             if (txtNombre.Text == "")
             {
                 txtNombre.Text = "Nombre";
             }
         }
-
-
-
-        private void txtEmail_Enter(object sender, EventArgs e)
+        private void txtEmail_Enter_1(object sender, EventArgs e)
         {
             if (txtEmail.Text == "Email")
             {
                 txtEmail.Text = "";
             }
         }
-
-        private void txtEmail_Leave(object sender, EventArgs e)
+        private void txtEmail_Leave_1(object sender, EventArgs e)
         {
             if (txtEmail.Text == "")
             {
@@ -102,21 +100,22 @@ namespace AgrodelisForm
             }
         }
 
-        private void txtContraseña_Enter(object sender, EventArgs e)
-        {
-            if (txtContraseña.Text == "Contraseña")
-            {
-                txtContraseña.Text = "";
-            }
-        }
 
-        private void txtContraseña_Leave(object sender, EventArgs e)
+        private void txtContraseña_Leave_1(object sender, EventArgs e)
         {
             if (txtContraseña.Text == "")
             {
                 txtContraseña.Text = "Contraseña";
             }
         }
+        private void txtContraseña_Enter_1(object sender, EventArgs e)
+        {
+            if (txtContraseña.Text == "Contraseña")
+            {
+                txtContraseña.Text = "";
+            }
+        }
+       
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
@@ -169,10 +168,7 @@ namespace AgrodelisForm
             if (string.IsNullOrWhiteSpace(txtLugarDeVenta.Text) || !int.TryParse(txtLugarDeVenta.Text.Trim(), out _))
                 return "El lugar de ventas debe ser un número entero válido.";
 
-            if (string.IsNullOrWhiteSpace(textMotivo.Text))
-                return "El motivo es obligatorio.";
-            if (string.IsNullOrWhiteSpace(textDuracion.Text))
-                return "La duración es obligatoria.";
+            
             if (string.IsNullOrWhiteSpace(txtEmail.Text))
                 return "El email es obligatorio.";
 
@@ -195,8 +191,19 @@ namespace AgrodelisForm
 
             // Restablecer el ComboBox de rol (si aplica)
             cmbRol.SelectedIndex = -1; // Resetea la selección (deja el ComboBox vacío)
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Nombre";
+            }
+            if (txtEmail.Text == "")
+            {
+                txtEmail.Text = "Email";
+            }
 
-            // Si el formulario tiene más controles que desees limpiar, añádelos aquí.
+            if (txtContraseña.Text == "")
+            {
+                txtContraseña.Text = "Contraseña";
+            }
         }
         private void CargarRoles()
         {
@@ -398,5 +405,46 @@ namespace AgrodelisForm
                 MessageBox.Show($"Ocurrió un error al eliminar el vendedor: {ex.Message}");
             }
         }
+
+        private void AplicarEstiloLabel()
+        {
+
+
+            label1.BackColor = Color.Transparent;
+            label1.Parent = panel4;
+            label1.Invalidate(); // Redibuja el control
+            label2.BackColor = Color.Transparent;
+            label2.Parent = panel4;
+            label2.Invalidate(); // Redibuja el control
+            label3.BackColor = Color.Transparent;
+            label3.Parent = panel4;
+            label3.Invalidate(); // Redibuja el control
+            label4.BackColor = Color.Transparent;
+            label4.Parent = panel4;
+            label4.Invalidate(); // Redibuja el control
+            label6.BackColor = Color.Transparent;
+            label6.Parent = panel4;
+            label6.Invalidate(); // Redibuja el control
+            label5.BackColor = Color.Transparent;
+            label5.Parent = panel4;
+            label5.Invalidate(); // Redibuja el control
+
+            label11.BackColor = Color.Transparent;
+            label11.Parent = panel4;
+            label11.Invalidate(); // Redibuja el control
+
+            label12.BackColor = Color.Transparent;
+            label12.Parent = panel4;
+            label12.Invalidate(); // Redibuja el control
+
+            label16.BackColor = Color.Transparent;
+            label16.Parent = panel4;
+            label16.Invalidate(); // Redibuja el control
+
+
+
+        }
+
+
     }
 }

@@ -41,9 +41,9 @@ namespace AgrodelisForm
             //this.Hide(); // Ocultar el formulario actua
             //FormAdmin.ShowDialog();
 
-            Inventario Inventario = new Inventario();  // Pasamos el UsuarioId
-            this.Hide(); // Ocultar el formulario actua
-            Inventario.ShowDialog();
+            //Inventario Inventario = new Inventario();  // Pasamos el UsuarioId
+            //this.Hide(); // Ocultar el formulario actua
+            //Inventario.ShowDialog();
         }
 
 
@@ -103,7 +103,7 @@ namespace AgrodelisForm
                         else if (rol == "Vendedor")
                         {
                             // Redirigir al formulario del vendedor
-                            MessageBox.Show($"¡Bienvenido, Vendedor {nombreUsuario}!", "Login Exitoso");
+                            MessageBox.Show($"¡Bienvenido, Vended@r {nombreUsuario}!", "Login Exitoso");
                             var formVendedor = new FormVendedor(SesionUsuario.UsuarioId);  // Pasamos el UsuarioId
                             formVendedor.Show();
                             this.Hide(); // Ocultar el formulario actual
@@ -293,6 +293,9 @@ namespace AgrodelisForm
                     MessageBox.Show(respuesta.Mensaje, "Error");
                     if (respuesta.Mensaje == "El correo electrónico ya está registrado.")
                     {
+                        txtUsuarioRegistrar.Clear();
+                        txtEmailRegistrar.Clear();
+                        txtContraRegistrar.Clear();
                         panelLogin.Visible = true;
                         panelRegistrar.Visible = false;
                     }
