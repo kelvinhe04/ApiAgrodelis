@@ -13,17 +13,21 @@ namespace ApiAgrodelis.Controllers
 
         public ProductosController()
         {
-            _db = new Db();  
+            _db = new Db();
         }
 
 
         //==============================FRONTEND-SOFTV================================
-        [HttpGet]   
+        [HttpGet]
         [Route("all")]
         public List<ProductoV> ObtenerTodosLosProductos()
         {
             return new Db().ObtenerTodosLosProductos();
         }
+
+        [HttpGet("ping")]
+        public string Ping() => "✅ API activa";
+
         //==============================FRONTEND-SOFTV================================
         [HttpPost]
         [Route("update")]
