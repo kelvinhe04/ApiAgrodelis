@@ -15,18 +15,26 @@
             });
         });
 
+        // Agregar servicios a Swagger
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
         // Añadir servicios al contenedor
         builder.Services.AddControllers();
 
         var app = builder.Build();
 
-        // 🔧 Esta línea es necesaria
+        // Habilitar Swagger en desarrollo y producción
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        // Ruteo
         app.UseRouting();
 
         // Usar CORS
         app.UseCors("AllowAll");
 
-        // Habilitar mapeo de controladores
+        // Mapear controladores
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
