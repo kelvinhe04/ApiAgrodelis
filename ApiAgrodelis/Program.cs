@@ -1,4 +1,4 @@
-public class Program
+﻿public class Program
 {
     public static void Main(string[] args)
     {
@@ -9,21 +9,29 @@ public class Program
         {
             options.AddPolicy("AllowAll", policy =>
             {
-                policy.AllowAnyOrigin()  // Permite cualquier origen
-                      .AllowAnyMethod()  // Permite cualquier m�todo (GET, POST, etc.)
-                      .AllowAnyHeader();  // Permite cualquier encabezado
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
             });
         });
 
-        // A�adir servicios al contenedor
+        // Añadir servicios al contenedor
         builder.Services.AddControllers();
 
         var app = builder.Build();
 
+        // 🔧 Esta línea es necesaria
+        app.UseRouting();
+
         // Usar CORS
         app.UseCors("AllowAll");
 
-        app.MapControllers();
+        // Habilitar mapeo de controladores
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
+
         app.Run();
     }
 }
