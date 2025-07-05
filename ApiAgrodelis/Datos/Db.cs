@@ -18,7 +18,7 @@ namespace ApiAgrodelis.Datos
 
         public Db()
         {
-            string cadenaConexion = Environment.GetEnvironmentVariable("ConnectionStrings_DefaultConnection");
+            string cadenaConexion = "Server=tcp:sqlserveragrodelis2025.database.windows.net,1433;Initial Catalog=ApiAgrodelis;Persist Security Info=False;User ID=kelvinhe;Password=-Luismunoz0516;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             con = new SqlConnection();
             con.ConnectionString = cadenaConexion;
             cmd = new SqlCommand();
