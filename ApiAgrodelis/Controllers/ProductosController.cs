@@ -25,9 +25,7 @@ namespace ApiAgrodelis.Controllers
             return new Db().ObtenerTodosLosProductos();
         }
 
-        [HttpGet("ping")]
-        public string Ping() => "✅ API activa";
-
+      
         //==============================FRONTEND-SOFTV================================
         [HttpPost]
         [Route("update")]
