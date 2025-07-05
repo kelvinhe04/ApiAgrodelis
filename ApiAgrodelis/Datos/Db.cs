@@ -18,7 +18,7 @@ namespace ApiAgrodelis.Datos
 
         public Db()
         {
-            string cadenaConexion = "server=localhost;database=AgroDelis;persistsecurityinfo=True; Integrated Security=True;TrustServerCertificate=True";
+            string cadenaConexion = Environment.GetEnvironmentVariable("ConnectionStrings_DefaultConnection");
             con = new SqlConnection();
             con.ConnectionString = cadenaConexion;
             cmd = new SqlCommand();
