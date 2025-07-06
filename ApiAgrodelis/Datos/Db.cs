@@ -16,12 +16,28 @@ namespace ApiAgrodelis.Datos
         SqlDataAdapter adapter;
         DataSet ds;
 
-        public Db()
+        public Db(IConfiguration configuration)
         {
-            string cadenaConexion = Environment.GetEnvironmentVariable("ConnectionStrings_DefaultConnection");
+            string cadenaConexion = configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(cadenaConexion))
+            {
+                // La variable no existe o está vacía
+                throw new Exception("❌ La cadena de conexión 'DefaultConnection' no está configurada.");
+            }
+
+            try
+            {
             con = new SqlConnection(cadenaConexion);
             cmd = new SqlCommand();
             cmd.Connection = con;
+            }
+            catch (Exception ex)
+            {
+                // Aquí puedes loguear el error o arrojarlo para que lo maneje quien llama
+                Console.WriteLine("Error al conectar a la base de datos: " + ex.Message);
+                throw;  // Re-lanza la excepción para que se vea el error afuera
+            }
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using ApiAgrodelis.Datos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace ApiAgrodelis.Controllers
 {
@@ -10,9 +11,9 @@ namespace ApiAgrodelis.Controllers
         
             private readonly Db _db;
 
-            public CategoriaController()
-            {
-                _db = new Db();
+            public CategoriaController(IConfiguration configuration)
+        {
+                _db = new Db(configuration);
             }
 
             // Obtener todas las categorías

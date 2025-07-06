@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiAgrodelis.Models;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 
 namespace ApiAgrodelis.Controllers
@@ -14,9 +15,9 @@ namespace ApiAgrodelis.Controllers
 
 
         [HttpPost("login")]
-        public object Login([FromBody] LoginRequest loginRequest)
+        public object Login([FromBody] LoginRequest loginRequest, IConfiguration configuration)
         {
-            var db = new Db();
+            var db = new Db(configuration);
             try
             {
                 // Verificar las credenciales
@@ -82,12 +83,12 @@ namespace ApiAgrodelis.Controllers
 
         // Endpoint de Registro
         [HttpPost("register")]
-        public object Register([FromBody] RegisterRequest registerRequest)
+        public object Register([FromBody] RegisterRequest registerRequest, IConfiguration configuration)
         {
             try
             {
                 // Verificar si el email ya está registrado
-                var emailExistente = new Db().ValidarEmail(registerRequest.Email);
+                var emailExistente = new Db(configuration).ValidarEmail(registerRequest.Email);
                 if (emailExistente)
                 {
                     return new
@@ -99,7 +100,7 @@ namespace ApiAgrodelis.Controllers
                 }
 
                 // Verificar si el nombre de usuario ya está registrado
-                var nombreExistente = new Db().ValidarNombreUsuario(registerRequest.Nombre);
+                var nombreExistente = new Db(configuration).ValidarNombreUsuario(registerRequest.Nombre);
                 if (nombreExistente)
                 {
                     return new
@@ -111,7 +112,7 @@ namespace ApiAgrodelis.Controllers
                 }
 
                 // Si no existe, registrar el nuevo usuario
-                var usuarioCreado = new Db().RegistrarUsuario(registerRequest.Nombre, registerRequest.Email, registerRequest.Contraseña, registerRequest.Rol);
+                var usuarioCreado = new Db(configuration).RegistrarUsuario(registerRequest.Nombre, registerRequest.Email, registerRequest.Contraseña, registerRequest.Rol);
                 if (usuarioCreado > 0)
                 {
                     return new

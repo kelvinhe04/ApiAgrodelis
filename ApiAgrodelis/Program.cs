@@ -1,10 +1,12 @@
-﻿public class Program
+﻿using ApiAgrodelis.Datos;
+
+public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Configurar CORS
+        // 1. CORS
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAll", policy =>
@@ -15,31 +17,35 @@
             });
         });
 
-        // Agregar servicios a Swagger
+        // 2. Swagger
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        // Añadir servicios al contenedor
+        // 3. Controladores
         builder.Services.AddControllers();
 
         var app = builder.Build();
 
-        // Habilitar Swagger en desarrollo y producción
+        // 4. Usar Swagger (habilitado siempre, opcionalmente puedes restringirlo)
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "API AgroDelis v1");
+            c.RoutePrefix = "swagger"; // Esto permite acceder con /swagger
+        });
 
-        // Ruteo
+        // 5. Middleware
         app.UseRouting();
-
-        // Usar CORS
         app.UseCors("AllowAll");
 
-        // Mapear controladores
+        // 6. Endpoints
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
         });
 
         app.Run();
+        builder.Services.AddSingleton<Db>();
+
     }
 }

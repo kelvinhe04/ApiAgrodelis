@@ -10,15 +10,15 @@ namespace ApiAgrodelis.Controllers
     {
         private Db _db;
 
-        public VentasController()
+        public VentasController(Db db)
         {
-            _db = new Db();
+            _db = db;
         }
 
         //============================== FRONTEND-SOFTV =====================================
         [HttpPost]
         [Route("registrar")]
-        public object RegistrarVentas([FromBody] List<VentaRequest> ventas)
+        public object RegistrarVentas([FromBody] List<VentaRequest> ventas, IConfiguration configuration)
         {
             Console.WriteLine("Datos recibidos para registrar ventas: ");
             try
@@ -38,7 +38,7 @@ namespace ApiAgrodelis.Controllers
                 Console.WriteLine("Datos recibidos: " + JsonConvert.SerializeObject(ventas));
 
                 // Registrar las ventas en la base de datos
-                new Db().RegistrarVentas(ventas);
+                new Db(configuration).RegistrarVentas(ventas);
 
                 return new
                 {

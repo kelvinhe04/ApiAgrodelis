@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiAgrodelis.Models;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace ApiAgrodelis.Controllers
 {
@@ -11,25 +12,25 @@ namespace ApiAgrodelis.Controllers
     {
         private Db _db;
 
-        public ProductosController()
+        public ProductosController(IConfiguration configuration)
         {
-            _db = new Db();
+            _db = new Db(configuration);
         }
 
 
         //==============================FRONTEND-SOFTV================================
         [HttpGet]
         [Route("all")]
-        public List<ProductoV> ObtenerTodosLosProductos()
+        public List<ProductoV> ObtenerTodosLosProductos(IConfiguration configuration)
         {
-            return new Db().ObtenerTodosLosProductos();
+            return new Db(configuration).ObtenerTodosLosProductos();
         }
 
       
         //==============================FRONTEND-SOFTV================================
         [HttpPost]
         [Route("update")]
-        public object ActualizarStockProductos([FromBody] List<ProductoRequestV> productos)
+        public object ActualizarStockProductos([FromBody] List<ProductoRequestV> productos, IConfiguration configuration)
         {
             Console.WriteLine("Datos recibidos: ");
             try
@@ -50,11 +51,11 @@ namespace ApiAgrodelis.Controllers
                 foreach (var producto in productos)
                 {
                     // Lógica para actualizar el stock en la base de datos
-                    var productoDb = new Db().ObtenerProductoPorIdV(producto.ProductoId);
+                    var productoDb = new Db(configuration).ObtenerProductoPorIdV(producto.ProductoId);
                     if (productoDb != null && producto.Cantidad > 0)
                     {
                         productoDb.Stock -= producto.Cantidad; // Resta la cantidad solicitada
-                        new Db().ActualizarProducto(productoDb); // Actualiza el producto en la base de datos
+                        new Db(configuration).ActualizarProducto(productoDb); // Actualiza el producto en la base de datos
                     }
                 }
 
@@ -182,11 +183,11 @@ namespace ApiAgrodelis.Controllers
         }
 
         [HttpDelete("eliminar/{productoId}")]
-        public object EliminarProducto(int productoId)
+        public object EliminarProducto(int productoId, IConfiguration configuration)
         {
             try
             {
-                var db = new Db();
+                var db = new Db(configuration);
                 int resultado = db.EliminarProducto(productoId);
 
                 if (resultado > 0)

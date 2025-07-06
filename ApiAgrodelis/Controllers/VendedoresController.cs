@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ApiAgrodelis.Models;
+using Microsoft.Extensions.Configuration;
 namespace ApiAgrodelis.Controllers
 {
     [Route("api/[controller]")]
@@ -10,9 +11,9 @@ namespace ApiAgrodelis.Controllers
     {
         private Db _db;
 
-        public VendedoresController()
+        public VendedoresController(IConfiguration configuration)
         {
-            _db = new Db();
+            _db = new Db(configuration);
         }
         [HttpGet]
         [Route("vendedores")]
@@ -139,11 +140,11 @@ namespace ApiAgrodelis.Controllers
             }
         }
         [HttpDelete("eliminar/{vendedorId}")]
-        public object EliminarVendedor(int vendedorId)
+        public object EliminarVendedor(int vendedorId, IConfiguration configuration)
         {
             try
             {
-                var db = new Db(); // Suponiendo que tienes una clase Db para manejar las operaciones de la base de datos
+                var db = new Db(configuration); // Suponiendo que tienes una clase Db para manejar las operaciones de la base de datos
                 int resultado = db.EliminarVendedor(vendedorId);
 
                 if (resultado > 0)
