@@ -23,7 +23,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync("https://localhost:7156/api/Categoria");
+                var respuesta = await _client.GetAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Categoria");
                 var contenido = await respuesta.Content.ReadAsStringAsync();
 
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);

@@ -22,7 +22,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync("https://localhost:7156/api/vendedores/vendedores");
+                var respuesta = await _client.GetAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/vendedores/vendedores");
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -51,7 +51,7 @@ namespace AgrodelisForm.Services
             {
                 try
                 {
-                    var respuesta = await _client.GetAsync("https://localhost:7156/api/vendedores/vendedores/todos");
+                    var respuesta = await _client.GetAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/vendedores/vendedores/todos");
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -84,7 +84,7 @@ namespace AgrodelisForm.Services
             {
                 var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-                var respuesta = await _client.PostAsync("https://localhost:7156/api/Vendedores/registrar", content);
+                var respuesta = await _client.PostAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Vendedores/registrar", content);
                 var contenido = await respuesta.Content.ReadAsStringAsync();
 
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
@@ -105,7 +105,7 @@ namespace AgrodelisForm.Services
             {
                 var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-                var respuesta = await _client.PostAsync("https://localhost:7156/api/Vendedores/modificar", content);
+                var respuesta = await _client.PostAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Vendedores/modificar", content);
                 var contenido = await respuesta.Content.ReadAsStringAsync();
 
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
@@ -124,7 +124,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.DeleteAsync($"https://localhost:7156/api/Vendedores/eliminar/{vendedorId}");
+                var respuesta = await _client.DeleteAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/Vendedores/eliminar/{vendedorId}");
 
                 if (respuesta.IsSuccessStatusCode)
                 {

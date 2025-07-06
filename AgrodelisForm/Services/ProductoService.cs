@@ -22,7 +22,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync($"https://localhost:7156/api/productos/{vendedorId}");
+                var respuesta = await _client.GetAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/productos/{vendedorId}");
                 var contenido = await respuesta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
             }
@@ -44,7 +44,7 @@ namespace AgrodelisForm.Services
             {
                 var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-                var respuesta = await _client.PostAsync("https://localhost:7156/api/Productos/registrar", content);
+                var respuesta = await _client.PostAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Productos/registrar", content);
                 var contenido = await respuesta.Content.ReadAsStringAsync();
 
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
@@ -66,7 +66,7 @@ namespace AgrodelisForm.Services
                 var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
                 // Asumiendo que la URL del API está configurada correctamente
-                var respuesta = await _client.PutAsync($"https://localhost:7156/api/Productos/Modificar", content);
+                var respuesta = await _client.PutAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/Productos/Modificar", content);
                 var contenido = await respuesta.Content.ReadAsStringAsync();
 
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
@@ -86,7 +86,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.DeleteAsync($"https://localhost:7156/api/Productos/eliminar/{productoId}");
+                var respuesta = await _client.DeleteAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/Productos/eliminar/{productoId}");
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -118,7 +118,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync("https://localhost:7156/api/Productos/inventario");
+                var respuesta = await _client.GetAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Productos/inventario");
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -147,7 +147,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync($"https://localhost:7156/api/Productos/inventario/{vendedorId}");
+                var respuesta = await _client.GetAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/Productos/inventario/{vendedorId}");
                 var contenido = await respuesta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
             }
@@ -169,7 +169,7 @@ namespace AgrodelisForm.Services
             try
             {
                 // URL de la API para obtener productos con stock bajo de un vendedor
-                var url = $"https://localhost:7156/api/productos/{vendedorId}/stock-bajo";  // Ajusta la URL según tu dominio
+                var url = $"https://apiagrodelis20250705155616.azurewebsites.net/api/productos/{vendedorId}/stock-bajo";  // Ajusta la URL según tu dominio
 
                 // Realizar la solicitud GET
                 var respuesta = await _client.GetAsync(url);

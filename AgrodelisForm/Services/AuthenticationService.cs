@@ -30,7 +30,7 @@ namespace AgrodelisForm.Services
                 var data = new StringContent(datos, Encoding.UTF8, "application/json");
 
                 // Enviar solicitud POST al endpoint de login
-                var respuesta = await _client.PostAsync("https://localhost:7156/api/Authentication/login", data);
+                var respuesta = await _client.PostAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Authentication/login", data);
 
                 // Verificar si la respuesta es exitosa
                 if (respuesta.IsSuccessStatusCode)
@@ -104,7 +104,7 @@ namespace AgrodelisForm.Services
             try
             {
                 // Realizar una solicitud GET para obtener el rol del usuario
-                var respuesta = await _client.GetAsync($"https://localhost:7156/api/Authentication/rol?email={email}");
+                var respuesta = await _client.GetAsync($"https://apiagrodelis20250705155616.azurewebsites.net/Authentication/rol?email={email}");
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -126,7 +126,7 @@ namespace AgrodelisForm.Services
             try
             {
                 // Crear la solicitud GET al endpoint de la API para obtener el rol
-                var respuesta = await _client.GetAsync($"https://localhost:7156/api/Authentication/rol?email={email}");
+                var respuesta = await _client.GetAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/Authentication/rol?email={email}");
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -155,7 +155,7 @@ namespace AgrodelisForm.Services
                 var data = new StringContent(datos, Encoding.UTF8, "application/json");
 
                 // Enviar solicitud POST al endpoint de registro
-                var respuesta = await _client.PostAsync("https://localhost:7156/api/Authentication/register", data);
+                var respuesta = await _client.PostAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/Authentication/register", data);
 
                 // Verificar si la respuesta es exitosa
                 if (respuesta.IsSuccessStatusCode)

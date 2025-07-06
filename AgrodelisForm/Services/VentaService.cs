@@ -23,7 +23,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync($"https://localhost:7156/api/ventas/{vendedorId}");
+                var respuesta = await _client.GetAsync($"https://apiagrodelis20250705155616.azurewebsites.net/api/ventas/{vendedorId}");
                 var contenido = await respuesta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
             }
@@ -42,7 +42,7 @@ namespace AgrodelisForm.Services
         {
             try
             {
-                var respuesta = await _client.GetAsync("https://localhost:7156/api/ventas/todas");
+                var respuesta = await _client.GetAsync("https://apiagrodelis20250705155616.azurewebsites.net/api/ventas/todas");
                 var contenido = await respuesta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Respuesta>(contenido);
             }
