@@ -18,8 +18,12 @@ Los vendedores utilizan una aplicación de escritorio (también desarrollada en 
 ## 🔗 Repositorios relacionados
 
 - 🌐 [Frontend Web (HTML/CSS/JS)](https://github.com/kelvinhe04/Semestral-SoftV)
-- 🖥️ [Aplicación de escritorio C# (no publicada aún / opcional)]
+  
+- 🖥️ Aplicación de escritorio C# (Windows Forms) — Ejecutable disponible en la sección [Releases](https://github.com/tu-usuario/tu-repo/releases), que permite a los usuarios gestionar sus productos y la plataforma.
+- **Agricultores:** pueden ingresar a la aplicación para administrar sus productos agrícolas y cárnicos. Tienen la capacidad de **agregar**, **modificar** y **eliminar** productos propios.
+- **Administrador:** tiene control total sobre la plataforma desde el formulario. Puede **gestionar usuarios vendedores** (agricultores), incluyendo **eliminar vendedores**, **actualizar contraseñas**, **cambiar nombres y correos electrónicos**, además de las operaciones sobre los productos.
 
+Esta aplicación facilita la gestión centralizada y segura de la información que alimenta la API REST y el frontend web.
 ---
 
 ## 📦 Funcionalidades principales
